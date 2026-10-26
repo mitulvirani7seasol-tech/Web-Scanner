@@ -1,0 +1,488 @@
+/* 
+  Localizable.strings
+  WhatsappChatBackup
+
+  Created by Sumit zalavadiya on 12/12/25.
+  
+*/
+
+"“Chat” instantly without needing to save any “contact”" = "“Chat” instantly without needing to save any “contact”";
+"Quickly “import” all your WA “chat” history securely" = "Quickly “import” all your WA “chat” history securely";
+"Chat Backup" = "Chat Backup";
+"Step-by-step guide to export chats" = "Step-by-step guide to export chats";
+"Import Chat" = "导入聊天";
+"Quick Send" = "Quick Send";
+"Quick Chat Without Saving Contact" = "Quick Chat Without Saving Contact";
+"Phone Number" = "Phone Number";
+"Direct Message" = "Direct Message";
+"WhatsClone" = "WhatsClone";
+"Settings" = "设置";
+"General" = "General";
+"Manage basic app preferences" = "Manage basic app preferences";
+"Dark Theme" = "Dark Theme";
+"Language" = "Language";
+"How to use?" = "How to use?";
+"More Settings" = "More Settings";
+"Manage extra features easily" = "Manage extra features easily";
+"Rate & Review" = "Rate & Review";
+"Share with Friends" = "Share with Friends";
+"Privacy Policy" = "Privacy Policy";
+"How to export?" = "How to export?";
+"Swipe left on chat in the Chat Section and tap on “More”" = "Swipe left on chat in the Chat Section and tap on “More”";
+"Tap on “Contact Info” or “Group Info” to proceed" = "Tap on “Contact Info” or “Group Info” to proceed";
+"Click on “Export Chat” to continue" = "Click on “Export Chat” to continue";
+"Choose either “Attach Media” or “Without Media”" = "Choose either “Attach Media” or “Without Media”";
+"Find “Chat Backup Deleted Messages” and tap on it." = "Find “Chat Backup Deleted Messages” and tap on it.";
+"Enter message...." = "Enter message....";
+"Required" = "Required";
+"Please enter your phone number." = "Please enter your phone number.";
+"Please enter a message." = "Please enter a message.";
+
+"Continue" = "Continue";
+"Next" = "Next";
+"No chat backup found" = "未找到聊天备份";
+"Search chats" = "Search chats";
+"OK" = "OK";
+"No Internet Connection" = "No Internet Connection";
+
+"Find “Whats Web” and tap on it." = "Find “Whats Web” and tap on it.";
+"Terms Of Use" = "Terms Of Use";
+
+"WT Scan" = "WT Scan";
+"Scan and Connect Instantly" = "Scan and Connect Instantly";
+"Scan" = "Scan";
+"Telegram" = "Telegram";
+"Facebook" = "Facebook";
+"Instagram" = "Instagram";
+"Twitter" = "Twitter";
+"Add More" = "Add More";
+"Other Web Accounts" = "Other Web Accounts";
+"See more" = "See more";
+"Media" = "Media";
+"Chat" = "聊天";
+"Links" = "Links";
+"Docs" = "Docs";
+"Direct Chat" = "直接聊天";
+"Add Message" = "Add Message";
+"Please enter your phone number." = "Please enter your phone number.";
+"Phone number copied" = "Phone number copied";
+"Enter message...." = "Enter message....";
+"Passcode" = "Passcode";
+"Change Passcode" = "Change Passcode";
+"Recover Passcode" = "Recover Passcode";
+"Import Chat" = "导入聊天";
+"Where would you like to import chats from?" = "您想从哪里导入聊天？";
+"Whatsapp" = "WhatsApp";
+"WA Business" = "WA Business";
+"Files" = "文件";
+"Add New Message" = "Add New Message";
+"Add Message" = "Add Message";
+"Enter message..." = "Enter message...";
+" Add Quick Message" = " Add Quick Message";
+"Set Password" = "Set Password";
+"Enter Your Passcode" = "Enter Your Passcode";
+"Change Password" = "Change Password";
+"Confirm Password" = "Confirm Password";
+"Password successfully set." = "Password successfully set.";
+"Confirm password does not match." = "Confirm password does not match.";
+"Enter Your Passcode" = "Enter Your Passcode";
+"Enter New Password" = "Enter New Password";
+"Current password does not match." = "Current password does not match.";
+"Confirm New Password" = "Confirm New Password";
+"Password changed successfully." = "Password changed successfully.";
+"Enter Your Current Password" = "Enter Your Current Password";
+"Wrong Password" = "Wrong Password";
+"OK" = "OK";
+"Set Answer" = "Set Answer";
+"Show Passcode" = "Show Passcode";
+"Required" = "Required";
+"Please enter your answer." = "Please enter your answer.";
+"OK" = "OK";
+"Success" = "Success";
+"Answer saved successfully." = "Answer saved successfully.";
+"Success" = "Success";
+"Your Passcode is: " = "Your Passcode is: ";
+"Wrong Answer" = "Wrong Answer";
+"Your answer does not match." = "Your answer does not match.";
+"No media found" = "No media found";
+"No links found" = "No links found";
+"No documents found" = "No documents found";
+"Please enter your 4 digit security code. " = "Please enter your 4 digit security code. ";
+"Forgot Passcode?" = "Forgot Passcode?";
+"Security Question" = "Security Question";
+"Question" = "Question";
+"What is your favorite team?" = "What is your favorite team?";
+"Write an Answer" = "Write an Answer";
+"Enter your answer here ..." = "Enter your answer here ...";
+"Show Passcode" = "Show Passcode";
+
+"step2_text" = "2. Tap Menu (⋮) on Android, or Settings on iPhone.";
+"menu_word" = "Menu (⋮)";
+"settings_word" = "Settings";
+"step3_text" = "3. Tap Linked devices and then Link a device.";
+"linked_devices" = "Linked devices";
+"link_device" = "Link a device";
+"How to scan?" = "How to scan?";
+"Watch Video" = "Watch Video";
+"Refresh QR" = "Refresh QR";
+"Save someone’s WhatsApp " = "Save someone’s WhatsApp ";
+"step1_text" = "1. Open Whatsapp on your other phone.";
+"Whatsapp" = "WhatsApp";
+"step4_text" = "4. Point your phone at this screen to scan the QR code.";
+"scan_the_QR_code." = "scan the QR code.";
+
+"intro_1_bold" = "Connected";
+"intro_1_text" = "Stay Connected Across All Devices";
+"Sync your conversations and files instantly across all your devices effortlessly" = "Sync your conversations and files instantly across all your devices effortlessly";
+"intro_3_bold" = "Conversations";
+"intro_3_text" = "Keep Conversations Forever Safe";
+"Your conversations stay safe, private, and backed up whenever you need" = "Your conversations stay safe, private, and backed up whenever you need";
+"intro_2_bold" = "Instant";
+"intro_2_text" = "Instant Messaging With Anyone";
+"Enjoy fast, seamless messaging with anyone across devices anytime, anywhere" = "Enjoy fast, seamless messaging with anyone across devices anytime, anywhere";
+"Next" = "Next";
+"Continue" = "Continue";
+"Thank" = "Thank";
+"You!" = "You!";
+"Thanks for using our WhatsApp Web Scan App. Your chats are now easily accessible anytime." = "Thanks for using our WhatsApp Web Scan App. Your chats are now easily accessible anytime.";
+"Go To Home" = "Go To Home";
+"Tap on a “Status” to start downloading." = "Tap on a “Status” to start downloading.";
+"Tap the “Download” button to continue." = "Tap the “Download” button to continue.";
+"Enjoy your downloaded “Status” anytime." = "Enjoy your downloaded “Status” anytime.";
+"Status Download" = "Status Download";
+"Photo" = "Photo";
+"Video" = "Video";
+"Saved" = "Saved";
+"Status saved in Whats Web folder" = "Status saved in Whats Web folder";
+"OK" = "OK";
+"Permission Required" = "Permission Required";
+"Please allow photo access from Settings to save media." = "Please allow photo access from Settings to save media.";
+"Cancel" = "Cancel";
+"Settings" = "设置";
+"No Photos Found" = "No Photos Found";
+"No Videos Found" = "No Videos Found";
+"No Accounts Found" = "No Accounts Found";
+
+"Loading your chats..." = "Loading your chats...";
+"Refresh current page" = "Refresh current page";
+"Keyboard Dismiss" = "Keyboard Dismiss";
+"Show the saved status" = "Show the saved status";
+"See how to download status" = "See how to download status";
+"Logging out..." = "Logging out...";
+"Permission" = "Permission";
+"Please allow photo access from Settings to save media." = "Please allow photo access from Settings to save media.";
+"Cancel" = "Cancel";
+"Settings" = "设置";
+
+"Tap to refresh the page" = "Tap to refresh the page";
+"Tap to hide keyboard" = "Tap to hide keyboard";
+"Tap to show saved status" = "Tap to show saved status";
+"Tap to see how to save status" = "Tap to see how to save status";
+"Tap to logout" = "Tap to logout";
+
+/* App Flow Additions */
+"Your Language" = "选择语言";
+"Select Language" = "选择语言";
+"All Language" = "所有语言";
+"Start Chats Without Saving Contacts" = "无需保存联系人即可发起聊天";
+"Message anyone without adding new contacts." = "无需添加新联系人即可向任何人发送消息。";
+"Save Your Favorite Status Easily" = "轻松保存喜爱的状态";
+"Download and save statuses in seconds." = "数秒内下载并保存状态。";
+"Backup Your Chats With Ease" = "轻松备份您的聊天记录";
+"Keep Important Messages Safe Forever." = "永久安全保存重要消息。";
+"Get Started" = "立即开始";
+"Web Scanner" = "网页扫描器";
+"WT Scan Now" = "立即扫码";
+"Access Your Chats Instantly" = "即时访问您的聊天";
+"Scan Now" = "立即扫描";
+"WhatsApp Tools" = "WhatsApp工具";
+"Backup Chats" = "聊天备份";
+"Status" = "状态";
+"Supported Platforms" = "支持的平台";
+
+/* Settings Screen Strings */
+"Dark Mode" = "深色模式";
+"Support" = "支持";
+"Rate App" = "给应用评分";
+"Share App" = "分享应用";
+"About" = "关于";
+"Terms of Use" = "使用条款";
+"EULA" = "最终用户许可协议";
+
+
+/* Added Localizations */
+"Home" = "首页";
+"Recent Platforms" = "最近使用的平台";
+"View All" = "查看全部";
+"No Platforms Yet" = "暂无平台";
+"Enter WhatsApp Number" = "输入 WhatsApp 号码";
+"Enter phone number" = "输入电话号码";
+"Message" = "消息";
+"Type or message here..." = "在此输入消息...";
+"Quick Messages" = "快捷短语";
+"Open WhatsApp Chat" = "打开 WhatsApp 聊天";
+"Recent Chats" = "最近聊天";
+"No Chats Available" = "暂无可用聊天";
+"Hello" = "你好";
+"Hi there" = "嗨，你好";
+"How are you?" = "你好吗？";
+"Good morning" = "早上好";
+"Thank you" = "谢谢";
+"Please call me" = "请给我打电话";
+"Just Now" = "刚刚";
+"Second Ago" = "秒前";
+"Minute Ago" = "分钟前";
+"Minutes Ago" = "分钟前";
+"Hour Ago" = "小时前";
+"Hours Ago" = "小时前";
+"Day Ago" = "天前";
+"Days Ago" = "天前";
+"Delete Chat" = "删除聊天";
+"Are you sure you want to delete this chat?" = "您确定要删除此聊天吗？";
+"Yes, delete" = "是的，删除";
+"Dismiss" = "取消";
+"Yes" = "是";
+"No" = "否";
+"Create new contact" = "创建新联系人";
+"Your backup chats will appear here." = "您的备份聊天将显示在此处。";
+
+"Invalid Phone Number" = "无效的电话号码";
+"Please enter a valid phone number for %@." = "请输入%@的有效电话号码。";
+"Please enter a valid %d-digit phone number for %@." = "请输入%@的有效%d位电话号码。";
+"Close" = "关闭";
+
+"Use WhatsApp on your computer" = "在电脑上使用 WhatsApp";
+"Open WhatsApp on your phone" = "在手机上打开 WhatsApp";
+"Tap Menu on Android, or Settings on iPhone" = "在 Android 上点击菜单，或在 iPhone 上点击设置";
+"Tap Linked devices and then Link a device" = "点击已关联的设备，然后点击关联设备";
+"Point your phone at this screen to capture the QR code" = "将手机对准此屏幕扫描二维码";
+"Refresh" = "刷新";
+"Generating QR Code..." = "正在生成二维码...";
+
+"Delete Account" = "删除账户";
+"Are you sure you want to delete this account?" = "您确定要删除此账户吗？";
+
+"Loading your chat..." = "正在加载聊天...";
+"Please wait a moment" = "请稍候";
+
+"WhatsApp Status" = "WhatsApp 状态";
+"Save status videos and photos" = "保存状态视频和照片";
+"Saved Status" = "已保存的状态";
+"Save your favorite status moments" = "保存喜爱的状态时刻";
+"Split Long Video" = "分割长视频";
+"Split long videos into status" = "将长视频分割为状态";
+"Caption Status" = "状态文案";
+"Find perfect captions for posts" = "寻找完美文案";
+"How to download?" = "如何下载？";
+"Click on the status you want to download." = "点击要下载的状态。";
+"Click on download button." = "点击下载按钮。";
+
+"Nothing Saved Yet" = "尚未保存任何内容";
+"Save your favorite statuses for later." = "保存您最喜欢的状态供日后查看。";
+"Today" = "今天";
+"Yesterday" = "昨天";
+"Selected" = "已选择";
+"Save" = "保存";
+"Share" = "分享";
+"Delete" = "删除";
+"Delete Items" = "删除项目";
+"Are you sure you want to delete the selected items?" = "确定要删除所选项目吗？";
+
+"Choose a Video" = "选择视频";
+"Choose a video and create multiple parts." = "选择一个视频并创建多个片段。";
+"Choose Video" = "选择视频";
+"Select Duration (Per Video)" = "选择时长（每个视频）";
+"File Name" = "文件名";
+"Eg. My_Video_Part" = "例如: My_Video_Part";
+"Save Split Video" = "保存分割视频";
+"Video Split Successfully" = "视频分割成功";
+"Ready to Save." = "已准备好保存。";
+"Save All Parts" = "保存所有片段";
+"Saved Video" = "已保存的视频";
+"No Saved Videos Yet" = "暂无已保存的视频";
+"Split videos you save will appear here." = "保存的分割视频将显示在此处。";
+"Splitting Video..." = "正在分割视频...";
+"Please wait while we split your video." = "正在分割您的视频，请稍候。";
+"All parts saved to Photos successfully" = "所有片段已成功保存至照片";
+"Seconds" = "秒";
+"Minutes" = "分钟";
+"Minute" = "分钟";
+
+"Caption" = "配文";
+"Copy" = "复制";
+"Copied!" = "已复制！";
+"Happiness" = "快乐";
+"Cool" = "酷";
+"Funny" = "搞笑";
+"Inspiring" = "励志";
+"Life" = "生活";
+"Love" = "爱情";
+"Party" = "派对";
+"Selfie" = "自拍";
+"Relationship" = "恋情";
+"Friendship" = "友情";
+"Birthday" = "生日";
+"Thanksgiving" = "感恩节";
+"Travel" = "旅行";
+"Anniversary" = "纪念日";
+"Family" = "家庭";
+
+/* Chat Section */
+"Quick Replay" = "快捷回复";
+"Reply instantly with just one tap" = "一键快速回复";
+"Funny Messages" = "趣味消息";
+"Create funny messages for every mood" = "为每种心情打造趣味消息";
+"Scan QR Code" = "扫描二维码";
+"Scan codes instantly with one tap" = "一键瞬间扫描二维码";
+"Generate QR Code" = "生成二维码";
+"Create custom QR codes instantly" = "立即创建自定义二维码";
+
+/* Quick Reply Section */
+"All" = "全部";
+"Greetings" = "问候";
+"Festivals" = "节日";
+"Sales" = "促销";
+"Templates" = "模板";
+"No Saved Messages Yet" = "暂无保存的消息";
+"Save your favorite replies for quick access." = "保存您最喜爱的快捷回复以便迅速使用。";
+"Add Quick Reply" = "添加快捷回复";
+"Type your message here..." = "在此输入您的消息...";
+"Select Category" = "选择类别";
+"Choose a category" = "请选择类别";
+"Save Message" = "保存消息";
+"Are you sure you want to delete this message." = "您确定要删除此消息吗？";
+"Done" = "完成";
+
+/* Funny Messages Section */
+"Stylish" = "炫酷字体";
+"Flip it" = "颠倒文字";
+"Repeat Text" = "重复文本";
+"Type Here" = "在此输入";
+"Enter Your text here..." = "在此输入您的文本...";
+"Repeat Times" = "重复次数";
+"Result" = "转换结果";
+"Your converted message appears here" = "转换后的消息将显示在此处";
+"Convert" = "转换";
+
+/* Scan QR Code Strings */
+"Choose From Gallery" = "从相册选择";
+"Scan Details" = "扫描详情";
+"QR Code Preview" = "二维码预览";
+"QR Scanner Result" = "二维码扫描结果";
+"QR code scanned successfully" = "二维码扫描成功";
+"Scan Again" = "再次扫描";
+"No QR Code found in selected image" = "所选图片中未找到二维码";
+"Camera Permission Required" = "需要相机权限";
+"Please enable camera access in Settings to scan QR codes." = "请在设置中开启相机权限以扫描二维码。";
+"Open Settings" = "打开设置";
+
+/* Generate QR Code Strings */
+"Create QR Code" = "生成二维码";
+"QR Code Details" = "二维码详情";
+"QR Code" = "二维码";
+"Barcode" = "条形码";
+"Convert your text into QR." = "将文本转换为二维码。";
+"Generate QR codes for websites." = "为网站生成二维码。";
+"Create QR codes for contacts." = "为联系人创建二维码。";
+"Create QR codes for email sharing." = "创建用于邮件分享的二维码。";
+"Share your location instantly." = "即时分享您的地理位置。";
+"Create QR codes for SMS." = "为短信创建二维码。";
+"Create QR codes for calling." = "为拨打电话创建二维码。";
+"Generate Wi-Fi QR codes." = "生成 Wi-Fi 二维码。";
+"Enter name here..." = "在此输入姓名...";
+"Enter phone number here..." = "在此输入电话号码...";
+"Enter address here..." = "在此输入地址...";
+"Enter email here..." = "在此输入邮箱...";
+"Enter text here..." = "在此输入文本...";
+"Enter website URL here..." = "在此输入网站链接...";
+"Enter subject here..." = "在此输入主题...";
+"Enter message here..." = "在此输入内容...";
+"Enter latitude here..." = "在此输入纬度...";
+"Enter longitude here..." = "在此输入经度...";
+"Enter network name..." = "输入网络名称...";
+"Enter password..." = "输入密码...";
+"Name" = "姓名";
+"Phone" = "电话";
+"Address" = "地址";
+"Email" = "邮箱";
+"Subject" = "主题";
+"Latitude" = "纬度";
+"Longitude" = "经度";
+"Network Name" = "网络名称";
+"Password" = "密码";
+"Security" = "安全性";
+"Text" = "文本";
+"URL" = "网址";
+"Contact" = "联系人";
+"Geo Location" = "地理位置";
+"SMS" = "短信";
+"Wi-Fi" = "Wi-Fi";
+
+/* Wi-Fi QR Code Form Strings */
+"Wi-Fi SSID" = "Wi-Fi SSID";
+"Enter SSID here..." = "在此输入 SSID...";
+"Select Security Type" = "选择安全类型";
+"Wi-Fi Password" = "Wi-Fi 密码";
+"Enter password here..." = "在此输入密码...";
+"WPA" = "WPA";
+"WEP" = "WEP";
+"Nopass" = "无密码";
+
+/* QR Code Form Validation Alerts */
+"Please enter a valid phone number." = "请输入有效的电话号码。";
+"Invalid Email" = "无效的邮箱地址";
+"Please enter a valid email address." = "请输入有效的邮箱地址。";
+"Invalid URL" = "无效的网址";
+"Please enter a valid website URL." = "请输入有效的网站网址。";
+"Invalid Location" = "无效的地理位置";
+"Please enter valid coordinates (-90 to 90 for latitude, -180 to 180 for longitude)." = "请输入有效的坐标（纬度 -90 到 90，经度 -180 到 180）。";
+"Invalid Password" = "无效的密码";
+"Wi-Fi password must be at least 8 characters for WPA." = "WPA 密码长度必须至少为 8 个字符。";
+"Wi-Fi password must be at least 5 characters for WEP." = "WEP 密码长度必须至少为 5 个字符。";
+
+/* Barcode Strings */
+"Create Barcode" = "创建条形码";
+"Barcode Details" = "条形码详情";
+"Generate Barcode" = "生成条形码";
+"Barcode Preview" = "条形码预览";
+"Enter 8 digit number..." = "输入8位数字...";
+"Enter 13 digit number..." = "输入13位数字...";
+"Enter 6-8 digit number..." = "输入6-8位数字...";
+"Enter 12 digit number..." = "输入12位数字...";
+"Invalid Barcode" = "无效条形码";
+"Please enter a valid 8 digit number." = "请输入有效的8位数字。";
+"Please enter a valid 13 digit number." = "请输入有效的13位数字。";
+"Please enter a valid 6-8 digit number." = "请输入有效的6-8位数字。";
+"Please enter a valid 12 digit number." = "请输入有效的12位数字。";
+
+/* Premium Paywall Strings */
+"Unlock" = "Unlock";
+"Access" = "Access";
+"Unlimited WhatsApp Scan Access" = "Unlimited WhatsApp Scan Access";
+"Direct Chat Without Limits" = "Direct Chat Without Limits";
+"Unlimited Status Downloads" = "Unlimited Status Downloads";
+"Ad-Free Experience" = "Ad-Free Experience";
+"Yearly Plan" = "Yearly Plan";
+"Monthly Plan" = "Monthly Plan";
+"Weekly Plan" = "Weekly Plan";
+"Per Year" = "Per Year";
+"Per Month" = "Per Month";
+"Per Week" = "Per Week";
+"Best Value" = "Best Value";
+"Subscribe Now" = "Subscribe Now";
+"Restore" = "Restore";
+"Terms of use" = "Terms of use";
+"Privacy policy" = "Privacy policy";
+"Eula" = "Eula";
+
+"Loading..." = "Loading...";
+
+"Rename" = "重命名";
+"Rename Account" = "重命名账户";
+"Account Name" = "账户名称";
+"Update" = "更新";
+"Videos" = "视频";
+"8 digit barcode" = "8位条形码";
+"13 digit barcode" = "13位条形码";
+"6-8 digit barcode" = "6-8位条形码";
+"12 digit barcode" = "12位条形码";

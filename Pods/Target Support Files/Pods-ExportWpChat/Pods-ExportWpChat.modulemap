@@ -1,0 +1,6 @@
+framework module Pods_ExportWpChat {
+  umbrella header "Pods-ExportWpChat-umbrella.h"
+
+  export *
+  module * { export * }
+}

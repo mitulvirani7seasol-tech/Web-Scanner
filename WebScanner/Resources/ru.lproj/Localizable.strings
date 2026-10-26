@@ -1,0 +1,485 @@
+/* 
+  Localizable.strings
+  WhatsappChatBackup
+
+  Created by Sumit zalavadiya on 12/12/25.
+  
+*/
+
+"“Chat” instantly without needing to save any “contact”" = "“Chat” instantly without needing to save any “contact”";
+"Quickly “import” all your WA “chat” history securely" = "Quickly “import” all your WA “chat” history securely";
+"Chat Backup" = "Chat Backup";
+"Step-by-step guide to export chats" = "Step-by-step guide to export chats";
+"Import Chat" = "Импортировать чат";
+"Quick Send" = "Quick Send";
+"Quick Chat Without Saving Contact" = "Quick Chat Without Saving Contact";
+"Phone Number" = "Phone Number";
+"Direct Message" = "Direct Message";
+"WhatsClone" = "WhatsClone";
+"Settings" = "Настройки";
+"General" = "General";
+"Manage basic app preferences" = "Manage basic app preferences";
+"Dark Theme" = "Dark Theme";
+"Language" = "Language";
+"How to use?" = "How to use?";
+"More Settings" = "More Settings";
+"Manage extra features easily" = "Manage extra features easily";
+"Rate & Review" = "Rate & Review";
+"Share with Friends" = "Share with Friends";
+"Privacy Policy" = "Privacy Policy";
+"How to export?" = "How to export?";
+"Swipe left on chat in the Chat Section and tap on “More”" = "Swipe left on chat in the Chat Section and tap on “More”";
+"Tap on “Contact Info” or “Group Info” to proceed" = "Tap on “Contact Info” or “Group Info” to proceed";
+"Click on “Export Chat” to continue" = "Click on “Export Chat” to continue";
+"Choose either “Attach Media” or “Without Media”" = "Choose either “Attach Media” or “Without Media”";
+"Find “Chat Backup Deleted Messages” and tap on it." = "Find “Chat Backup Deleted Messages” and tap on it.";
+"Enter message...." = "Enter message....";
+"Required" = "Required";
+"Please enter your phone number." = "Please enter your phone number.";
+"Please enter a message." = "Please enter a message.";
+
+"Continue" = "Continue";
+"Next" = "Next";
+"No chat backup found" = "Резервных копий не найдено";
+"Search chats" = "Search chats";
+"OK" = "OK";
+"No Internet Connection" = "No Internet Connection";
+
+"Find “Whats Web” and tap on it." = "Find “Whats Web” and tap on it.";
+"Terms Of Use" = "Terms Of Use";
+
+"WT Scan" = "WT Scan";
+"Scan and Connect Instantly" = "Scan and Connect Instantly";
+"Scan" = "Scan";
+"Telegram" = "Telegram";
+"Facebook" = "Facebook";
+"Instagram" = "Instagram";
+"Twitter" = "Twitter";
+"Add More" = "Add More";
+"Other Web Accounts" = "Other Web Accounts";
+"See more" = "See more";
+"Media" = "Media";
+"Chat" = "Чат";
+"Links" = "Links";
+"Docs" = "Docs";
+"Direct Chat" = "Прямой чат";
+"Add Message" = "Add Message";
+"Please enter your phone number." = "Please enter your phone number.";
+"Phone number copied" = "Phone number copied";
+"Enter message...." = "Enter message....";
+"Passcode" = "Passcode";
+"Change Passcode" = "Change Passcode";
+"Recover Passcode" = "Recover Passcode";
+"Import Chat" = "Импортировать чат";
+"Where would you like to import chats from?" = "Откуда вы хотите импортировать чаты?";
+"Whatsapp" = "WhatsApp";
+"WA Business" = "WA Business";
+"Files" = "Файлы";
+"Add New Message" = "Add New Message";
+"Add Message" = "Add Message";
+"Enter message..." = "Enter message...";
+" Add Quick Message" = " Add Quick Message";
+"Set Password" = "Set Password";
+"Enter Your Passcode" = "Enter Your Passcode";
+"Change Password" = "Change Password";
+"Confirm Password" = "Confirm Password";
+"Password successfully set." = "Password successfully set.";
+"Confirm password does not match." = "Confirm password does not match.";
+"Enter Your Passcode" = "Enter Your Passcode";
+"Enter New Password" = "Enter New Password";
+"Current password does not match." = "Current password does not match.";
+"Confirm New Password" = "Confirm New Password";
+"Password changed successfully." = "Password changed successfully.";
+"Enter Your Current Password" = "Enter Your Current Password";
+"Wrong Password" = "Wrong Password";
+"OK" = "OK";
+"Set Answer" = "Set Answer";
+"Show Passcode" = "Show Passcode";
+"Required" = "Required";
+"Please enter your answer." = "Please enter your answer.";
+"OK" = "OK";
+"Success" = "Success";
+"Answer saved successfully." = "Answer saved successfully.";
+"Success" = "Success";
+"Your Passcode is: " = "Your Passcode is: ";
+"Wrong Answer" = "Wrong Answer";
+"Your answer does not match." = "Your answer does not match.";
+"No media found" = "No media found";
+"No links found" = "No links found";
+"No documents found" = "No documents found";
+"Please enter your 4 digit security code. " = "Please enter your 4 digit security code. ";
+"Forgot Passcode?" = "Forgot Passcode?";
+"Security Question" = "Security Question";
+"Question" = "Question";
+"What is your favorite team?" = "What is your favorite team?";
+"Write an Answer" = "Write an Answer";
+"Enter your answer here ..." = "Enter your answer here ...";
+"Show Passcode" = "Show Passcode";
+
+"step2_text" = "2. Tap Menu (⋮) on Android, or Settings on iPhone.";
+"menu_word" = "Menu (⋮)";
+"settings_word" = "Settings";
+"step3_text" = "3. Tap Linked devices and then Link a device.";
+"linked_devices" = "Linked devices";
+"link_device" = "Link a device";
+"How to scan?" = "How to scan?";
+"Watch Video" = "Watch Video";
+"Refresh QR" = "Refresh QR";
+"Save someone’s WhatsApp " = "Save someone’s WhatsApp ";
+"step1_text" = "1. Open Whatsapp on your other phone.";
+"Whatsapp" = "WhatsApp";
+"step4_text" = "4. Point your phone at this screen to scan the QR code.";
+"scan_the_QR_code." = "scan the QR code.";
+
+"intro_1_bold" = "Connected";
+"intro_1_text" = "Stay Connected Across All Devices";
+"Sync your conversations and files instantly across all your devices effortlessly" = "Sync your conversations and files instantly across all your devices effortlessly";
+"intro_3_bold" = "Conversations";
+"intro_3_text" = "Keep Conversations Forever Safe";
+"Your conversations stay safe, private, and backed up whenever you need" = "Your conversations stay safe, private, and backed up whenever you need";
+"intro_2_bold" = "Instant";
+"intro_2_text" = "Instant Messaging With Anyone";
+"Enjoy fast, seamless messaging with anyone across devices anytime, anywhere" = "Enjoy fast, seamless messaging with anyone across devices anytime, anywhere";
+"Next" = "Next";
+"Continue" = "Continue";
+"Thank" = "Thank";
+"You!" = "You!";
+"Thanks for using our WhatsApp Web Scan App. Your chats are now easily accessible anytime." = "Thanks for using our WhatsApp Web Scan App. Your chats are now easily accessible anytime.";
+"Go To Home" = "Go To Home";
+"Tap on a “Status” to start downloading." = "Tap on a “Status” to start downloading.";
+"Tap the “Download” button to continue." = "Tap the “Download” button to continue.";
+"Enjoy your downloaded “Status” anytime." = "Enjoy your downloaded “Status” anytime.";
+"Status Download" = "Status Download";
+"Photo" = "Photo";
+"Video" = "Video";
+"Saved" = "Saved";
+"Status saved in Whats Web folder" = "Status saved in Whats Web folder";
+"OK" = "OK";
+"Permission Required" = "Permission Required";
+"Please allow photo access from Settings to save media." = "Please allow photo access from Settings to save media.";
+"Cancel" = "Cancel";
+"Settings" = "Настройки";
+"No Photos Found" = "No Photos Found";
+"No Videos Found" = "No Videos Found";
+"No Accounts Found" = "No Accounts Found";
+
+"Loading your chats..." = "Loading your chats...";
+"Refresh current page" = "Refresh current page";
+"Keyboard Dismiss" = "Keyboard Dismiss";
+"Show the saved status" = "Show the saved status";
+"See how to download status" = "See how to download status";
+"Logging out..." = "Logging out...";
+"Permission" = "Permission";
+"Please allow photo access from Settings to save media." = "Please allow photo access from Settings to save media.";
+"Cancel" = "Cancel";
+"Settings" = "Настройки";
+
+"Tap to refresh the page" = "Tap to refresh the page";
+"Tap to hide keyboard" = "Tap to hide keyboard";
+"Tap to show saved status" = "Tap to show saved status";
+"Tap to see how to save status" = "Tap to see how to save status";
+"Tap to logout" = "Tap to logout";
+
+/* App Flow Additions */
+"Your Language" = "Ваш язык";
+"Select Language" = "Выберите язык";
+"All Language" = "Все языки";
+"Start Chats Without Saving Contacts" = "Начните чат без сохранения контактов";
+"Message anyone without adding new contacts." = "Отправляйте сообщения, не добавляя новые контакты.";
+"Save Your Favorite Status Easily" = "Легко сохраняйте любимый статус";
+"Download and save statuses in seconds." = "Скачивайте и сохраняйте статусы за считанные секунды.";
+"Backup Your Chats With Ease" = "Легкое резервное копирование чатов";
+"Keep Important Messages Safe Forever." = "Храните важные сообщения в безопасности навсегда.";
+"Get Started" = "Начать";
+"Web Scanner" = "Веб-сканер";
+"WT Scan Now" = "Сканировать WT";
+"Access Your Chats Instantly" = "Мгновенный доступ к вашим чатам";
+"Scan Now" = "Сканировать сейчас";
+"WhatsApp Tools" = "Инструменты WhatsApp";
+"Backup Chats" = "Резервная копия чатов";
+"Status" = "Статус";
+"Supported Platforms" = "Поддерживаемые платформы";
+
+/* Settings Screen Strings */
+"Dark Mode" = "Тёмная тема";
+"Support" = "Поддержка";
+"Rate App" = "Оценить приложение";
+"Share App" = "Поделиться";
+"About" = "О приложении";
+"Terms of Use" = "Условия использования";
+"EULA" = "EULA";
+
+
+/* Added Localizations */
+"Home" = "Главная";
+"Recent Platforms" = "Недавние платформы";
+"View All" = "Посмотреть все";
+"No Platforms Yet" = "Пока нет платформ";
+"Enter WhatsApp Number" = "Введите номер WhatsApp";
+"Enter phone number" = "Введите номер телефона";
+"Message" = "Сообщение";
+"Type or message here..." = "Введите сообщение...";
+"Quick Messages" = "Быстрые сообщения";
+"Open WhatsApp Chat" = "Открыть чат WhatsApp";
+"Recent Chats" = "Недавние чаты";
+"No Chats Available" = "Нет доступных чатов";
+"Hello" = "Привет";
+"Hi there" = "Здравствуйте";
+"How are you?" = "Как дела?";
+"Good morning" = "Доброе утро";
+"Thank you" = "Спасибо";
+"Please call me" = "Пожалуйста, позвоните мне";
+"Just Now" = "Только что";
+"Second Ago" = "сек. назад";
+"Minute Ago" = "мин. назад";
+"Minutes Ago" = "мин. назад";
+"Hour Ago" = "ч. назад";
+"Hours Ago" = "ч. назад";
+"Day Ago" = "дн. назад";
+"Days Ago" = "дн. назад";
+"Delete Chat" = "Удалить чат";
+"Are you sure you want to delete this chat?" = "Вы уверены, что хотите удалить этот чат?";
+"Yes, delete" = "Да, удалить";
+"Dismiss" = "Отмена";
+"Your backup chats will appear here." = "Ваши сохраненные чаты появятся здесь.";
+
+"Invalid Phone Number" = "Недействительный номер телефона";
+"Please enter a valid phone number for %@." = "Пожалуйста, введите действительный номер телефона для %@.";
+"Please enter a valid %d-digit phone number for %@." = "Пожалуйста, введите действительный номер телефона из %d цифр для %@.";
+"Close" = "Закрыть";
+
+"Use WhatsApp on your computer" = "Используйте WhatsApp на компьютере";
+"Open WhatsApp on your phone" = "Откройте WhatsApp на телефоне";
+"Tap Menu on Android, or Settings on iPhone" = "Нажмите Меню на Android или Настройки на iPhone";
+"Tap Linked devices and then Link a device" = "Нажмите Связанные устройства, затем Привязать устройство";
+"Point your phone at this screen to capture the QR code" = "Наведите телефон на этот экран, чтобы отсканировать QR-код";
+"Refresh" = "Обновить";
+"Generating QR Code..." = "Генерация QR-кода...";
+
+"Delete Account" = "Удалить аккаунт";
+"Are you sure you want to delete this account?" = "Вы уверены, что хотите удалить этот аккаунт?";
+
+"Loading your chat..." = "Загрузка ваших чатов...";
+"Please wait a moment" = "Пожалуйста, подождите";
+
+"WhatsApp Status" = "Статус WhatsApp";
+"Save status videos and photos" = "Сохранить видео и фото статуса";
+"Saved Status" = "Сохраненный статус";
+"Save your favorite status moments" = "Сохраняйте любимые моменты статуса";
+"Split Long Video" = "Разделить длинное видео";
+"Split long videos into status" = "Разделяйте длинные видео на статусы";
+"Caption Status" = "Подписи к статусу";
+"Find perfect captions for posts" = "Найдите идеальные подписи";
+"How to download?" = "Как скачать?";
+"Click on the status you want to download." = "Нажмите на статус, который хотите скачать.";
+"Click on download button." = "Нажмите на кнопку загрузки.";
+
+"Nothing Saved Yet" = "Пока ничего не сохранено";
+"Save your favorite statuses for later." = "Сохраняйте любимые статусы на потом.";
+"Today" = "Сегодня";
+"Yesterday" = "Вчера";
+"Selected" = "Выбрано";
+"Save" = "Сохранить";
+"Share" = "Поделиться";
+"Delete" = "Удалить";
+"Delete Items" = "Удалить элементы";
+"Are you sure you want to delete the selected items?" = "Вы уверены, что хотите удалить выбранные элементы?";
+
+"Choose a Video" = "Выберите видео";
+"Choose a video and create multiple parts." = "Выберите видео и создайте несколько частей.";
+"Choose Video" = "Выбрать видео";
+"Select Duration (Per Video)" = "Выберите длительность (за видео)";
+"File Name" = "Имя файла";
+"Eg. My_Video_Part" = "Напр. My_Video_Part";
+"Save Split Video" = "Сохранить разделенное видео";
+"Video Split Successfully" = "Видео успешно разделено";
+"Ready to Save." = "готовы к сохранению.";
+"Save All Parts" = "Сохранить все части";
+"Saved Video" = "Сохраненное видео";
+"No Saved Videos Yet" = "Пока нет сохраненных видео";
+"Split videos you save will appear here." = "Разделенные видео будут отображаться здесь.";
+"Splitting Video..." = "Разделение видео...";
+"Please wait while we split your video." = "Пожалуйста, подождите, пока видео разделяется.";
+"All parts saved to Photos successfully" = "Все части успешно сохранены в Фото";
+"Seconds" = "Секунд";
+"Minutes" = "Минут";
+"Minute" = "Минута";
+
+"Caption" = "Подпись";
+"Copy" = "Копировать";
+"Copied!" = "Скопировано!";
+"Happiness" = "Счастье";
+"Cool" = "Круто";
+"Funny" = "Смешно";
+"Inspiring" = "Вдохновляющее";
+"Life" = "Жизнь";
+"Love" = "Любовь";
+"Party" = "Вечеринка";
+"Selfie" = "Селфи";
+"Relationship" = "Отношения";
+"Friendship" = "Дружба";
+"Birthday" = "День рождения";
+"Thanksgiving" = "День благодарения";
+"Travel" = "Путешествия";
+"Anniversary" = "Годовщина";
+"Family" = "Семья";
+
+/* Chat Section */
+"Quick Replay" = "Быстрый ответ";
+"Reply instantly with just one tap" = "Отвечайте мгновенно в одно касание";
+"Funny Messages" = "Смешные сообщения";
+"Create funny messages for every mood" = "Создавайте смешные сообщения под любое настроение";
+"Scan QR Code" = "Сканировать QR-код";
+"Scan codes instantly with one tap" = "Сканируйте коды мгновенно в одно касание";
+"Generate QR Code" = "Создать QR-код";
+"Create custom QR codes instantly" = "Мгновенно создавайте собственные QR-коды";
+
+/* Quick Reply Section */
+"All" = "Все";
+"Greetings" = "Приветствия";
+"Festivals" = "Праздники";
+"Sales" = "Распродажи";
+"Templates" = "Шаблоны";
+"No Saved Messages Yet" = "Пока нет сохраненных сообщений";
+"Save your favorite replies for quick access." = "Сохраняйте любимые ответы для быстрого доступа.";
+"Add Quick Reply" = "Добавить быстрый ответ";
+"Type your message here..." = "Введите ваше сообщение здесь...";
+"Select Category" = "Выберите категорию";
+"Choose a category" = "Выберите категорию";
+"Save Message" = "Сохранить сообщение";
+"Are you sure you want to delete this message." = "Вы уверены, что хотите удалить это сообщение?";
+"Done" = "Готово";
+
+/* Funny Messages Section */
+"Stylish" = "Стильный";
+"Flip it" = "Перевернуть";
+"Repeat Text" = "Повторить текст";
+"Type Here" = "Введите здесь";
+"Enter Your text here..." = "Введите ваш текст здесь...";
+"Repeat Times" = "Количество повторений";
+"Result" = "Результат";
+"Your converted message appears here" = "Ваше преобразованное сообщение появится здесь";
+"Convert" = "Преобразовать";
+
+/* Scan QR Code Strings */
+"Choose From Gallery" = "Выбрать из галереи";
+"Scan Details" = "Детали сканирования";
+"QR Code Preview" = "Предпросмотр QR-кода";
+"QR Scanner Result" = "Результат сканирования QR";
+"QR code scanned successfully" = "QR-код успешно отсканирован";
+"Scan Again" = "Сканировать снова";
+"No QR Code found in selected image" = "QR-код не найден в выбранном изображении";
+"Camera Permission Required" = "Требуется разрешение на камеру";
+"Please enable camera access in Settings to scan QR codes." = "Пожалуйста, разрешите доступ к камере в Настройках для сканирования QR-кодов.";
+"Open Settings" = "Открыть настройки";
+
+/* Generate QR Code Strings */
+"Create QR Code" = "Создать QR-код";
+"QR Code Details" = "Детали QR-кода";
+"QR Code" = "QR-код";
+"Barcode" = "Штрихкод";
+"Convert your text into QR." = "Преобразуйте текст в QR.";
+"Generate QR codes for websites." = "Создавайте QR-коды для сайтов.";
+"Create QR codes for contacts." = "Создавайте QR-коды для контактов.";
+"Create QR codes for email sharing." = "Создавайте QR-коды для почты.";
+"Share your location instantly." = "Делитесь местоположением мгновенно.";
+"Create QR codes for SMS." = "Создавайте QR-коды для SMS.";
+"Create QR codes for calling." = "Создавайте QR-коды для звонков.";
+"Generate Wi-Fi QR codes." = "Создавайте QR-коды Wi-Fi.";
+"Enter name here..." = "Введите имя...";
+"Enter phone number here..." = "Введите номер телефона...";
+"Enter address here..." = "Введите адрес...";
+"Enter email here..." = "Введите email...";
+"Enter text here..." = "Введите текст...";
+"Enter website URL here..." = "Введите URL сайта...";
+"Enter subject here..." = "Введите тему...";
+"Enter message here..." = "Введите сообщение...";
+"Enter latitude here..." = "Введите широту...";
+"Enter longitude here..." = "Введите долготу...";
+"Enter network name..." = "Введите имя сети...";
+"Enter password..." = "Введите пароль...";
+"Name" = "Имя";
+"Phone" = "Телефон";
+"Address" = "Адрес";
+"Email" = "Email";
+"Subject" = "Тема";
+"Latitude" = "Широта";
+"Longitude" = "Долгота";
+"Network Name" = "Имя сети";
+"Password" = "Пароль";
+"Security" = "Безопасность";
+"Text" = "Текст";
+"URL" = "URL";
+"Contact" = "Контакт";
+"Geo Location" = "Геолокация";
+"SMS" = "SMS";
+"Wi-Fi" = "Wi-Fi";
+
+/* Wi-Fi QR Code Form Strings */
+"Wi-Fi SSID" = "SSID Wi-Fi";
+"Enter SSID here..." = "Введите SSID здесь...";
+"Select Security Type" = "Выберите тип безопасности";
+"Wi-Fi Password" = "Пароль Wi-Fi";
+"Enter password here..." = "Введите пароль здесь...";
+"WPA" = "WPA";
+"WEP" = "WEP";
+"Nopass" = "Без пароля";
+
+/* QR Code Form Validation Alerts */
+"Please enter a valid phone number." = "Пожалуйста, введите действительный номер телефона.";
+"Invalid Email" = "Недействительный email";
+"Please enter a valid email address." = "Пожалуйста, введите действительный адрес электронной почты.";
+"Invalid URL" = "Недействительный URL";
+"Please enter a valid website URL." = "Пожалуйста, введите действительный URL сайта.";
+"Invalid Location" = "Недействительное местоположение";
+"Please enter valid coordinates (-90 to 90 for latitude, -180 to 180 for longitude)." = "Пожалуйста, введите действительные координаты (от -90 до 90 для широты, от -180 до 180 для долготы).";
+"Invalid Password" = "Недействительный пароль";
+"Wi-Fi password must be at least 8 characters for WPA." = "Пароль Wi-Fi должен содержать не менее 8 символов для WPA.";
+"Wi-Fi password must be at least 5 characters for WEP." = "Пароль Wi-Fi должен содержать не менее 5 символов для WEP.";
+
+/* Barcode Strings */
+"Create Barcode" = "Создать штрихкод";
+"Barcode Details" = "Детали штрихкода";
+"Generate Barcode" = "Создать штрихкод";
+"Barcode Preview" = "Предпросмотр штрихкода";
+"Enter 8 digit number..." = "Введите 8-значный номер...";
+"Enter 13 digit number..." = "Введите 13-значный номер...";
+"Enter 6-8 digit number..." = "Введите 6-8-значный номер...";
+"Enter 12 digit number..." = "Введите 12-значный номер...";
+"Invalid Barcode" = "Недействительный штрихкод";
+"Please enter a valid 8 digit number." = "Пожалуйста, введите корректный 8-значный номер.";
+"Please enter a valid 13 digit number." = "Пожалуйста, введите корректный 13-значный номер.";
+"Please enter a valid 6-8 digit number." = "Пожалуйста, введите корректный 6-8-значный номер.";
+"Please enter a valid 12 digit number." = "Пожалуйста, введите корректный 12-значный номер.";
+
+/* Premium Paywall Strings */
+"Unlock" = "Unlock";
+"Access" = "Access";
+"Unlimited WhatsApp Scan Access" = "Unlimited WhatsApp Scan Access";
+"Direct Chat Without Limits" = "Direct Chat Without Limits";
+"Unlimited Status Downloads" = "Unlimited Status Downloads";
+"Ad-Free Experience" = "Ad-Free Experience";
+"Yearly Plan" = "Yearly Plan";
+"Monthly Plan" = "Monthly Plan";
+"Weekly Plan" = "Weekly Plan";
+"Per Year" = "Per Year";
+"Per Month" = "Per Month";
+"Per Week" = "Per Week";
+"Best Value" = "Best Value";
+"Subscribe Now" = "Subscribe Now";
+"Restore" = "Restore";
+"Terms of use" = "Terms of use";
+"Privacy policy" = "Privacy policy";
+"Eula" = "Eula";
+
+"Loading..." = "Loading...";
+
+"Rename" = "Переименовать";
+"Rename Account" = "Переименовать аккаунт";
+"Account Name" = "Имя аккаунта";
+"Update" = "Обновить";
+"Videos" = "Видео";
+"8 digit barcode" = "8-значный штрихкод";
+"13 digit barcode" = "13-значный штрихкод";
+"6-8 digit barcode" = "6-8-значный штрихкод";
+"12 digit barcode" = "12-значный штрихкод";

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.WebScanner.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>webscanner</string>
+			</array>
+		</dict>
+	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<key>GADNativeAdValidatorEnabled</key>
+	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inter_24pt-Black.ttf</string>
+		<string>Inter_24pt-BlackItalic.ttf</string>
+		<string>Inter_24pt-Bold.ttf</string>
+		<string>Inter_24pt-BoldItalic.ttf</string>
+		<string>Inter_24pt-ExtraBold.ttf</string>
+		<string>Inter_24pt-ExtraBoldItalic.ttf</string>
+		<string>Inter_24pt-ExtraLight.ttf</string>
+		<string>Inter_24pt-ExtraLightItalic.ttf</string>
+		<string>Inter_24pt-Italic.ttf</string>
+		<string>Inter_24pt-Light.ttf</string>
+		<string>Inter_24pt-LightItalic.ttf</string>
+		<string>Inter_24pt-Medium.ttf</string>
+		<string>Inter_24pt-MediumItalic.ttf</string>
+		<string>Inter_24pt-Regular.ttf</string>
+		<string>Inter_24pt-SemiBold.ttf</string>
+		<string>Inter_24pt-SemiBoldItalic.ttf</string>
+		<string>Inter_24pt-Thin.ttf</string>
+		<string>Inter_24pt-ThinItalic.ttf</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>whatsapp</string>
+		<string>whatsapp-consumer</string>
+		<string>whatsapp-smb</string>
+		<string>whatsapp-business</string>
+	</array>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>ZIP Archive</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.pkware.zip-archive</string>
+				<string>public.zip-archive</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Plain Text</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is required to scan QR codes.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library access is required to select QR codes from your gallery.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
+</dict>
+</plist>

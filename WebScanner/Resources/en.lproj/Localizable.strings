@@ -1,0 +1,521 @@
+/* 
+  Localizable.strings
+  WhatsappChatBackup
+
+  Created by Sumit zalavadiya on 12/12/25.
+  
+*/
+
+"“Chat” instantly without needing to save any “contact”" = "“Chat” instantly without needing to save any “contact”";
+"Quickly “import” all your WA “chat” history securely" = "Quickly “import” all your WA “chat” history securely";
+"Chat Backup" = "Chat Backup";
+"Step-by-step guide to export chats" = "Step-by-step guide to export chats";
+"Import Chat" = "Import Chat";
+"Quick Send" = "Quick Send";
+"Quick Chat Without Saving Contact" = "Quick Chat Without Saving Contact";
+"Phone Number" = "Phone Number";
+"Direct Message" = "Direct Message";
+"WhatsClone" = "WhatsClone";
+"Settings" = "Settings";
+"General" = "General";
+"Manage basic app preferences" = "Manage basic app preferences";
+"Dark Theme" = "Dark Theme";
+"Language" = "Language";
+"How to use?" = "How to use?";
+"More Settings" = "More Settings";
+"Manage extra features easily" = "Manage extra features easily";
+"Rate & Review" = "Rate & Review";
+"Share with Friends" = "Share with Friends";
+"Privacy Policy" = "Privacy Policy";
+"How to export?" = "How to export?";
+"Swipe left on chat in the Chat Section and tap on “More”" = "Swipe left on chat in the Chat Section and tap on “More”";
+"Tap on “Contact Info” or “Group Info” to proceed" = "Tap on “Contact Info” or “Group Info” to proceed";
+"Click on “Export Chat” to continue" = "Click on “Export Chat” to continue";
+"Choose either “Attach Media” or “Without Media”" = "Choose either “Attach Media” or “Without Media”";
+"Find “Chat Backup Deleted Messages” and tap on it." = "Find “Chat Backup Deleted Messages” and tap on it.";
+"Enter message...." = "Enter message....";
+"Required" = "Required";
+"Please enter your phone number." = "Please enter your phone number.";
+"Please enter a message." = "Please enter a message.";
+
+"Continue" = "Continue";
+"Next" = "Next";
+"No chat backup found" = "No chat backup found";
+"Search chats" = "Search chats";
+"OK" = "OK";
+"No Internet Connection" = "No Internet Connection";
+
+"Find “Whats Web” and tap on it." = "Find “Whats Web” and tap on it.";
+"Terms Of Use" = "Terms Of Use";
+
+"WT Scan" = "WT Scan";
+"Scan and Connect Instantly" = "Scan and Connect Instantly";
+"Scan" = "Scan";
+"Telegram" = "Telegram";
+"Facebook" = "Facebook";
+"Instagram" = "Instagram";
+"Twitter" = "Twitter";
+"Add More" = "Add More";
+"Other Web Accounts" = "Other Web Accounts";
+"See more" = "See more";
+"Media" = "Media";
+"Chat" = "Chat";
+"Links" = "Links";
+"Docs" = "Docs";
+"Direct Chat" = "Direct Chat";
+"Add Message" = "Add Message";
+"Please enter your phone number." = "Please enter your phone number.";
+"Phone number copied" = "Phone number copied";
+"Enter message...." = "Enter message....";
+"Passcode" = "Passcode";
+"Change Passcode" = "Change Passcode";
+"Recover Passcode" = "Recover Passcode";
+"Import Chat" = "Import Chat";
+"Where would you like to import chats from?" = "Where would you like to import chats from?";
+"Whatsapp" = "Whatsapp";
+"WA Business" = "WA Business";
+"Files" = "Files";
+"Add New Message" = "Add New Message";
+"Add Message" = "Add Message";
+"Enter message..." = "Enter message...";
+" Add Quick Message" = " Add Quick Message";
+"Set Password" = "Set Password";
+"Enter Your Passcode" = "Enter Your Passcode";
+"Change Password" = "Change Password";
+"Confirm Password" = "Confirm Password";
+"Password successfully set." = "Password successfully set.";
+"Confirm password does not match." = "Confirm password does not match.";
+"Enter Your Passcode" = "Enter Your Passcode";
+"Enter New Password" = "Enter New Password";
+"Current password does not match." = "Current password does not match.";
+"Confirm New Password" = "Confirm New Password";
+"Password changed successfully." = "Password changed successfully.";
+"Enter Your Current Password" = "Enter Your Current Password";
+"Wrong Password" = "Wrong Password";
+"OK" = "OK";
+"Set Answer" = "Set Answer";
+"Show Passcode" = "Show Passcode";
+"Required" = "Required";
+"Please enter your answer." = "Please enter your answer.";
+"OK" = "OK";
+"Success" = "Success";
+"Answer saved successfully." = "Answer saved successfully.";
+"Success" = "Success";
+"Your Passcode is: " = "Your Passcode is: ";
+"Wrong Answer" = "Wrong Answer";
+"Your answer does not match." = "Your answer does not match.";
+"No media found" = "No media found";
+"No links found" = "No links found";
+"No documents found" = "No documents found";
+"Please enter your 4 digit security code. " = "Please enter your 4 digit security code. ";
+"Forgot Passcode?" = "Forgot Passcode?";
+"Security Question" = "Security Question";
+"Question" = "Question";
+"What is your favorite team?" = "What is your favorite team?";
+"Write an Answer" = "Write an Answer";
+"Enter your answer here ..." = "Enter your answer here ...";
+"Show Passcode" = "Show Passcode";
+
+"step2_text" = "2. Tap Menu (⋮) on Android, or Settings on iPhone.";
+"menu_word" = "Menu (⋮)";
+"settings_word" = "Settings";
+"step3_text" = "3. Tap Linked devices and then Link a device.";
+"linked_devices" = "Linked devices";
+"link_device" = "Link a device";
+"How to scan?" = "How to scan?";
+"Watch Video" = "Watch Video";
+"Refresh QR" = "Refresh QR";
+"Save someone’s WhatsApp " = "Save someone’s WhatsApp ";
+"step1_text" = "1. Open Whatsapp on your other phone.";
+"Whatsapp" = "Whatsapp";
+"step4_text" = "4. Point your phone at this screen to scan the QR code.";
+"scan_the_QR_code." = "scan the QR code.";
+
+"intro_1_bold" = "Connected";
+"intro_1_text" = "Stay Connected Across All Devices";
+"Sync your conversations and files instantly across all your devices effortlessly" = "Sync your conversations and files instantly across all your devices effortlessly";
+"intro_3_bold" = "Conversations";
+"intro_3_text" = "Keep Conversations Forever Safe";
+"Your conversations stay safe, private, and backed up whenever you need" = "Your conversations stay safe, private, and backed up whenever you need";
+"intro_2_bold" = "Instant";
+"intro_2_text" = "Instant Messaging With Anyone";
+"Enjoy fast, seamless messaging with anyone across devices anytime, anywhere" = "Enjoy fast, seamless messaging with anyone across devices anytime, anywhere";
+"Next" = "Next";
+"Continue" = "Continue";
+"Thank" = "Thank";
+"You!" = "You!";
+"Thanks for using our WhatsApp Web Scan App. Your chats are now easily accessible anytime." = "Thanks for using our WhatsApp Web Scan App. Your chats are now easily accessible anytime.";
+"Go To Home" = "Go To Home";
+"Tap on a “Status” to start downloading." = "Tap on a “Status” to start downloading.";
+"Tap the “Download” button to continue." = "Tap the “Download” button to continue.";
+"Enjoy your downloaded “Status” anytime." = "Enjoy your downloaded “Status” anytime.";
+"Status Download" = "Status Download";
+"Photo" = "Photo";
+"Video" = "Video";
+"Videos" = "Videos";
+"Saved" = "Saved";
+"Status saved in Whats Web folder" = "Status saved in Whats Web folder";
+"OK" = "OK";
+"Permission Required" = "Permission Required";
+"Please allow photo access from Settings to save media." = "Please allow photo access from Settings to save media.";
+"Cancel" = "Cancel";
+"Settings" = "Settings";
+"No Photos Found" = "No Photos Found";
+"No Videos Found" = "No Videos Found";
+"No Accounts Found" = "No Accounts Found";
+
+"Loading your chats..." = "Loading your chats...";
+"Refresh current page" = "Refresh current page";
+"Keyboard Dismiss" = "Keyboard Dismiss";
+"Show the saved status" = "Show the saved status";
+"See how to download status" = "See how to download status";
+"Logging out..." = "Logging out...";
+"Permission" = "Permission";
+"Please allow photo access from Settings to save media." = "Please allow photo access from Settings to save media.";
+"Cancel" = "Cancel";
+"Settings" = "Settings";
+
+"Tap to refresh the page" = "Tap to refresh the page";
+"Tap to hide keyboard" = "Tap to hide keyboard";
+"Tap to show saved status" = "Tap to show saved status";
+"Tap to see how to save status" = "Tap to see how to save status";
+"Tap to logout" = "Tap to logout";
+
+/* App Flow Additions */
+"Your Language" = "Your Language";
+"Select Language" = "Select Language";
+"All Language" = "All Language";
+"Start Chats Without Saving Contacts" = "Start Chats Without Saving Contacts";
+"Message anyone without adding new contacts." = "Message anyone without adding new contacts.";
+"Save Your Favorite Status Easily" = "Save Your Favorite Status Easily";
+"Download and save statuses in seconds." = "Download and save statuses in seconds.";
+"Backup Your Chats With Ease" = "Backup Your Chats With Ease";
+"Keep Important Messages Safe Forever." = "Keep Important Messages Safe Forever.";
+"Get Started" = "Get Started";
+"Web Scanner" = "Web Scanner";
+"WT Scan Now" = "WT Scan Now";
+"Access Your Chats Instantly" = "Access Your Chats Instantly";
+"Scan Now" = "Scan Now";
+"WhatsApp Tools" = "WhatsApp Tools";
+"Backup Chats" = "Backup Chats";
+"Status" = "Status";
+"Supported Platforms" = "Supported Platforms";
+"Chat" = "Chat";
+"Recent Platforms" = "Recent Platforms";
+"View All" = "View All";
+"No Platforms Yet" = "No Platforms Yet";
+"Home" = "Home";
+"Direct Chat" = "Direct Chat";
+"Settings" = "Settings";
+"Just Now" = "Just Now";
+"Minute Ago" = "Minute Ago";
+"Minutes Ago" = "Minutes Ago";
+"Hour Ago" = "Hour Ago";
+"Hours Ago" = "Hours Ago";
+"Day Ago" = "Day Ago";
+"Days Ago" = "Days Ago";
+"Rename" = "Rename";
+"Rename Account" = "Rename Account";
+"Account Name" = "Account Name";
+"Update" = "Update";
+
+/* Settings Screen Strings */
+"Dark Mode" = "Dark Mode";
+"Support" = "Support";
+"Rate App" = "Rate App";
+"Share App" = "Share App";
+"About" = "About";
+"Terms of Use" = "Terms of Use";
+"EULA" = "EULA";
+
+/* Backup Chats Strings */
+"No Backup Chats" = "No Backup Chats";
+"Your backup chats will appear here." = "Your backup chats will appear here.";
+"Import Backup" = "Import Backup";
+"How to Backup Chats" = "How to Backup Chats";
+"Got It" = "Got It";
+
+/* Export Chat Guide Strings */
+"Export Chat Guide" = "Export Chat Guide";
+"Export Chat" = "Export Chat";
+"Import Chat" = "Import Chat";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "Open the chat section, swipe left on any conversation, and tap 'More'.";
+"Tap on Contact or Group info." = "Tap on Contact or Group info.";
+"Tap on Export Chat." = "Tap on Export Chat.";
+"Choose Attach Media or Without Media." = "Choose Attach Media or Without Media.";
+"Tap on Saved to Files." = "Tap on Saved to Files.";
+"Open Web Scanner and tap on 'Backup Chats'." = "Open Web Scanner and tap on 'Backup Chats'.";
+"Tap on the 'Import Backup' button at the bottom." = "Tap on the 'Import Backup' button at the bottom.";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Select your saved WhatsApp backup (.zip or .txt) file from Files.";
+"Open the app and tap on WA Backup Chats." = "Open the app and tap on WA Backup Chats.";
+"Tap Import Backup Chat." = "Tap Import Backup Chat.";
+"Choose Wp Chat." = "Choose Wp Chat.";
+
+
+/* Added Localizations */
+"Enter WhatsApp Number" = "Enter WhatsApp Number";
+"Enter phone number" = "Enter phone number";
+"Message" = "Message";
+"Type or message here..." = "Type or message here...";
+"Quick Messages" = "Quick Messages";
+"Open WhatsApp Chat" = "Open WhatsApp Chat";
+"Recent Chats" = "Recent Chats";
+"No Chats Available" = "No Chats Available";
+"Hello" = "Hello";
+"Hi there" = "Hi there";
+"How are you?" = "How are you?";
+"Good morning" = "Good morning";
+"Thank you" = "Thank you";
+"Please call me" = "Please call me";
+"Second Ago" = "Second Ago";
+"Delete Chat" = "Delete Chat";
+"Are you sure you want to delete this chat?" = "Are you sure you want to delete this chat?";
+"Yes, delete" = "Yes, delete";
+"Dismiss" = "Dismiss";
+"Yes" = "Yes";
+"No" = "No";
+"Create new contact" = "Create new contact";
+
+"Invalid Phone Number" = "Invalid Phone Number";
+"Please enter a valid phone number for %@." = "Please enter a valid phone number for %@.";
+"Please enter a valid %d-digit phone number for %@." = "Please enter a valid %d-digit phone number for %@.";
+"Close" = "Close";
+
+"Use WhatsApp on your computer" = "Use WhatsApp on your computer";
+"Open WhatsApp on your phone" = "Open WhatsApp on your phone";
+"Tap Menu on Android, or Settings on iPhone" = "Tap Menu on Android, or Settings on iPhone";
+"Tap Linked devices and then Link a device" = "Tap Linked devices and then Link a device";
+"Point your phone at this screen to capture the QR code" = "Point your phone at this screen to capture the QR code";
+"Refresh" = "Refresh";
+"Generating QR Code..." = "Generating QR Code...";
+
+"Delete Account" = "Delete Account";
+"Are you sure you want to delete this account?" = "Are you sure you want to delete this account?";
+
+"Loading your chat..." = "Loading your chat...";
+"Please wait a moment" = "Please wait a moment";
+
+"WhatsApp Status" = "WhatsApp Status";
+"Save status videos and photos" = "Save status videos and photos";
+"Saved Status" = "Saved Status";
+"Save your favorite status moments" = "Save your favorite status moments";
+"Split Long Video" = "Split Long Video";
+"Split long videos into status" = "Split long videos into status";
+"Caption Status" = "Caption Status";
+"Find perfect captions for posts" = "Find perfect captions for posts";
+"How to download?" = "How to download?";
+"Click on the status you want to download." = "Click on the status you want to download.";
+"Click on download button." = "Click on download button.";
+
+"Nothing Saved Yet" = "Nothing Saved Yet";
+"Save your favorite statuses for later." = "Save your favorite statuses for later.";
+"Today" = "Today";
+"Yesterday" = "Yesterday";
+"Selected" = "Selected";
+"Save" = "Save";
+"Share" = "Share";
+"Delete" = "Delete";
+"Delete Items" = "Delete Items";
+"Are you sure you want to delete the selected items?" = "Are you sure you want to delete the selected items?";
+
+"Choose a Video" = "Choose a Video";
+"Choose a video and create multiple parts." = "Choose a video and create multiple parts.";
+"Choose Video" = "Choose Video";
+"Select Duration (Per Video)" = "Select Duration (Per Video)";
+"File Name" = "File Name";
+"Eg. My_Video_Part" = "Eg. My_Video_Part";
+"Save Split Video" = "Save Split Video";
+"Video Split Successfully" = "Video Split Successfully";
+"Ready to Save." = "Ready to Save.";
+"Save All Parts" = "Save All Parts";
+"Saved Video" = "Saved Video";
+"No Saved Videos Yet" = "No Saved Videos Yet";
+"Split videos you save will appear here." = "Split videos you save will appear here.";
+"Splitting Video..." = "Splitting Video...";
+"Please wait while we split your video." = "Please wait while we split your video.";
+"All parts saved to Photos successfully" = "All parts saved to Photos successfully";
+"Seconds" = "Seconds";
+"Minutes" = "Minutes";
+"Minute" = "Minute";
+
+"Caption" = "Caption";
+"Copy" = "Copy";
+"Copied!" = "Copied!";
+"Happiness" = "Happiness";
+"Cool" = "Cool";
+"Funny" = "Funny";
+"Inspiring" = "Inspiring";
+"Life" = "Life";
+"Love" = "Love";
+"Party" = "Party";
+"Selfie" = "Selfie";
+"Relationship" = "Relationship";
+"Friendship" = "Friendship";
+"Birthday" = "Birthday";
+"Thanksgiving" = "Thanksgiving";
+"Travel" = "Travel";
+"Anniversary" = "Anniversary";
+"Family" = "Family";
+
+/* Chat Section */
+"Quick Replay" = "Quick Replay";
+"Reply instantly with just one tap" = "Reply instantly with just one tap";
+"Funny Messages" = "Funny Messages";
+"Create funny messages for every mood" = "Create funny messages for every mood";
+"Scan QR Code" = "Scan QR Code";
+"Scan codes instantly with one tap" = "Scan codes instantly with one tap";
+"Generate QR Code" = "Generate QR Code";
+"Create custom QR codes instantly" = "Create custom QR codes instantly";
+
+/* Quick Reply Section */
+"All" = "All";
+"Greetings" = "Greetings";
+"Festivals" = "Festivals";
+"Sales" = "Sales";
+"Templates" = "Templates";
+"No Saved Messages Yet" = "No Saved Messages Yet";
+"Save your favorite replies for quick access." = "Save your favorite replies for quick access.";
+"Add Quick Reply" = "Add Quick Reply";
+"Type your message here..." = "Type your message here...";
+"Select Category" = "Select Category";
+"Choose a category" = "Choose a category";
+"Save Message" = "Save Message";
+"Are you sure you want to delete this message." = "Are you sure you want to delete this message.";
+"Done" = "Done";
+
+/* Funny Messages Section */
+"Stylish" = "Stylish";
+"Flip it" = "Flip it";
+"Repeat Text" = "Repeat Text";
+"Type Here" = "Type Here";
+"Enter Your text here..." = "Enter Your text here...";
+"Repeat Times" = "Repeat Times";
+"Result" = "Result";
+"Your converted message appears here" = "Your converted message appears here";
+"Convert" = "Convert";
+
+/* Scan QR Code Strings */
+"Choose From Gallery" = "Choose From Gallery";
+"Scan Details" = "Scan Details";
+"QR Code Preview" = "QR Code Preview";
+"QR Scanner Result" = "QR Scanner Result";
+"QR code scanned successfully" = "QR code scanned successfully";
+"Scan Again" = "Scan Again";
+"No QR Code found in selected image" = "No QR Code found in selected image";
+"Camera Permission Required" = "Camera Permission Required";
+"Please enable camera access in Settings to scan QR codes." = "Please enable camera access in Settings to scan QR codes.";
+"Open Settings" = "Open Settings";
+
+/* Generate QR Code Strings */
+"Create QR Code" = "Create QR Code";
+"QR Code Details" = "QR Code Details";
+"QR Code" = "QR Code";
+"Barcode" = "Barcode";
+"Convert your text into QR." = "Convert your text into QR.";
+"Generate QR codes for websites." = "Generate QR codes for websites.";
+"Create QR codes for contacts." = "Create QR codes for contacts.";
+"Create QR codes for email sharing." = "Create QR codes for email sharing.";
+"Share your location instantly." = "Share your location instantly.";
+"Create QR codes for SMS." = "Create QR codes for SMS.";
+"Create QR codes for calling." = "Create QR codes for calling.";
+"Generate Wi-Fi QR codes." = "Generate Wi-Fi QR codes.";
+"Enter name here..." = "Enter name here...";
+"Enter phone number here..." = "Enter phone number here...";
+"Enter address here..." = "Enter address here...";
+"Enter email here..." = "Enter email here...";
+"Enter text here..." = "Enter text here...";
+"Enter website URL here..." = "Enter website URL here...";
+"Enter subject here..." = "Enter subject here...";
+"Enter message here..." = "Enter message here...";
+"Enter latitude here..." = "Enter latitude here...";
+"Enter longitude here..." = "Enter longitude here...";
+"Enter network name..." = "Enter network name...";
+"Enter password..." = "Enter password...";
+"Name" = "Name";
+"Phone" = "Phone";
+"Address" = "Address";
+"Email" = "Email";
+"Subject" = "Subject";
+"Latitude" = "Latitude";
+"Longitude" = "Longitude";
+"Network Name" = "Network Name";
+"Password" = "Password";
+"Security" = "Security";
+"Text" = "Text";
+"URL" = "URL";
+"Contact" = "Contact";
+"Geo Location" = "Geo Location";
+"SMS" = "SMS";
+"Wi-Fi" = "Wi-Fi";
+
+/* Wi-Fi QR Code Form Strings */
+"Wi-Fi SSID" = "Wi-Fi SSID";
+"Enter SSID here..." = "Enter SSID here...";
+"Select Security Type" = "Select Security Type";
+"Wi-Fi Password" = "Wi-Fi Password";
+"Enter password here..." = "Enter password here...";
+"WPA" = "WPA";
+"WEP" = "WEP";
+"Nopass" = "Nopass";
+
+/* QR Code Form Validation Alerts */
+"Please enter a valid phone number." = "Please enter a valid phone number.";
+"Invalid Email" = "Invalid Email";
+"Please enter a valid email address." = "Please enter a valid email address.";
+"Invalid URL" = "Invalid URL";
+"Please enter a valid website URL." = "Please enter a valid website URL.";
+"Invalid Location" = "Invalid Location";
+"Please enter valid coordinates (-90 to 90 for latitude, -180 to 180 for longitude)." = "Please enter valid coordinates (-90 to 90 for latitude, -180 to 180 for longitude).";
+"Invalid Password" = "Invalid Password";
+"Wi-Fi password must be at least 8 characters for WPA." = "Wi-Fi password must be at least 8 characters for WPA.";
+"Wi-Fi password must be at least 5 characters for WEP." = "Wi-Fi password must be at least 5 characters for WEP.";
+
+/* Barcode Strings */
+"Create Barcode" = "Create Barcode";
+"Barcode Details" = "Barcode Details";
+"Generate Barcode" = "Generate Barcode";
+"Barcode Preview" = "Barcode Preview";
+"8 digit barcode" = "8 digit barcode";
+"13 digit barcode" = "13 digit barcode";
+"6-8 digit barcode" = "6-8 digit barcode";
+"12 digit barcode" = "12 digit barcode";
+"Enter 8 digit number..." = "Enter 8 digit number...";
+"Enter 13 digit number..." = "Enter 13 digit number...";
+"Enter 6-8 digit number..." = "Enter 6-8 digit number...";
+"Enter 12 digit number..." = "Enter 12 digit number...";
+"Invalid Barcode" = "Invalid Barcode";
+"Please enter a valid 8 digit number." = "Please enter a valid 8 digit number.";
+"Please enter a valid 13 digit number." = "Please enter a valid 13 digit number.";
+"Please enter a valid 6-8 digit number." = "Please enter a valid 6-8 digit number.";
+"Please enter a valid 12 digit number." = "Please enter a valid 12 digit number.";
+
+/* Premium Paywall Strings */
+"Unlock" = "Unlock";
+"Access" = "Access";
+"Unlimited WhatsApp Scan Access" = "Unlimited WhatsApp Scan Access";
+"Direct Chat Without Limits" = "Direct Chat Without Limits";
+"Unlimited Status Downloads" = "Unlimited Status Downloads";
+"Ad-Free Experience" = "Ad-Free Experience";
+"Yearly Plan" = "Yearly Plan";
+"Monthly Plan" = "Monthly Plan";
+"Weekly Plan" = "Weekly Plan";
+"Per Year" = "Per Year";
+"Per Month" = "Per Month";
+"Per Week" = "Per Week";
+"Best Value" = "Best Value";
+"Subscribe Now" = "Subscribe Now";
+"Restore" = "Restore";
+"Terms of use" = "Terms of use";
+"Privacy policy" = "Privacy policy";
+"Eula" = "Eula";
+
+"Loading..." = "Loading...";
+
+"Update Available" = "Update Available";
+"Update Now" = "Update Now";
+"Later" = "Later";
+"A new version of our app is available on the App Store. Please update for the best experience." = "A new version of our app is available on the App Store. Please update for the best experience.";
+"Do you like our App?" = "Do you like our App?";
+"No" = "No";
+"Yes" = "Yes";
+"Help us improve it app by answering this quick poll" = "Help us improve it app by answering this quick poll";

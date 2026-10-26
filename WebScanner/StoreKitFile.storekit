@@ -1,0 +1,170 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "E3CA0F65",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "34.99",
+      "familyShareable" : false,
+      "internalID" : "6823514000",
+      "localizations" : [
+        {
+          "description" : "Full Access Lifetime",
+          "displayName" : "Lifetime Plan",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "Re_Lifetime",
+      "referenceName" : "Lifetime Plan",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6790386176",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "AMS33G996X",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 813828651.11782098,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "22483666",
+      "localizations" : [
+
+      ],
+      "name" : "Subscribe Remote",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "14.99",
+              "displayPrice" : "14.99",
+              "internalID" : "6823512902_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "14.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6823512902",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+
+          ],
+          "productID" : "Re_Month",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Month Plan",
+          "subscriptionGroupID" : "22483666",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "7.99",
+              "displayPrice" : "7.99",
+              "internalID" : "6823512620_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "7.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6823512620",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+
+          ],
+          "productID" : "Re_Week",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Week Plan",
+          "subscriptionGroupID" : "22483666",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "24.99",
+              "displayPrice" : "24.99",
+              "internalID" : "6823513170_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "24.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "6823513170",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+
+          ],
+          "productID" : "Re_Year",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Year Plan",
+          "subscriptionGroupID" : "22483666",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}
