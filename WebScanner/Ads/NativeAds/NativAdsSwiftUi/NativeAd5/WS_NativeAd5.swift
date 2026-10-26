@@ -15,6 +15,7 @@ struct WS_NativeAd5: View {
     @AppStorage(WSAPP_SessionKeys.isPro) var isPro = false
     @State var hasLoadedOnce = false
 
+    
     var body: some View {
         VStack {
             if !isPro {
