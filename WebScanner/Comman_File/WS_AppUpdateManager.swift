@@ -28,9 +28,7 @@ final class TR_AppUpdateManager: ObservableObject {
         self.currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
         self.appStoreURL = URL(string: APPURL)
     }
-    
-    /// Checks App Store for latest available version.
-    /// Does not directly force alert display so callers can sequence presentations properly with other screens.
+  
     func checkForUpdate(forcePrompt: Bool = false, completion: ((Bool) -> Void)? = nil) {
         if let completion = completion {
             if hasCheckedInSession && !isChecking {
@@ -117,14 +115,12 @@ final class TR_AppUpdateManager: ObservableObject {
         }
     }
     
-    /// Presents the update alert directly if an update is available.
     func promptUpdateIfAvailable() {
         if isUpdateAvailable {
             self.showUpdateAlert = true
         }
     }
     
-    /// Opens the App Store page for this application
     func openAppStore() {
         let targetURL = appStoreURL ?? URL(string: APPURL) ?? URL(string: "https://apps.apple.com/app/id\(AppId)")!
         if UIApplication.shared.canOpenURL(targetURL) {

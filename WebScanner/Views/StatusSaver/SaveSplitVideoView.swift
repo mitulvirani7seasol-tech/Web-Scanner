@@ -42,21 +42,17 @@ public struct SaveSplitVideoView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 40 : 28) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Save Split Video
                 headerBar(horizontalPadding: horizontalPadding)
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: isIPad ? 20 : 16) {
-                        // 2. Success Banner
                         successBanner
                         
-                        // 3. Section Title
                         Text("Split Video".localized)
                             .font(.inter(.bold, size: isIPad ? 20 : 17))
                             .foregroundColor(AppColors.textPrimary(for: colorScheme))
                             .padding(.top, 4)
                         
-                        // 4. Parts List
                         VStack(spacing: isIPad ? 14 : 10) {
                             ForEach(parts) { part in
                                 partCard(for: part)
@@ -70,7 +66,6 @@ public struct SaveSplitVideoView: View {
                     .frame(maxWidth: .infinity)
                 }
                 
-                // 5. Fixed Bottom Button: Save All Parts
                 saveAllButton(horizontalPadding: horizontalPadding)
             }
             .frame(width: geo.size.width, height: geo.size.height)
@@ -106,6 +101,7 @@ public struct SaveSplitVideoView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -161,7 +157,6 @@ public struct SaveSplitVideoView: View {
     // MARK: - Part Card
     private func partCard(for part: SplitVideoPart) -> some View {
         HStack(spacing: 14) {
-            // Thumbnail with Play overlay
             ZStack {
                 if let thumb = part.thumbnailImage {
                     Image(uiImage: thumb)
@@ -190,7 +185,6 @@ public struct SaveSplitVideoView: View {
                 previewVideoURL = part.fileURL
             }
             
-            // Info
             VStack(alignment: .leading, spacing: 4) {
                 Text(part.name)
                     .font(.inter(.semiBold, size: isIPad ? 17 : 15))
@@ -203,7 +197,6 @@ public struct SaveSplitVideoView: View {
             
             Spacer()
             
-            // Menu
             Menu {
                 Button(action: {
                     TR_AdCountViewModel.sharedd.registerTap()
@@ -276,10 +269,8 @@ public struct SaveSplitVideoView: View {
     
     private func saveAllParts() {
         HapticFeedback.generate(.medium)
-        // 1. Save to camera roll
         SplitVideoManager.shared.saveAllPartsToCameraRoll(parts: parts)
         
-        // 2. Save collection to local manager history
         let collection = SavedSplitVideoCollection(
             title: videoTitle,
             date: Date(),
@@ -287,7 +278,6 @@ public struct SaveSplitVideoView: View {
         )
         SplitVideoManager.shared.saveCollection(collection)
         
-        // 3. Directly redirect to Saved Videos screen
         HapticFeedback.generate(.success)
         if let onSaveAllSuccess = onSaveAllSuccess {
             onSaveAllSuccess()

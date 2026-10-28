@@ -36,10 +36,8 @@ public struct SavedSplitVideoDetailView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 40 : 28) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Collection Title
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Parts List
                 if let current = currentCollection, !current.parts.isEmpty {
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack(spacing: isIPad ? 14 : 10) {
@@ -96,6 +94,7 @@ public struct SavedSplitVideoDetailView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -114,7 +113,6 @@ public struct SavedSplitVideoDetailView: View {
     // MARK: - Part Card
     private func partCard(for part: SplitVideoPart, collectionId: String) -> some View {
         HStack(spacing: 14) {
-            // Thumbnail with Play overlay
             ZStack {
                 if let thumb = part.thumbnailImage {
                     Image(uiImage: thumb)
@@ -145,7 +143,6 @@ public struct SavedSplitVideoDetailView: View {
                 }
             }
             
-            // Info
             VStack(alignment: .leading, spacing: 4) {
                 Text(part.name)
                     .font(.inter(.semiBold, size: isIPad ? 17 : 15))
@@ -158,7 +155,6 @@ public struct SavedSplitVideoDetailView: View {
             
             Spacer()
             
-            // Menu
             Menu {
                 Button(action: {
                     TR_AdCountViewModel.sharedd.registerTap()

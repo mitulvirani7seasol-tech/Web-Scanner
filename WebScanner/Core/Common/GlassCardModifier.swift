@@ -5,6 +5,7 @@
 
 import SwiftUI
 import UIKit
+import LinkPresentation
 
 // MARK: - Custom Rounded Corners Shape
 public struct CustomRoundedCorners: Shape {
@@ -345,6 +346,106 @@ struct TR_Blur: UIViewRepresentable {
 }
 
 // MARK: - Reusable Share Sheet Component
+public struct ShareTextItem: Identifiable {
+    public let id = UUID()
+    public let text: String
+    
+    public init(text: String) {
+        self.text = text
+    }
+}
+
+// MARK: - Activity Item Source with Instant LinkPresentation Metadata
+public final class StatusShareActivityItemSource: NSObject, UIActivityItemSource {
+    public let item: Any
+    public let title: String
+    public let thumbnail: UIImage?
+
+    public init(item: Any, title: String = "Status", thumbnail: UIImage? = nil) {
+        self.item = item
+        self.title = title
+        self.thumbnail = thumbnail
+        super.init()
+    }
+
+    public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return item
+    }
+
+    public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return item
+    }
+
+    public func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let metadata = LPLinkMetadata()
+        metadata.title = title
+        if let thumb = thumbnail {
+            metadata.imageProvider = NSItemProvider(object: thumb)
+            metadata.iconProvider = NSItemProvider(object: thumb)
+        } else if let img = item as? UIImage {
+            metadata.imageProvider = NSItemProvider(object: img)
+            metadata.iconProvider = NSItemProvider(object: img)
+        }
+        return metadata
+    }
+}
+
+public struct ShareHelper {
+    public static func share(items: [Any], from sourceView: UIView? = nil) {
+        guard !items.isEmpty else { return }
+        
+        DispatchQueue.main.async {
+            guard let windowScene = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .first(where: { $0.activationState == .foregroundActive })
+                ?? UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first else {
+                return
+            }
+            
+            guard let keyWindow = windowScene.windows.first(where: { $0.isKeyWindow }) ?? windowScene.windows.first,
+                  let rootVC = keyWindow.rootViewController else {
+                return
+            }
+            
+            var topVC = rootVC
+            while let presented = topVC.presentedViewController, !presented.isBeingDismissed {
+                topVC = presented
+            }
+            
+            let preparedItems: [Any] = items.map { item in
+                if item is UIActivityItemSource {
+                    return item
+                } else if let image = item as? UIImage {
+                    return StatusShareActivityItemSource(item: image, title: "Status Photo", thumbnail: image)
+                } else if let url = item as? URL {
+                    let isVideo = url.pathExtension.lowercased() == "mp4" || url.pathExtension.lowercased() == "mov"
+                    return StatusShareActivityItemSource(item: url, title: isVideo ? "Status Video" : "Status Media")
+                } else {
+                    return item
+                }
+            }
+            
+            let activityVC = UIActivityViewController(activityItems: preparedItems, applicationActivities: nil)
+            
+            if let popover = activityVC.popoverPresentationController {
+                let targetView = sourceView ?? topVC.view ?? keyWindow
+                popover.sourceView = targetView
+                let bounds = targetView.bounds
+                if let source = sourceView {
+                    popover.sourceRect = source.bounds
+                    popover.permittedArrowDirections = .any
+                } else {
+                    // Position in center with non-zero dimensions to avoid blank popover bug on iPad
+                    popover.sourceRect = CGRect(x: bounds.midX - 50, y: bounds.midY - 50, width: 100, height: 100)
+                    popover.permittedArrowDirections = []
+                }
+            }
+            
+            topVC.present(activityVC, animated: true)
+        }
+    }
+}
+
 public struct WS_ShareSheet: UIViewControllerRepresentable {
     public var activityItems: [Any]
     public var applicationActivities: [UIActivity]? = nil

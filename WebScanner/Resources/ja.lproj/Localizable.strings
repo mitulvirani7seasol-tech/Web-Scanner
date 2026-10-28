@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -183,7 +183,7 @@
 "Start Chats Without Saving Contacts" = "連絡先を保存せずにチャットを開始";
 "Message anyone without adding new contacts." = "連絡先を追加せずに誰にでもメッセージを送信できます。";
 "Save Your Favorite Status Easily" = "お気に入りのステータスを簡単に保存";
-"Download and save statuses in seconds." = "数秒でステータスをダウンロードして保存します。";
+"Save and manage statuses with ease." = "ステータスを簡単に保存・管理できます。";
 "Backup Your Chats With Ease" = "チャットを簡単にバックアップ";
 "Keep Important Messages Safe Forever." = "大切なメッセージをずっと安全に保管します。";
 "Get Started" = "始める";
@@ -479,3 +479,29 @@
 "13 digit barcode" = "13桁のバーコード";
 "6-8 digit barcode" = "6-8桁のバーコード";
 "12 digit barcode" = "12桁のバーコード";
+
+"Update Available" = "アップデートが利用可能です";
+"Update Now" = "今すぐアップデート";
+"Later" = "後で";
+"A new version of our app is available on the App Store. Please update for the best experience." = "App Storeでアプリの新しいバージョンが利用可能です。最高のエクスペリエンスのために更新してください。";
+"Do you like our App?" = "アプリはお気に入りですか？";
+"Help us improve it app by answering this quick poll" = "簡単なアンケートに答えて、アプリの改善にご協力ください";
+"No" = "いいえ";
+"Yes" = "はい";
+"No Backup Chats" = "バックアップチャットがありません";
+"Import Backup" = "バックアップをインポート";
+"Export Chat Guide" = "チャットエクスポートガイド";
+"How to Backup Chats" = "チャットのバックアップ方法";
+"Export Chat" = "チャットをエクスポート";
+"Got It" = "了解";
+"Open Web Scanner and tap on 'Backup Chats'." = "Web Scannerを開き、「バックアップチャット」をタップします。";
+"Open the app and tap on WA Backup Chats." = "アプリを開き、WAバックアップチャットをタップします。";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "チャットセクションを開き、会話を左にスワイプして「その他」をタップします。";
+"Tap on Contact or Group info." = "連絡先またはグループ情報をタップします。";
+"Tap on Export Chat." = "チャットをエクスポートをタップします。";
+"Choose Attach Media or Without Media." = "メディアを添付またはメディアなしを選択します。";
+"Choose Wp Chat." = "Wp Chatを選択します。";
+"Tap on Saved to Files." = "ファイルに保存をタップします。";
+"Tap on the 'Import Backup' button at the bottom." = "下部にある「バックアップをインポート」ボタンをタップします。";
+"Tap Import Backup Chat." = "バックアップチャットをインポートをタップします。";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "ファイルから保存したWhatsAppバックアップ（.zipまたは.txt）ファイルを選択します。";

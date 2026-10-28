@@ -14,6 +14,7 @@ public struct RecentChatsView: View {
     @State private var chatToDelete: RecentChatItem? = nil
     @State private var showDeleteConfirmation: Bool = false
     @State private var showPaywall: Bool = false
+    @State private var showNoInternetAlert: Bool = false
     @AppStorage(WS_SessionKeys.isPro) private var isPro: Bool = false
     
     private var isIPad: Bool {
@@ -25,19 +26,10 @@ public struct RecentChatsView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Background image strictly bounded
-//                Image(colorScheme == .dark ? "BG_Dark" : "BG")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(width: geo.size.width, height: geo.size.height)
-//                    .clipped()
-//                    .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Header Bar (Matching Image 3: < Recent Chats)
                     headerBar(topInset: geo.safeAreaInsets.top)
                     
-                    // List of Recent Chats
                     if recentChatManager.recentChats.isEmpty {
                         VStack(spacing: 16) {
                             Spacer()
@@ -78,6 +70,10 @@ public struct RecentChatsView: View {
                                                 swipedChatId = nil
                                             }
                                             HapticFeedback.generate(.medium)
+                                            guard NetworkMonitor.shared.isNetworkAvailable else {
+                                                showNoInternetAlert = true
+                                                return
+                                            }
                                             TR_AdCountViewModel.sharedd.registerTap {
                                                 if !isPro {
                                                     showPaywall = true
@@ -146,6 +142,11 @@ public struct RecentChatsView: View {
         } message: { _ in
             Text("Are you sure you want to delete this chat?".localized)
         }
+        .alert("No Internet Connection".localized, isPresented: $showNoInternetAlert) {
+            Button("OK".localized, role: .cancel) {}
+        } message: {
+            Text("Please check your internet connection and try again.".localized)
+        }
         .fullScreenCover(isPresented: $showPaywall) {
             PremiumPaywallView(isFromAppOpen: false) {
                 showPaywall = false
@@ -164,7 +165,7 @@ public struct RecentChatsView: View {
                     .font(.system(size: isIPad ? 22 : 22, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 40, height: isIPad ? 44 : 40)
-//                    .glassCard(cornerRadius: 12)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(ScaleButtonStyle())
             
@@ -238,7 +239,6 @@ public struct RecentChatSwipeableRow: View {
     
     public var body: some View {
         ZStack(alignment: .trailing) {
-            // Red Delete Button (revealed on swipe to left with spring animation)
             Button(action: {
                 HapticFeedback.generate(.medium)
                 onDelete()
@@ -258,15 +258,12 @@ public struct RecentChatSwipeableRow: View {
             .scaleEffect(offset < -8 ? min(1.0, 0.75 + 0.25 * (Double(-offset) / Double(actionWidth))) : 0.75)
             .animation(.spring(response: 0.35, dampingFraction: 0.78), value: offset)
             
-            // Foreground Card (Matching Image 3: Left ic_wp, middle bold phone & time, right ic_msg)
             HStack(spacing: 14.scaled) {
-                // WhatsApp Icon from Assets Direct_Chat
                 Image("ic_wp")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: isIPad ? 60 : 44.scaled, height: isIPad ? 60 : 44.scaled)
                 
-                // Phone & Time
                 VStack(alignment: .leading, spacing: 4.scaled) {
                     Text(chat.phoneNumber)
                         .font(.inter(.bold, size: isIPad ? 17 : 15.scaled))
@@ -280,7 +277,6 @@ public struct RecentChatSwipeableRow: View {
                 
                 Spacer()
                 
-                // Message Icon from Assets Direct_Chat
                 Image("ic_msg")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

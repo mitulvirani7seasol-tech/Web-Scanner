@@ -20,6 +20,7 @@ public struct RecentPlatformsView: View {
     @State private var newAccountName: String = ""
     @AppStorage(WS_SessionKeys.isPro) var isPro = false
     @State private var showPaywall: Bool = false
+    @State private var showNoInternetAlert: Bool = false
     
     private var isIPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
@@ -34,10 +35,8 @@ public struct RecentPlatformsView: View {
             let horizontalPadding: CGFloat = isIPad ? 28 : 16
             
             VStack(spacing: 0) {
-                // Top Custom Navigation Header: < Recent Platforms
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // Content List
                 if accountManager.accounts.isEmpty {
                     emptyStateView
                 } else {
@@ -50,6 +49,10 @@ public struct RecentPlatformsView: View {
                                     isIPad: isIPad,
                                     onTap: {
                                         HapticFeedback.generate(.light)
+                                        guard NetworkMonitor.shared.isNetworkAvailable else {
+                                            showNoInternetAlert = true
+                                            return
+                                        }
                                         if !isPro {
                                             showPaywall = true
                                             return
@@ -74,7 +77,7 @@ public struct RecentPlatformsView: View {
                                     onRename: {
                                         accountToRename = account
                                         let raw = account.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-                                        if raw.starts(with: "-") || raw.contains("લૉગ ઇન") || raw.contains("સાઇન અપ") || raw.contains("Log in") || raw.contains("Sign in") {
+                                        if raw.isEmpty || raw.starts(with: "-") || raw.contains("લૉગ ઇન") || raw.contains("સાઇન અપ") || raw.contains("Log in") || raw.contains("Sign in") {
                                             newAccountName = "\(account.platform.displayName) - 1"
                                         } else {
                                             newAccountName = account.accountName
@@ -108,8 +111,10 @@ public struct RecentPlatformsView: View {
         .onAppear {
             TabBarManager.shared.isHidden = true
         }
-        .onChange(of: navPath) { _ in
-            TabBarManager.shared.isHidden = true
+        .onDisappear {
+            if navPath.isEmpty {
+                TabBarManager.shared.isHidden = false
+            }
         }
         .fullScreenCover(isPresented: $showPaywall) {
             PremiumPaywallView(isFromAppOpen: false) {
@@ -135,6 +140,11 @@ public struct RecentPlatformsView: View {
                 }
             )
         }
+        .alert("No Internet Connection".localized, isPresented: $showNoInternetAlert) {
+            Button("OK".localized, role: .cancel) {}
+        } message: {
+            Text("Please check your internet connection and try again.".localized)
+        }
         .sheet(isPresented: $showRenameSheet) {
             renameSheet
         }
@@ -145,13 +155,19 @@ public struct RecentPlatformsView: View {
         HStack(alignment: .center, spacing: 14) {
             Button(action: {
                 HapticFeedback.generate(.light)
-                dismiss()
+                if !navPath.isEmpty {
+                    navPath.removeLast()
+                } else {
+                    dismiss()
+                }
+                TabBarManager.shared.isHidden = false
             }) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: isIPad ? 22 : 18, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -185,33 +201,39 @@ public struct RecentPlatformsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
+    private var isRenameValid: Bool {
+        !newAccountName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     // MARK: - Rename Sheet
     private var renameSheet: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             Text("Rename Account".localized)
                 .font(.inter(.bold, size: 18))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                .padding(.top, 24)
+                .padding(.top, 16)
             
             TextField("Account Name".localized, text: $newAccountName)
                 .font(.inter(.medium, size: 16))
-                .padding(14)
+                .padding(12)
                 .background(AppColors.cardBackground(for: colorScheme))
-                .cornerRadius(14)
-                .padding(.horizontal, 24)
+                .cornerRadius(12)
+                .padding(.horizontal, 20)
             
-            HStack(spacing: 16) {
+            HStack(spacing: 14) {
                 Button("Cancel".localized) {
                     showRenameSheet = false
                 }
                 .foregroundColor(.gray)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .glassCard(cornerRadius: 14.scaled)
+                .padding(.vertical, 12)
+                .glassCard(cornerRadius: 12.scaled)
                 
                 Button("Update".localized) {
+                    let trimmed = newAccountName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !trimmed.isEmpty else { return }
                     if var acc = accountToRename {
-                        acc.accountName = newAccountName
+                        acc.accountName = trimmed
                         accountManager.update(acc)
                     }
                     showRenameSheet = false
@@ -219,14 +241,19 @@ public struct RecentPlatformsView: View {
                 .font(.inter(.bold, size: 15))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(AppColors.primaryGreen)
-                .cornerRadius(14)
+                .padding(.vertical, 12)
+                .background(isRenameValid ? AppColors.primaryGreen : AppColors.primaryGreen.opacity(0.4))
+                .cornerRadius(12)
+                .disabled(!isRenameValid)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 12)
         }
-        .background(AppColors.background(for: colorScheme))
-        .presentationDetents([.height(220)])
+        .background(
+            AppColors.background(for: colorScheme)
+                .ignoresSafeArea(edges: .bottom)
+        )
+        .presentationDetents([.height(isIPad ? 210 : 170)])
+        .presentationDragIndicator(.hidden)
     }
 }

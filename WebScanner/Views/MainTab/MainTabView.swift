@@ -23,48 +23,63 @@ public struct MainTabView: View {
         )
     }
     
-    public init() {}
-    
-    private var isIPad: Bool {
-        UIDevice.current.userInterfaceIdiom == .pad
+    public init() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        
+        let unselectedColor = UIColor(red: 122/255, green: 122/255, blue: 122/255, alpha: 1.0)
+        let selectedColor = UIColor(red: 5/255, green: 151/255, blue: 77/255, alpha: 1.0)
+        
+        let itemAppearance = UITabBarItemAppearance()
+        itemAppearance.normal.iconColor = unselectedColor
+        itemAppearance.normal.titleTextAttributes = [
+            .foregroundColor: unselectedColor
+        ]
+        itemAppearance.selected.iconColor = selectedColor
+        itemAppearance.selected.titleTextAttributes = [
+            .foregroundColor: selectedColor
+        ]
+        
+        appearance.stackedLayoutAppearance = itemAppearance
+        appearance.inlineLayoutAppearance = itemAppearance
+        appearance.compactInlineLayoutAppearance = itemAppearance
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
     
     public var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .bottom) {
-                // Full Screen Background (Seamless across tab switches)
-                Image(colorScheme == .dark ? "BG_Dark" : "BG")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: geo.size.width, height: geo.size.height)
-                    .clipped()
-                    .ignoresSafeArea()
-                
-                // Tab Content
-                Group {
-                    switch tabBarManager.selectedTab {
-                    case 0:
-                        HomeView(selectedTab: selectedTabBinding)
-                    case 1:
-                        DirectChatView()
-                    case 2:
-                        SettingsView()
-                    default:
-                        HomeView(selectedTab: selectedTabBinding)
-                    }
+        TabView(selection: selectedTabBinding) {
+            HomeView(selectedTab: selectedTabBinding)
+                .tabItem {
+                    Image(tabBarManager.selectedTab == 0 ? "Home_Selected" : "Home_Unselect")
+                        .renderingMode(.template)
+                    Text("Home".localized)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                // Floating Liquid Glass Tab Bar (Hidden on detail screens)
-                if !tabBarManager.isHidden {
-                    customTabBar(bottomInset: geo.safeAreaInsets.bottom)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                .tag(0)
+                .toolbar(tabBarManager.isHidden ? .hidden : .visible, for: .tabBar)
+            
+            DirectChatView()
+                .tabItem {
+                    Image(tabBarManager.selectedTab == 1 ? "Chat_Selected" : "Chat_Unselect")
+                        .renderingMode(.template)
+                    Text("Direct Chat".localized)
                 }
-            }
-            .animation(.easeInOut(duration: 0.25), value: tabBarManager.isHidden)
-            .frame(width: geo.size.width, height: geo.size.height)
+                .tag(1)
+                .toolbar(tabBarManager.isHidden ? .hidden : .visible, for: .tabBar)
+            
+            SettingsView()
+                .tabItem {
+                    Image(tabBarManager.selectedTab == 2 ? "Setting_Selected" : "Setting_Unselect")
+                        .renderingMode(.template)
+                    Text("Settings".localized)
+                }
+                .tag(2)
+                .toolbar(tabBarManager.isHidden ? .hidden : .visible, for: .tabBar)
         }
-        .ignoresSafeArea(edges: .bottom)
+        .environment(\.horizontalSizeClass, .compact)
+        .tint(AppColors.primaryGreen)
+        .toolbar(tabBarManager.isHidden ? .hidden : .visible, for: .tabBar)
         .id(localizationHelper.refreshID)
         .fullScreenCover(isPresented: $isPresentPremium, onDismiss: {
             checkUpdateThenRate()
@@ -129,12 +144,14 @@ public struct MainTabView: View {
             return
         }
         
-        if !isPro {
+        let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+        if !isUserPro {
             if !WS_AppSession.shared.hasShownPremium && isShowPremium.lowercased() != "false" {
                 WS_AppSession.shared.hasShownPremium = true
                 tabBarManager.isPaywallFromAppOpen = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    guard !self.isPro else { return }
+                    let stillPro = self.isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+                    guard !stillPro else { return }
                     self.tabBarManager.showPaywall = true
                     self.isPresentPremium = true
                 }
@@ -186,83 +203,6 @@ public struct MainTabView: View {
         }
     }
     
-    // MARK: - Custom Liquid Glass Tab Bar
-    private func customTabBar(bottomInset: CGFloat) -> some View {
-        HStack(spacing: 0) {
-            tabBarItem(
-                index: 0,
-                title: "Home",
-                selectedImage: "Home_Selected",
-                unselectedImage: "Home_Unselect"
-            )
-            
-            tabBarItem(
-                index: 1,
-                title: "Direct Chat",
-                selectedImage: "Chat_Selected",
-                unselectedImage: "Chat_Unselect"
-            )
-            
-            tabBarItem(
-                index: 2,
-                title: "Settings",
-                selectedImage: "Setting_Selected",
-                unselectedImage: "Setting_Unselect"
-            )
-        }
-        .padding(.horizontal, isIPad ? 28 : 16.scaled)
-        .padding(.vertical, isIPad ? 10 : 8.scaled)
-        .glassCard(
-            cornerRadius: 32.scaled,
-            color: colorScheme == .dark ? Color.clear : Color.clear
-        )
-        .padding(.horizontal, isIPad ? 36 : 24.scaled)
-        .padding(.bottom, max(bottomInset, isIPad ? 32 : 24))
-        .frame(maxWidth: isIPad ? 520 : .infinity)
-    }
-    
-    private func tabBarItem(index: Int, title: String, selectedImage: String, unselectedImage: String) -> some View {
-        let isSelected = (tabBarManager.selectedTab == index)
-        let capsuleWidth: CGFloat = isIPad ? 84 : 50.scaled
-        let capsuleHeight: CGFloat = isIPad ? 56 : 36.scaled
-        
-        return Button(action: {
-            HapticFeedback.generate(.selection)
-            withAnimation(.spring(response: 0.32, dampingFraction: 0.72)) {
-                tabBarManager.selectedTab = index
-            }
-        }) {
-            VStack(spacing: isIPad ? 5 : 4.scaled) {
-                ZStack {
-                    if isSelected {
-                        Capsule()
-                            .fill(AppColors.primaryGreen)
-                            .frame(width: capsuleWidth, height: capsuleHeight)
-                            .transition(.scale.combined(with: .opacity))
-                        
-                        Image(selectedImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: isIPad ? 36 : 24.scaled, height: isIPad ? 36 : 24.scaled)
-                    } else {
-                        Image(unselectedImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: isIPad ? 36 : 24.scaled, height: isIPad ? 36 : 24.scaled)
-                            .frame(width: capsuleWidth, height: capsuleHeight)
-                    }
-                }
-                .frame(width: capsuleWidth, height: capsuleHeight)
-                
-                Text(title)
-                    .font(.inter(isSelected ? .bold : .medium, size: isIPad ? 13 : 11))
-                    .foregroundColor(isSelected ? AppColors.primaryGreen : Color(hex: "#7A7A7A"))
-            }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(ScaleButtonStyle(scaleAmount: 0.94))
-    }
 }
 
 #Preview {

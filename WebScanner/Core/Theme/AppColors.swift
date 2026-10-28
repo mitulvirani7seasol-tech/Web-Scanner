@@ -23,17 +23,14 @@ struct AppColors {
     
     // MARK: - Dynamic Semantic Colors (Supports Dark & Light Mode)
     
-    /// Main screen background color
     static func background(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color(hex: "#0B0E14") : Color(hex: "#E8EFF7")
     }
     
-    /// Card / Container surface color
     static func cardBackground(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color(hex: "#161B22") : Color.white
     }
     
-    /// Card border / stroke color
     static func cardStroke(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color(hex: "#21262D") : Color(hex: "#E2E8F0").opacity(0.8)
     }
@@ -46,22 +43,18 @@ struct AppColors {
         cardStroke(for: scheme)
     }
     
-    /// Primary text color
     static func textPrimary(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color.white : Color(hex: "#121212")
     }
     
-    /// Secondary / muted text color
     static func textSecondary(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color(hex: "#747474") : Color(hex: "#919593")
     }
     
-    /// Tab bar background color
     static func tabBarBackground(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color(hex: "#161B22") : Color.white
     }
     
-    /// Sub-tab / pill unselected background
     static func pillBackground(for scheme: ColorScheme) -> Color {
         scheme == .dark ? Color(hex: "#21262D") : Color(hex: "#E5E9F0")
     }

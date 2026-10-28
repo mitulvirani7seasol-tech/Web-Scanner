@@ -30,7 +30,6 @@ public struct WebBrowserSheetView: View {
             let horizontalPadding: CGFloat = isIPad ? 28 : 18.scaled
             
             VStack(spacing: 0) {
-                // Header Bar (Title & Close Button)
                 HStack {
                     Text(title)
                         .font(.inter(.bold, size: isIPad ? 20 : 17.scaled))
@@ -62,7 +61,6 @@ public struct WebBrowserSheetView: View {
                 Divider()
                     .opacity(0.5)
                 
-                // Content area
                 ZStack {
                     WebBrowserRepresentable(url: url, isLoading: $isLoading)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -93,16 +91,15 @@ private struct WebBrowserRepresentable: UIViewRepresentable {
     @Binding var isLoading: Bool
     
     func makeUIView(context: Context) -> WKWebView {
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
+        let makeUI = WKWebViewConfiguration()
+        makeUI.allowsInlineMediaPlayback = true
         
-        let webView = WKWebView(frame: .zero, configuration: config)
+        let webView = WKWebView(frame: .zero, configuration: makeUI)
         webView.navigationDelegate = context.coordinator
         webView.isOpaque = false
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = .clear
         
-        // Use timeout and returnCacheDataElseLoad to avoid hangs
         let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 12)
         webView.load(request)
         return webView
@@ -144,7 +141,6 @@ private struct WebBrowserRepresentable: UIViewRepresentable {
         
         private func handleFailure(webView: WKWebView) {
             DispatchQueue.main.async {
-                // If Blogspot fails/times out, fallback to Apple standard EULA or finish loading
                 if !self.hasLoadedFallback,
                    self.parent.url.absoluteString.contains("eula") {
                     self.hasLoadedFallback = true

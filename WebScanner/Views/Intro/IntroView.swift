@@ -81,7 +81,7 @@ public struct IntroView: View {
             imageName: "intro_2",
             iconName: "intro_2_Save",
             titleKey: "Save Your Favorite Status Easily",
-            subtitleKey: "Download and save statuses in seconds.",
+            subtitleKey: "Save and manage statuses with ease.",
             buttonTextKey: "Continue"
         ),
         IntroItem(
@@ -103,7 +103,6 @@ public struct IntroView: View {
             let isLandscape = geo.size.width > geo.size.height
             
             ZStack {
-                // Full Screen Background Image (Landscape and Portrait both)
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -112,18 +111,14 @@ public struct IntroView: View {
                     .ignoresSafeArea()
                 
                 if isLandscape {
-                    // MARK: - Landscape Layout (Side-by-Side)
                     VStack {
                         landscapeLayout(geo: geo)
-                        
-                       
                     }
                     
                     
                 } else {
                     // MARK: - Portrait Layout (Vertical Stack)
                     portraitLayout(geo: geo)
-                    
                 }
             }
         }
@@ -168,14 +163,12 @@ public struct IntroView: View {
                 }
             }
             
-            // Bottom Curved Green Gradient Card
             let extraAdHeight: CGFloat = isPro ? 0 : (isIPad ? 115 : 90)
             if isIPad {
                 bottomPortraitCard(height: bottomCardHeight + extraAdHeight, safeAreaBottom: geo.safeAreaInsets.bottom, containerWidth: geo.size.width)
             } else {
                 bottomPortraitCard(height: 220 + extraAdHeight, safeAreaBottom: geo.safeAreaInsets.bottom, containerWidth: geo.size.width)
             }
-            
         }
     }
     
@@ -188,7 +181,6 @@ public struct IntroView: View {
         
         return VStack {
             HStack(spacing: 0) {
-               // Left: Illustration Swiper
                TabView(selection: $currentPage) {
                    ForEach(introItems) { item in
                        VStack {
@@ -207,7 +199,6 @@ public struct IntroView: View {
                .frame(width: leftWidth, height: geo.size.height)
                .padding(.leading, max(geo.safeAreaInsets.leading, 12))
                
-               // Right: Green Curved Sheet matching reference design
                ZStack(alignment: .center) {
                    IntroLandscapeCurveShape(curveDepth: curveDepth)
                        .fill(
@@ -222,10 +213,8 @@ public struct IntroView: View {
                    VStack(spacing: isIPad ? 22 : 14) {
                        Spacer()
                        
-                       // Liquid Glass Icon Badge
                        liquidGlassBadge(iconName: currentItem.iconName)
                        
-                       // Title (Localized)
                        Text(currentItem.titleKey.localized)
                            .font(.inter(.bold, size: isIPad ? 28 : 22))
                            .foregroundColor(.white)
@@ -234,7 +223,6 @@ public struct IntroView: View {
                            .padding(.horizontal, isIPad ? 32 : 20)
                            .animation(.easeInOut(duration: 0.25), value: currentPage)
                        
-                       // Subtitle (Localized)
                        Text(currentItem.subtitleKey.localized)
                            .font(.inter(.regular, size: isIPad ? 25 : 14))
                            .foregroundColor(.white.opacity(0.85))
@@ -243,11 +231,9 @@ public struct IntroView: View {
                            .padding(.horizontal, isIPad ? 36 : 24)
                            .animation(.easeInOut(duration: 0.25), value: currentPage)
                        
-                       // Indicators
                        pageIndicators
                            .padding(.vertical, isIPad ? 6 : 2)
                        
-                       // Continue Button
                        actionButton(title: currentItem.buttonTextKey.localized)
                            .padding(.horizontal, isIPad ? 40 : 20)
                        
@@ -276,7 +262,6 @@ public struct IntroView: View {
         let currentItem = introItems[currentPage]
         
         return ZStack(alignment: .top) {
-            // Curved Background
             IntroCurveShape()
                 .fill(
                     LinearGradient(
@@ -288,17 +273,14 @@ public struct IntroView: View {
                 .frame(height: height)
                 .shadow(color: Color.black.opacity(0.12), radius: 12, x: 0, y: -4)
             
-            // Content
             VStack(spacing: 0) {
                 Spacer()
                     .frame(height: isIPad ? 28 : 22)
                 
-                // Liquid Glass Icon Badge
                 liquidGlassBadge(iconName: currentItem.iconName)
                     .padding(.bottom, isIPad ? 18 : 14)
                     .animation(.spring(response: 0.4, dampingFraction: 0.75), value: currentPage)
                 
-                // Title (Localized)
                 Text(currentItem.titleKey.localized)
                     .font(.inter(.bold, size: isIPad ? 28 : 22))
                     .foregroundColor(.white)
@@ -309,7 +291,6 @@ public struct IntroView: View {
                     .padding(.bottom, isIPad ? 12 : 8)
                     .animation(.easeInOut(duration: 0.25), value: currentPage)
                 
-                // Subtitle (Localized)
                 Text(currentItem.subtitleKey.localized)
                     .font(.inter(.regular, size: isIPad ? 17 : 14))
                     .foregroundColor(.white.opacity(0.85))
@@ -319,17 +300,14 @@ public struct IntroView: View {
                     .padding(.bottom, isIPad ? 22 : 16)
                     .animation(.easeInOut(duration: 0.25), value: currentPage)
                 
-                // Vertical Pill Page Indicators
                 pageIndicators
                     .padding(.bottom, isIPad ? 24 : 20)
                 
-                // Action Button (Above Home Indicator)
                 actionButton(title: currentItem.buttonTextKey.localized)
                     .padding(.horizontal, isIPad ? 32 : 24)
                     .padding(.bottom, isPro ? (max(safeAreaBottom, 18) + 12) : 10)
             }
             
-//            .frame(maxWidth: isIPad ? 580 : min(containerWidth, 540))
             .frame(maxWidth: .infinity)
             .frame(height: height)
             .padding(.bottom,  isIPad ? 140 : 100)

@@ -37,7 +37,6 @@ final class WS_AdOrientationManager: ObservableObject {
     }
     
     @objc private func handleDeviceRotation() {
-        // Only dismiss ads on rotation if the device is an iPad
         guard UIDevice.current.userInterfaceIdiom == .pad else { return }
         
         let smObservedOrientation = UIDevice.current.orientation
@@ -51,7 +50,6 @@ final class WS_AdOrientationManager: ObservableObject {
         
         var didRotate = false
         
-        // 1. Check physical device orientation change (portrait vs landscape)
         if smObservedOrientation.isValidInterfaceOrientation {
             if lastDeviceOrientation != .unknown && lastDeviceOrientation != smObservedOrientation {
                 didRotate = true
@@ -59,7 +57,6 @@ final class WS_AdOrientationManager: ObservableObject {
             lastDeviceOrientation = smObservedOrientation
         }
         
-        // 2. Check window scene interface orientation change
         if let currentIsLandscape = currentIsLandscape {
             if let lastIsLandscape = lastIsLandscape, lastIsLandscape != currentIsLandscape {
                 didRotate = true
@@ -81,7 +78,6 @@ final class WS_AdOrientationManager: ObservableObject {
         
         isDismissing = true
         DispatchQueue.main.async {
-            // Dismiss Interstitial Ads on rotation (triggers onDismiss completion to continue flow)
             TR_AdCountViewModel.sharedd.interstitialManager.dismissAdIfShowing()
             TR_InterstitialAdManager.dismissAnyActiveInterstitial()
             

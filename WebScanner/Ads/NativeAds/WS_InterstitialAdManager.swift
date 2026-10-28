@@ -33,6 +33,11 @@ final class WS_InterstitialAdManager: NSObject, FullScreenContentDelegate {
     }
 
     func load() {
+        guard !UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro) else {
+            print("🚫 [AdManager] User is Pro -> Skipping interstitial ad load.")
+            return
+        }
+
         guard !isLoadings else {
             print("⚙️ [AdManager] Already loading an interstitial, skipping duplicate request.")
             return
@@ -64,6 +69,12 @@ final class WS_InterstitialAdManager: NSObject, FullScreenContentDelegate {
     }
 
     func present(onDismiss: (() -> Void)? = nil) {
+        guard !UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro) else {
+            print("🚫 [AdManager] User is Pro -> Skipping interstitial ad presentation.")
+            onDismiss?()
+            return
+        }
+
         guard let root = UIApplication.topViewController else {
             print("⚠️ [AdManager] No rootViewController found for presentation.")
             onDismiss?()

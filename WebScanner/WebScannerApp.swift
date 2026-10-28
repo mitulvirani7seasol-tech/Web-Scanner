@@ -8,11 +8,66 @@
 import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    static var customOrientationLock: UIInterfaceOrientationMask? = nil
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let lock = AppDelegate.customOrientationLock {
+            return lock
+        }
         if UIDevice.current.userInterfaceIdiom == .pad {
             return .all
         } else {
             return .portrait
+        }
+    }
+}
+
+public struct OrientationHelper {
+    public static func lockOrientation(_ orientation: UIInterfaceOrientationMask, rotateTo: UIInterfaceOrientation = .portrait) {
+        AppDelegate.customOrientationLock = orientation
+        
+        DispatchQueue.main.async {
+            if #available(iOS 16.0, *) {
+                let activeScene = UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .first(where: { $0.activationState == .foregroundActive })
+                    ?? UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
+                
+                activeScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientation)) { _ in }
+            } else {
+                UIDevice.current.setValue(rotateTo.rawValue, forKey: "orientation")
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
+            
+            if let rootVC = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .first?.windows.first?.rootViewController {
+                rootVC.setNeedsUpdateOfSupportedInterfaceOrientations()
+            }
+        }
+    }
+    
+    public static func resetOrientation() {
+        AppDelegate.customOrientationLock = nil
+        
+        DispatchQueue.main.async {
+            if #available(iOS 16.0, *) {
+                let defaultMask: UIInterfaceOrientationMask = (UIDevice.current.userInterfaceIdiom == .pad) ? .all : .portrait
+                let activeScene = UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .first(where: { $0.activationState == .foregroundActive })
+                    ?? UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
+                
+                activeScene?.requestGeometryUpdate(.iOS(interfaceOrientations: defaultMask)) { _ in }
+            } else {
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
+            
+            if let rootVC = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .first?.windows.first?.rootViewController {
+                rootVC.setNeedsUpdateOfSupportedInterfaceOrientations()
+            }
         }
     }
 }
@@ -29,6 +84,9 @@ struct WebScannerApp: App {
     
     init() {
         AdOrientationManager.shared.startMonitoring()
+        Task {
+            await WS_SubscriptionManager.shared.checkSubscriptionStatus()
+        }
     }
     
     var body: some Scene {
@@ -113,10 +171,14 @@ struct WebScannerApp: App {
                 
             case .active:
                 print("🔄 App became active")
+                Task {
+                    await WS_SubscriptionManager.shared.checkSubscriptionStatus()
+                }
                 guard wasInBackground, WS_AppSession.shared.isSplashCompleted else { return }
                 wasInBackground = false
                 
-                if isPro {
+                let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+                if isUserPro {
                     print("🚫 Pro user → skip AppOpen ad")
                     return
                 }

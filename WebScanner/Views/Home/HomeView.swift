@@ -45,6 +45,7 @@ public struct HomeView: View {
     @State private var swipedAccountId: String? = nil
     @State private var accountToDelete: AppAccount? = nil
     @State private var showDeleteConfirmation: Bool = false
+    @State private var showNoInternetAlert: Bool = false
     @AppStorage(WS_SessionKeys.isPro) var isPro = false
     
     private var isIPad: Bool {
@@ -64,35 +65,33 @@ public struct HomeView: View {
             GeometryReader { geo in
                 ZStack(alignment: .top) {
                     
-                    // Fixed Top Header (Stays pinned at top, does not scroll)
+                    Image(colorScheme == .dark ? "BG_Dark" : "BG")
+                        .resizable()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .ignoresSafeArea()
+                    
                     VStack(spacing: 0) {
                         topHeader
                             .padding(.horizontal, 16)
                             .padding(.top, isIPad ? 14 : 8.scaled)
                             .padding(.bottom, isIPad ? 10 : 10.scaled)
                         
-                        // Content scrolls below the header
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack(spacing: isIPad ? 24 : 20.scaled) {
-                                // 1. WT Scan Now Hero Banner
                                 heroScanBanner
                                 
                                 if !isPro {
                                     TR_NativeAd7()
                                 }
                                 
-                                // 2. WhatsApp Tools (Backup Chats, Status, Chat)
                                 whatsappToolsSection
                                 
-                                // 3. Supported Platforms (Inside one continuous Liquid Glass card)
                                 supportedPlatformsSection
                                 
-                                // 4. Recent Platforms (View All + Empty State or List of items)
                                 recentPlatformsSection
                                 
-                                // Bottom spacing to avoid floating tab bar overlap
                                 Spacer()
-                                    .frame(height: isIPad ? 140 : 110.scaled)
+                                    .frame(height: isIPad ? 32 : 24)
                             }
                             .padding(.horizontal, 16)
                             .padding(.top, isIPad ? 6 : 4.scaled)
@@ -102,17 +101,13 @@ public struct HomeView: View {
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
             }
-            .background(
-                Image(colorScheme == .dark ? "BG_Dark" : "BG")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .ignoresSafeArea()
-            )
+
             .navigationDestination(for: HomeDestination.self) { destination in
                 switch destination {
                 case .webScanner(let accountId):
                     let account = accountManager.accounts.first(where: { $0.id == accountId })
                     WebScannerView(existingAccount: account)
+                        .id(accountId ?? "new_ws_scanner")
                 case .clone(let platform, let accountId):
                     let account = accountManager.accounts.first(where: { $0.id == accountId })
                     CloneWebView(platform: platform, existingAccount: account)
@@ -176,6 +171,11 @@ public struct HomeView: View {
                 }
             } message: { _ in
                 Text("Are you sure you want to delete this account?".localized)
+            }
+            .alert("No Internet Connection".localized, isPresented: $showNoInternetAlert) {
+                Button("OK".localized, role: .cancel) {}
+            } message: {
+                Text("Please check your internet connection and try again.".localized)
             }
             .onChange(of: navPath) { path in
                 TabBarManager.shared.isHidden = !path.isEmpty
@@ -262,12 +262,15 @@ public struct HomeView: View {
     private var heroScanBanner: some View {
         Button(action: {
             HapticFeedback.generate(.medium)
+            guard NetworkMonitor.shared.isNetworkAvailable else {
+                showNoInternetAlert = true
+                return
+            }
             TR_AdCountViewModel.sharedd.registerTap {
                 navPath.append(HomeDestination.webScanner(accountId: nil))
             }
         }) {
             ZStack {
-                // Background image banner strictly bounded inside container
                 RoundedRectangle(cornerRadius: isIPad ? 24 : 18.scaled, style: .continuous)
                     .fill(Color.clear)
                     .overlay(
@@ -281,7 +284,6 @@ public struct HomeView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: isIPad ? 24 : 18.scaled, style: .continuous))
                 
-                // Content overlay
                 HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: isIPad ? 12 : (isSmallDevice ? 10 : 10.scaled)) {
                         Text("WT Scan Now".localized)
@@ -333,7 +335,7 @@ public struct HomeView: View {
     private var whatsappToolsSection: some View {
         VStack(alignment: .leading, spacing: isIPad ? 16 : 10.scaled) {
             Text("WhatsApp Tools".localized)
-                .font(.inter(.bold, size: isIPad ? 22 : 17))
+                .font(.inter(.bold, size: isIPad ? 20 : 17))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
             HStack(spacing: isIPad ? 16 : (isSmallDevice ? 8 : 12.scaled)) {
@@ -406,7 +408,7 @@ public struct HomeView: View {
     private var supportedPlatformsSection: some View {
         VStack(alignment: .leading, spacing: isIPad ? 20 : 12.scaled) {
             Text("Supported Platforms".localized)
-                .font(.inter(.bold, size: isIPad ? 20 : 16))
+                .font(.inter(.bold, size: isIPad ? 18 : 16))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
             Spacer()
@@ -430,6 +432,10 @@ public struct HomeView: View {
     private func platformItem(platform: WebAppPlatform, icon: String) -> some View {
         Button(action: {
             HapticFeedback.generate(.light)
+            guard NetworkMonitor.shared.isNetworkAvailable else {
+                showNoInternetAlert = true
+                return
+            }
             TR_AdCountViewModel.sharedd.registerTap {
                 navPath.append(HomeDestination.clone(platform: platform, accountId: nil))
             }
@@ -451,20 +457,22 @@ public struct HomeView: View {
         VStack(alignment: .leading, spacing: isIPad ? 14 : 10.scaled) {
             HStack {
                 Text("Recent Platforms".localized)
-                    .font(.inter(.bold, size: isIPad ? 22 : 17))
+                    .font(.inter(.bold, size: isIPad ? 20 : 17))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                 
                 Spacer()
                 
-                Button(action: {
-                    HapticFeedback.generate(.light)
-                    TR_AdCountViewModel.sharedd.registerTap {
-                        navPath.append(HomeDestination.recentPlatforms)
+                if !accountManager.accounts.isEmpty {
+                    Button(action: {
+                        HapticFeedback.generate(.light)
+                        TR_AdCountViewModel.sharedd.registerTap {
+                            navPath.append(HomeDestination.recentPlatforms)
+                        }
+                    }) {
+                        Text("View All".localized)
+                            .font(.inter(.semiBold, size: isIPad ? 14 : 13))
+                            .foregroundColor(AppColors.primaryGreen)
                     }
-                }) {
-                    Text("View All".localized)
-                        .font(.inter(.semiBold, size: isIPad ? 16 : 13))
-                        .foregroundColor(AppColors.primaryGreen)
                 }
             }
             
@@ -483,7 +491,6 @@ public struct HomeView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, isIPad ? 32 : 24.scaled)
             } else {
-                // Show latest 10 data items on Home screen
                 let displayedAccounts = Array(accountManager.accounts.prefix(10))
                 
                 VStack(spacing: isIPad ? 12 : 9.scaled) {
@@ -494,6 +501,10 @@ public struct HomeView: View {
                             isIPad: isIPad,
                             onTap: {
                                 HapticFeedback.generate(.light)
+                                guard NetworkMonitor.shared.isNetworkAvailable else {
+                                    showNoInternetAlert = true
+                                    return
+                                }
                                 if !isPro {
                                     tabBarManager.isPaywallFromAppOpen = false
                                     tabBarManager.showPaywall = true
@@ -519,7 +530,7 @@ public struct HomeView: View {
                             onRename: {
                                 accountToRename = account
                                 let raw = account.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-                                if raw.starts(with: "-") || raw.contains("લૉગ ઇન") || raw.contains("સાઇન અપ") || raw.contains("Log in") || raw.contains("Sign in") {
+                                if raw.isEmpty || raw.starts(with: "-") || raw.contains("લૉગ ઇન") || raw.contains("સાઇન અપ") || raw.contains("Log in") || raw.contains("Sign in") {
                                     newAccountName = "\(account.platform.displayName) - 1"
                                 } else {
                                     newAccountName = account.accountName
@@ -542,36 +553,42 @@ public struct HomeView: View {
         swipedAccountId = nil
     }
     
+    private var isRenameValid: Bool {
+        !newAccountName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     // MARK: - Rename Sheet
     private var renameSheet: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             Text("Rename Account".localized)
                 .font(.inter(.bold, size: 18))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                .padding(.top, 24)
+                .padding(.top, 16)
             
             TextField("Account Name".localized, text: $newAccountName)
                 .font(.inter(.medium, size: 16))
-                .padding(14)
+                .padding(12)
                 .background(AppColors.cardBackground(for: colorScheme))
-                .cornerRadius(14)
-                .padding(.horizontal, 24)
+                .cornerRadius(12)
+                .padding(.horizontal, 20)
             
-            HStack(spacing: 16) {
+            HStack(spacing: 14) {
                 Button("Cancel".localized) {
                     showRenameSheet = false
                 }
                 .foregroundColor(.gray)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
+                .padding(.vertical, 12)
                 .glassCard(
-                    cornerRadius: 14.scaled,
+                    cornerRadius: 12.scaled,
                     color: colorScheme == .dark ? Color.clear : Color.clear
                 )
                 
                 Button("Update".localized) {
+                    let trimmed = newAccountName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !trimmed.isEmpty else { return }
                     if var acc = accountToRename {
-                        acc.accountName = newAccountName
+                        acc.accountName = trimmed
                         accountManager.update(acc)
                     }
                     showRenameSheet = false
@@ -579,15 +596,20 @@ public struct HomeView: View {
                 .font(.inter(.bold, size: 15))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(AppColors.primaryGreen)
-                .cornerRadius(14)
+                .padding(.vertical, 12)
+                .background(isRenameValid ? AppColors.primaryGreen : AppColors.primaryGreen.opacity(0.4))
+                .cornerRadius(12)
+                .disabled(!isRenameValid)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 12)
         }
-        .background(AppColors.background(for: colorScheme))
-        .presentationDetents([.height(220)])
+        .background(
+            AppColors.background(for: colorScheme)
+                .ignoresSafeArea(edges: .bottom)
+        )
+        .presentationDetents([.height(isIPad ? 210 : 170)])
+        .presentationDragIndicator(.hidden)
     }
 }
 
@@ -601,7 +623,6 @@ public struct RecentPlatformRow: View {
     var onDelete: (() -> Void)? = nil
     var onRename: (() -> Void)? = nil
     
-    // Optional compatibility parameters
     var isSwiped: Bool = false
     var onSwipe: (() -> Void)? = nil
     var onReset: (() -> Void)? = nil
@@ -632,8 +653,8 @@ public struct RecentPlatformRow: View {
     
     public var displayAccountName: String {
         let raw = account.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-        if raw.starts(with: "-") || raw.contains("લૉગ ઇન") || raw.contains("સાઇન અપ") || raw.contains("Log in") || raw.contains("Sign in") {
-            return "\(account.platform.displayName) - 1"
+        if raw.isEmpty || raw.starts(with: "-") || raw.contains("લૉગ ઇન") || raw.contains("સાઇન અપ") || raw.contains("Log in") || raw.contains("Sign in") {
+            return AccountManager.shared.defaultAccountName(for: account.platform, accountId: account.id)
         }
         return raw
     }

@@ -38,23 +38,19 @@ public struct SelectCountryView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .top) {
-                // Fixed background image strictly bounded to geo
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // 1. Header Bar: < Select Country (Pinned safely below notch/status bar)
                     headerBar(topInset: geo.safeAreaInsets.top)
                     
-                    // 2. Search Bar with Close button when focused / active
                     searchBarSection
                         .padding(.horizontal, isIPad ? 32 : 16)
                         .padding(.vertical, 10)
                         .frame(maxWidth: .infinity)
                     
-                    // 3. Country List (Full width for iPad as requested)
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack(spacing: 0) {
                             ForEach(filteredCountries) { country in
@@ -69,8 +65,6 @@ public struct SelectCountryView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
-//            .frame(width: geo.size.width, height: geo.size.height)
-//            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .navigationBarBackButtonHidden(true)
         .enableNativeSwipeBack()
@@ -93,6 +87,7 @@ public struct SelectCountryView: View {
                     .font(.system(size: isIPad ? 22 : 18, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(ScaleButtonStyle())
             
@@ -139,7 +134,6 @@ public struct SelectCountryView: View {
                     .fill(colorScheme == .dark ? Color.white.opacity(0.09) : Color(hex: "#E5E9EE").opacity(0.65))
             )
             
-            // Close Button shown when user clicks search bar or is searching
             if isSearchFocused || !searchQuery.isEmpty {
                 Button(action: {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
@@ -190,7 +184,6 @@ public struct SelectCountryView: View {
                 .padding(.vertical, isIPad ? 15 : 13.scaled)
                 .contentShape(Rectangle())
                 
-                // Subtle divider
                 Rectangle()
                     .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.06))
                     .frame(height: 0.8)

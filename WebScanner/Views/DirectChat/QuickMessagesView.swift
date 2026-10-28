@@ -27,19 +27,9 @@ public struct QuickMessagesView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Background image
-//                Image(colorScheme == .dark ? "BG_Dark" : "BG")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(width: geo.size.width, height: geo.size.height)
-//                    .clipped()
-//                    .ignoresSafeArea()
-                
                 VStack(spacing: 0) {
-                    // Header Bar (Matching Image 2)
                     headerBar(topInset: geo.safeAreaInsets.top)
                     
-                    // List of Quick Messages
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack(spacing: isIPad ? 14 : 12.scaled) {
                             ForEach(QuickMessageManager.defaultMessages, id: \.self) { message in
@@ -84,6 +74,7 @@ public struct QuickMessagesView: View {
                     .font(.system(size: isIPad ? 22 : 22, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 44, height: isIPad ? 44 : 44)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(ScaleButtonStyle())
             
@@ -119,7 +110,6 @@ public struct QuickMessagesView: View {
                 
                 Spacer()
                 
-                // Copy Icon (Matching Image 2)
                 Button(action: {
                     HapticFeedback.generate(.medium)
                     TR_AdCountViewModel.sharedd.registerTap()
@@ -138,9 +128,11 @@ public struct QuickMessagesView: View {
                                 .foregroundColor(AppColors.primaryGreen)
                         } else {
                             Image("ic_copy")
+                                .renderingMode(.template)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: isIPad ? 22 : 18.scaled, height: isIPad ? 22 : 18.scaled)
+                                .foregroundColor(AppColors.SaticColor(for: colorScheme))
                         }
                     }
                     .frame(width: isIPad ? 36 : 30, height: isIPad ? 36 : 30)

@@ -9,7 +9,7 @@ public struct HowToUseView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     
-    @State private var selectedGuide: Int = 0 // 0: WT Scan, 1: Direct Chat, 2: Chat Backup, 3: Status Saver
+    @State private var selectedGuide: Int = 0
     
     private let guides = ["WT Scan", "Direct Chat", "Chat Backup", "Status Saver"]
     
@@ -21,13 +21,10 @@ public struct HowToUseView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 16.scaled) {
-                // Header
                 headerView
                 
-                // Segmented Selector
                 segmentedBar
                 
-                // Guide Content
                 ScrollView(.vertical, showsIndicators: false) {
                     guideContent(for: selectedGuide)
                         .padding(.bottom, 24.scaled)
@@ -51,6 +48,7 @@ public struct HowToUseView: View {
                     .padding(8.scaled)
                     .background(AppColors.card(for: colorScheme))
                     .clipShape(Circle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(ScaleButtonStyle())
             
@@ -104,7 +102,6 @@ public struct HowToUseView: View {
         }
     }
     
-    // WT Scan
     private var wtScanGuide: some View {
         VStack(spacing: 16.scaled) {
             guideStepCard(
@@ -137,7 +134,6 @@ public struct HowToUseView: View {
         }
     }
     
-    // Direct Chat
     private var directChatGuide: some View {
         VStack(spacing: 16.scaled) {
             guideStepCard(
@@ -170,7 +166,6 @@ public struct HowToUseView: View {
         }
     }
     
-    // Chat Backup
     private var chatBackupGuide: some View {
         VStack(spacing: 16.scaled) {
             guideStepCard(
@@ -203,7 +198,6 @@ public struct HowToUseView: View {
         }
     }
     
-    // Status Saver
     private var statusSaverGuide: some View {
         VStack(spacing: 16.scaled) {
             guideStepCard(

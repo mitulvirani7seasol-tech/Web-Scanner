@@ -25,12 +25,10 @@ public struct ContactDetailsView: View {
     
     public var body: some View {
         ZStack {
-            // Background: Light gray in light mode (#F7F8FA), dark in dark mode (#111B21)
             (colorScheme == .dark ? Color(hex: "#111B21") : Color(hex: "#F7F8FA"))
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Top Custom Header: Circular Back Button matching Image 2
                 HStack {
                     Button(action: {
                         HapticFeedback.generate(.light)
@@ -45,6 +43,7 @@ public struct ContactDetailsView: View {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: isIPad ? 18 : 15, weight: .bold))
                                 .foregroundColor(colorScheme == .dark ? .white : Color(hex: "#111B21"))
+                                .glassCard(cornerRadius: 12)
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -58,7 +57,6 @@ public struct ContactDetailsView: View {
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 22 : 16) {
-                        // Centered Avatar (Large light purple circle matching Image 2)
                         ZStack {
                             Circle()
                                 .fill(colorScheme == .dark ? Color(hex: "#3D3866") : Color(hex: "#D0C9FF"))
@@ -70,15 +68,12 @@ public struct ContactDetailsView: View {
                         }
                         .padding(.top, isIPad ? 24 : 14)
                         
-                        // Contact Name (Bold, large text matching Image 2)
                         Text(contact.name.isEmpty ? "Contact".localized : contact.name)
                             .font(.system(size: isIPad ? 28 : 22, weight: .bold))
                             .foregroundColor(colorScheme == .dark ? .white : Color(hex: "#111B21"))
                             .multilineTextAlignment(.center)
                         
-                        // Mobile Card with 3 buttons (Chat, Video, Audio) matching Image 2
                         HStack(alignment: .center, spacing: 12) {
-                            // Left: "Mobile" + Phone Number
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Mobile".localized)
                                     .font(.system(size: isIPad ? 14 : 12, weight: .regular))

@@ -36,33 +36,32 @@ public struct SettingsView: View {
         NavigationStack {
             GeometryReader { geo in
                 ZStack(alignment: .top) {
-                    // Background Image
+                    
+                    Image(colorScheme == .dark ? "BG_Dark" : "BG")
+                        .resizable()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .ignoresSafeArea()
                     
                     VStack(spacing: 0) {
-                        // Top Header (Pinned at top)
                         topHeader
                             .padding(.horizontal, 16)
                             .padding(.top, isIPad ? 16 : 8.scaled)
                             .padding(.bottom, isIPad ? 14 : 10.scaled)
                         
-                        // Scrollable Content
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack(spacing: isIPad ? 22 : 18.scaled) {
-                                // Card 1: Language & Dark Mode
                                 preferencesCard
                                 
                                 if !isPro {
                                     TR_NativeAd7()
                                 }
                                 
-                                // Section: Support
                                 supportSection
                                 
-                                // Section: About (Without About Us)
                                 aboutSection
                                 
                                 Spacer()
-                                    .frame(height: isIPad ? 120 : 100.scaled)
+                                    .frame(height: isIPad ? 32 : 24)
                             }
                             .padding(.horizontal, 16)
                             .padding(.top, isIPad ? 4 : 2)
@@ -72,12 +71,6 @@ public struct SettingsView: View {
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
             }
-            .background(
-                Image(colorScheme == .dark ? "BG_Dark" : "BG")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .ignoresSafeArea()
-            )
             
             .navigationDestination(isPresented: $navigateToLanguage) {
                 LanguageSelectionView()
@@ -129,7 +122,6 @@ public struct SettingsView: View {
     // MARK: - Preferences Card (Language & Dark Mode)
     private var preferencesCard: some View {
         VStack(spacing: 0) {
-            // Language Row (Whole row clickable)
             Button(action: {
                 HapticFeedback.generate(.light)
                 TR_AdCountViewModel.sharedd.registerTap {
@@ -166,7 +158,6 @@ public struct SettingsView: View {
             
             dividerLine
             
-            // Dark Mode Row
             HStack(spacing: isIPad ? 16 : 14.scaled) {
                 Image(systemName: "moon.fill")
                     .font(.system(size: isIPad ? 22 : 18.scaled))
@@ -206,12 +197,11 @@ public struct SettingsView: View {
                 .padding(.leading, 4)
             
             VStack(spacing: 0) {
-                // Rate App (Whole row clickable)
                 Button(action: {
                     rateApp()
                 }) {
                     HStack(spacing: isIPad ? 16 : 14.scaled) {
-                        Image(systemName: "star.fill")
+                        Image("ic_Rate_App")
                             .font(.system(size: isIPad ? 22 : 18.scaled))
                             .foregroundColor(AppColors.primaryGreen)
                             .frame(width: isIPad ? 26 : 22.scaled, height: isIPad ? 26 : 22.scaled, alignment: .center)
@@ -234,7 +224,6 @@ public struct SettingsView: View {
                 
                 dividerLine
                 
-                // Share App (Whole row clickable)
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()
@@ -267,6 +256,11 @@ public struct SettingsView: View {
         }
     }
     
+    func openURL(_ urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        UIApplication.shared.open(url)
+    }
+    
     // MARK: - About Section (No About Us)
     private var aboutSection: some View {
         VStack(alignment: .leading, spacing: isIPad ? 10 : 8.scaled) {
@@ -276,23 +270,18 @@ public struct SettingsView: View {
                 .padding(.leading, 4)
             
             VStack(spacing: 0) {
-                // Privacy Policy (Whole row clickable)
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()
-                    if let url = URL(string: PRIVACYPOLICY) {
-                        safariURL = url
-                        safariTitle = "Privacy Policy".localized
-                        showSafari = true
-                    }
+                    openURL(PRIVACYPOLICY)
                 }) {
                     HStack(spacing: isIPad ? 16 : 14.scaled) {
-                        Image(systemName: "shield.fill")
+                        Image("ic_privacy_App")
                             .font(.system(size: isIPad ? 22 : 18.scaled))
                             .foregroundColor(AppColors.primaryGreen)
                             .frame(width: isIPad ? 26 : 22.scaled, height: isIPad ? 26 : 22.scaled, alignment: .center)
                         
-                        Text("Privacy Policy".localized)
+                        Text("Privacy policy".localized)
                             .font(.inter(.medium, size: isIPad ? 17 : 15.scaled))
                             .foregroundColor(AppColors.textPrimary(for: colorScheme))
                         
@@ -310,18 +299,13 @@ public struct SettingsView: View {
                 
                 dividerLine
                 
-                // Terms of Use (Whole row clickable)
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()
-                    if let url = URL(string: TEARMS) {
-                        safariURL = url
-                        safariTitle = "Terms of Use".localized
-                        showSafari = true
-                    }
+                    openURL(TEARMS)
                 }) {
                     HStack(spacing: isIPad ? 16 : 14.scaled) {
-                        Image(systemName: "doc.text.fill")
+                        Image("ic_Terms_App")
                             .font(.system(size: isIPad ? 22 : 18.scaled))
                             .foregroundColor(AppColors.primaryGreen)
                             .frame(width: isIPad ? 26 : 22.scaled, height: isIPad ? 26 : 22.scaled, alignment: .center)
@@ -344,17 +328,12 @@ public struct SettingsView: View {
                 
                 dividerLine
                 
-                // EULA (Whole row clickable)
                 Button(action: {
                     HapticFeedback.generate(.light)
-                    if let url = URL(string: EULA) {
-                        safariURL = url
-                        safariTitle = "EULA".localized
-                        showSafari = true
-                    }
+                    openURL(EULA)
                 }) {
                     HStack(spacing: isIPad ? 16 : 14.scaled) {
-                        Image(systemName: "doc.plaintext.fill")
+                        Image("ic_EULA_App")
                             .font(.system(size: isIPad ? 22 : 18.scaled))
                             .foregroundColor(AppColors.primaryGreen)
                             .frame(width: isIPad ? 26 : 22.scaled, height: isIPad ? 26 : 22.scaled, alignment: .center)
@@ -416,7 +395,6 @@ struct ShareNodesIcon: View {
             let circleR = w * 0.16
             let lineWidth = w * 0.10
             
-            // Connecting branch lines
             var path = Path()
             path.move(to: pLeft)
             path.addLine(to: pTopRight)
@@ -424,7 +402,6 @@ struct ShareNodesIcon: View {
             path.addLine(to: pBottomRight)
             context.stroke(path, with: .color(color), style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
             
-            // 3 Nodes (filled circles)
             for pt in [pLeft, pTopRight, pBottomRight] {
                 let rect = CGRect(x: pt.x - circleR, y: pt.y - circleR, width: circleR * 2, height: circleR * 2)
                 context.fill(Path(ellipseIn: rect), with: .color(color))

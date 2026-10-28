@@ -186,7 +186,6 @@ public final class ChatBackupManager: ObservableObject {
                         foundChatName = defaults.string(forKey: "latestSharedChatName")
                     }
                 }
-                // Clear immediately in all candidate groups and synchronize
                 defaults.set(false, forKey: "shouldOpenAppAfterShare")
                 defaults.removeObject(forKey: "latestSharedChatName")
                 defaults.synchronize()
@@ -245,7 +244,6 @@ public final class ChatBackupManager: ObservableObject {
         var seenFolderNames = Set<String>()
         
         for rootDir in backupCandidateDirectories {
-            // First check for any loose .zip files and extract if needed
             if let looseFiles = try? fileManager.contentsOfDirectory(at: rootDir, includingPropertiesForKeys: nil) {
                 for file in looseFiles where file.pathExtension.lowercased() == "zip" {
                     let base = file.deletingPathExtension().lastPathComponent
@@ -258,7 +256,6 @@ public final class ChatBackupManager: ObservableObject {
                     }
                 }
                 
-                // If there are loose .txt files, move to their own folder
                 for file in looseFiles where file.pathExtension.lowercased() == "txt" {
                     let base = file.deletingPathExtension().lastPathComponent
                     let targetFolder = rootDir.appendingPathComponent(base, isDirectory: true)
@@ -291,7 +288,6 @@ public final class ChatBackupManager: ObservableObject {
                 
                 let messages = chatFile != nil ? parseChatFile(url: chatFile!, mediaFolder: folder, chatName: chatName) : []
                 
-                // If folder name was generic like "_chat" or "WhatsApp Chat", extract real sender from messages
                 if chatName.lowercased() == "_chat" || chatName.lowercased() == "chat" || chatName.lowercased() == "whatsapp chat" || chatName.isEmpty {
                     for msg in messages {
                         if !msg.isMe && !msg.sender.isEmpty && msg.sender.lowercased() != "you" && !msg.sender.lowercased().contains("messages and calls") {
@@ -301,7 +297,6 @@ public final class ChatBackupManager: ObservableObject {
                     }
                 }
                 
-                // Find latest non-header message for preview
                 let lastMsg = messages.reversed().first(where: {
                     if case .header = $0.type { return false }
                     return true
@@ -320,7 +315,6 @@ public final class ChatBackupManager: ObservableObject {
                     messageCount: messages.filter { if case .header = $0.type { return false }; return true }.count
                 ))
                 
-                // Extract media, links, docs
                 for msg in messages {
                     switch msg.type {
                     case .images(let urls):
@@ -599,7 +593,6 @@ public final class ChatBackupManager: ObservableObject {
         let dummyFolder = URL(fileURLWithPath: NSTemporaryDirectory())
         let sampleAudioURL = Bundle.main.url(forResource: "audio", withExtension: "mp3") ?? dummyFolder.appendingPathComponent("sample_audio.mp3")
         
-        // Single message case for short chat verification
         if chatName.contains("79907") {
             return [
                 ChatMessage(
@@ -799,7 +792,6 @@ public final class ChatBackupManager: ObservableObject {
             if let txt = files.first(where: { $0.pathExtension.lowercased() == "txt" }) {
                 return txt
             }
-            // Check subdirectories 1 level deep
             for sub in files {
                 var isDir: ObjCBool = false
                 if fileManager.fileExists(atPath: sub.path, isDirectory: &isDir), isDir.boolValue {
@@ -854,6 +846,11 @@ public final class ChatBackupManager: ObservableObject {
             .replacingOccurrences(of: "\u{FEFF}", with: "")
             .replacingOccurrences(of: "\u{202A}", with: "")
             .replacingOccurrences(of: "\u{202C}", with: "")
+            .replacingOccurrences(of: "\u{200B}", with: "")
+            .replacingOccurrences(of: "\u{200C}", with: "")
+            .replacingOccurrences(of: "\u{200D}", with: "")
+            .replacingOccurrences(of: "\u{200F}", with: "")
+            .replacingOccurrences(of: "\u{2060}", with: "")
         
         let lines = cleaned.components(separatedBy: .newlines)
         
@@ -863,7 +860,6 @@ public final class ChatBackupManager: ObservableObject {
         let msgRegex = try? NSRegularExpression(pattern: messagePattern)
         let sysRegex = try? NSRegularExpression(pattern: systemPattern)
         
-        // --- PASS 1: Pre-scan all distinct real senders ---
         var allSenders = Set<String>()
         for raw in lines {
             let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -882,7 +878,6 @@ public final class ChatBackupManager: ObservableObject {
             }
         }
         
-        // Determine the contact sender vs user sender deterministically
         var resolvedContact: String? = nil
         var resolvedUser: String? = nil
         
@@ -902,14 +897,12 @@ public final class ChatBackupManager: ObservableObject {
             } else if meKeywords.contains(where: { s2Lower == $0 || s2Lower.hasPrefix($0) }) {
                 resolvedUser = s2
                 resolvedContact = s1
-            // 2. In WhatsApp exports, "~" prefix (e.g. "~Mitul Virani") is ONLY displayed for other contacts' push names
             } else if s1.hasPrefix("~") && !s2.hasPrefix("~") {
                 resolvedContact = s1
                 resolvedUser = s2
             } else if s2.hasPrefix("~") && !s1.hasPrefix("~") {
                 resolvedContact = s2
                 resolvedUser = s1
-            // 3. Match against chat title / phone number
             } else {
                 let normChat = normalizeSender(chatName)
                 let normS1 = normalizeSender(s1)
@@ -966,7 +959,6 @@ public final class ChatBackupManager: ObservableObject {
             }
         }
         
-        // --- PASS 2: Group multiline messages first before classification ---
         struct RawEntry {
             var dateStr: String
             var timeStr: String
@@ -982,7 +974,6 @@ public final class ChatBackupManager: ObservableObject {
             
             let range = NSRange(location: 0, length: line.utf16.count)
             
-            // Check system notice with timestamp
             if isSystemNoticeLine(line),
                let match = sysRegex?.firstMatch(in: line, range: range),
                let dateR = Range(match.range(at: 1), in: line),
@@ -995,7 +986,6 @@ public final class ChatBackupManager: ObservableObject {
                 continue
             }
             
-            // Standard message with sender
             if let match = msgRegex?.firstMatch(in: line, range: range),
                let dateR = Range(match.range(at: 1), in: line),
                let timeR = Range(match.range(at: 2), in: line),
@@ -1012,7 +1002,6 @@ public final class ChatBackupManager: ObservableObject {
                 continue
             }
             
-            // System notice without colon
             if let match = sysRegex?.firstMatch(in: line, range: range),
                let dateR = Range(match.range(at: 1), in: line),
                let timeR = Range(match.range(at: 2), in: line),
@@ -1026,19 +1015,19 @@ public final class ChatBackupManager: ObservableObject {
                 }
             }
             
-            // Continuation line of previous message (e.g. poll lines, multiline text)
             if !rawEntries.isEmpty {
                 rawEntries[rawEntries.count - 1].textLines.append(line)
             }
         }
         
-        // --- PASS 3: Classify each complete message ---
+        let invisibleChars = CharacterSet(charactersIn: "\u{200B}\u{200C}\u{200D}\u{200E}\u{200F}\u{FEFF}\u{2060}\u{202A}\u{202C}\u{202F}\u{00A0}")
+        let combinedWhitespace = CharacterSet.whitespacesAndNewlines.union(invisibleChars)
+        
         var result: [ChatMessage] = []
         for entry in rawEntries {
-            let fullText = entry.textLines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+            let fullText = entry.textLines.joined(separator: "\n").trimmingCharacters(in: combinedWhitespace)
             
-            // Skip media omitted notices in chats exported without media
-            if isMediaOmittedNotice(fullText) {
+            if fullText.isEmpty || isMediaOmittedNotice(fullText) {
                 continue
             }
             
@@ -1058,6 +1047,9 @@ public final class ChatBackupManager: ObservableObject {
                 allSenders: allSenders
             )
             let type = classifyMessageType(message: fullText, mediaFolder: mediaFolder)
+            if case .text(let txt) = type, txt.trimmingCharacters(in: combinedWhitespace).isEmpty {
+                continue
+            }
             result.append(ChatMessage(sender: sender, date: parsedDate, time: formattedTime, type: type, isMe: isMe))
         }
         return result
@@ -1089,7 +1081,6 @@ public final class ChatBackupManager: ObservableObject {
             return sender != contact
         }
         
-        // For groups (>2 senders), default to false unless explicitly "You"
         return false
     }
     
@@ -1157,22 +1148,18 @@ public final class ChatBackupManager: ObservableObject {
     private func classifyMessageType(message: String, mediaFolder: URL) -> MessageType {
         let lower = message.lowercased()
         
-        // WhatsApp omitted notices
         if lower.contains("<media omitted>") || lower.contains("image omitted") || lower.contains("video omitted") || lower.contains("audio omitted") || lower.contains("document omitted") {
             return .header("📁 " + message)
         }
         
-        // Poll detection (Images 3 & 4)
         if lower.hasPrefix("poll:") || lower.hasPrefix("poll\n") || lower.contains("📊") || lower.contains("(1 vote)") || lower.contains("(0 votes)") || lower.contains("option:") || (lower.contains("select one") && lower.contains("\n")) {
             return parsePollMessage(message)
         }
         
-        // Event detection (Images 3 & 4)
         if lower.hasPrefix("event:") || lower.contains("📅") || lower.contains("edit event") || lower.contains("add to calendar") {
             return parseEventMessage(message)
         }
         
-        // Attached file regex e.g. <attached: file.jpg> or file.jpg (file attached)
         if lower.contains("<attached:") || lower.contains("(file attached)") || lower.contains("attached:") || lower.contains("(archivo adjunto)") || lower.contains("(fichier joint)") {
             let filename = extractAttachmentFilename(from: message)
             let fileURL = mediaFolder.appendingPathComponent(filename)
@@ -1398,7 +1385,6 @@ public final class ChatBackupManager: ObservableObject {
             .replacingOccurrences(of: "\u{00A0}", with: " ")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Only remove seconds if there are two colons (i.e. H:m:s -> H:m)
         let colonCount = clean.filter { $0 == ":" }.count
         if colonCount >= 2 {
             if let regex = try? NSRegularExpression(pattern: #":(\d{2})(?=\s*(?:[aApP][mM]|$))"#) {

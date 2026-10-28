@@ -70,16 +70,11 @@ var adsPlus = 1
 var smallNativeBannerId = ""
 
 #if DEBUG
-// Test URL
-let getJSON : String = "https://7seasol-application.s3.amazonaws.com/admin_prod/pbz-grfgvat-arj.json"
-//let getJSON : String = "https://d2is1ss4hhk4uk.cloudfront.net/dev/mitulvirani.7seasol@gmail.json"
+let ApiURL : String = "https://7seasol-application.s3.amazonaws.com/admin_prod/pbz-grfgvat-arj.json"
+//let ApiURL : String = "https://d2is1ss4hhk4uk.cloudfront.net/dev/mitulvirani.7seasol@gmail.json"
 #else
-// Live URL
-let getJSON : String = "https://7seasol-application.s3.amazonaws.com/admin_prod/pbz-pber-gbby.json"
+let ApiURL : String = "https://7seasol-application.s3.amazonaws.com/admin_prod/pbz-pber-gbby.json"
 #endif
-
-public let ACCESS = "AKIA2FCATE7MLGSZBHML"
-public let SECRET = "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"
 
 func isIpad() -> Bool {
     UIDevice.current.userInterfaceIdiom == .pad

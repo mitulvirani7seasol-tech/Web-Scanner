@@ -47,19 +47,14 @@ public struct CreateBarcodeFormView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Create Barcode
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Main Scrollable Form Content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 22 : 18.scaled) {
-                        // Category Header Summary Card (Matches Screenshots 1-4)
                         categorySummaryCard
                         
-                        // Input Field Card
                         inputFieldSection
                         
-                        // Generate Barcode Action Button
                         generateButton
                             .padding(.top, isIPad ? 14 : 10)
                     }
@@ -101,7 +96,6 @@ public struct CreateBarcodeFormView: View {
         } message: {
             Text(validationAlertMessage)
         }
-        // Fallback navigation when navPath is nil
         .navigationDestination(isPresented: Binding(
             get: { generatedBarcodeToPresent != nil && navPath == nil },
             set: { if !$0 { generatedBarcodeToPresent = nil } }
@@ -124,6 +118,7 @@ public struct CreateBarcodeFormView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             

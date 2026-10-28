@@ -37,7 +37,7 @@ public enum WebAppPlatform: String, Codable, CaseIterable, Identifiable {
         case .facebook: return URL(string: "https://m.facebook.com")!
         case .instagram: return URL(string: "https://www.instagram.com")!
         case .twitter: return URL(string: "https://x.com")!
-        case .google: return URL(string: "https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fmyaccount.google.com%2F")!
+        case .google: return URL(string: "https://www.google.com")!
         case .other: return URL(string: "https://www.google.com")!
         }
     }
@@ -57,14 +57,12 @@ public enum WebAppPlatform: String, Codable, CaseIterable, Identifiable {
     public var userAgent: String {
         switch self {
         case .whatsApp:
-            // WhatsApp Web requires Desktop Safari/Chrome User Agent
             return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         default:
             return "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
         }
     }
     
-    /// JavaScript snippet to detect active login state
     public var loginDetectJS: String {
         switch self {
         case .whatsApp:
@@ -423,135 +421,10 @@ public enum WebAppPlatform: String, Codable, CaseIterable, Identifiable {
                 return JSON.stringify({loggedIn: false, name: '', debug: 'no_match, bodyLen:' + bodyText.length + ', url:' + url.slice(0,60)});
             })()
             """
-        case .google:
+        case .google, .other:
             return """
             (function() {
-                try {
-                    var url = window.location.href || '';
-                    var bodyText = (document.body ? (document.body.innerText || '') : '').toLowerCase();
-                    
-                    // 1. Strict auth screen detection: check if active login input is present or in middle of sign-in flow
-                    var hasEmail = document.querySelector('input[type="email"]') != null;
-                    var hasPassword = document.querySelector('input[type="password"]') != null;
-                    var hasEmailOrPass = hasEmail || hasPassword;
-                    
-                    var isAuthUrl = (url.includes('/signin') || 
-                                     url.includes('/ServiceLogin') || 
-                                     url.includes('/v3/signin') || 
-                                     url.includes('/identifier') || 
-                                     url.includes('/challenge')) && !url.includes('myaccount.google.com');
-                                     
-                    var isAuthText = bodyText.includes('sign in to your google account') || 
-                                     bodyText.includes('sign in with your google account') || 
-                                     bodyText.includes('sign in - google accounts');
-                    
-                    var isAuthScreen = hasEmailOrPass || isAuthUrl || (isAuthText && !url.includes('myaccount.google.com'));
-                    
-                    if (isAuthScreen) {
-                        return JSON.stringify({loggedIn: false, name: '', debug: 'auth_screen:inputs=' + hasEmailOrPass + ',authUrl=' + isAuthUrl});
-                    }
-                    
-                    // Must be on a Google domain
-                    if (!url.includes('google.com')) {
-                        return JSON.stringify({loggedIn: false, name: '', debug: 'not_google_domain:' + url.slice(0,60)});
-                    }
-                    
-                    // Function to extract Google user email (e.g. mitulvirani.7seasol@gmail.com)
-                    function extractGoogleEmail() {
-                        try {
-                            var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/;
-                            
-                            // A. Look at data-email or data-identifier attributes
-                            var dataEls = document.querySelectorAll('[data-email], [data-identifier]');
-                            for (var d = 0; d < dataEls.length; d++) {
-                                var val = dataEls[d].getAttribute('data-email') || dataEls[d].getAttribute('data-identifier') || '';
-                                if (val.includes('@')) return val.trim();
-                            }
-                            
-                            // B. Look at aria-label on profile/account elements
-                            var ariaEls = document.querySelectorAll('a[aria-label], button[aria-label], div[aria-label]');
-                            for (var i = 0; i < ariaEls.length; i++) {
-                                var rawAria = ariaEls[i].getAttribute('aria-label') || '';
-                                var m1 = rawAria.match(emailRegex);
-                                if (m1 && m1[0]) return m1[0].trim();
-                            }
-                            
-                            // C. Look at imgs alt / title
-                            var imgs = document.querySelectorAll('img[alt], img[title]');
-                            for (var j = 0; j < imgs.length; j++) {
-                                var imgTxt = (imgs[j].getAttribute('alt') || '') + ' ' + (imgs[j].getAttribute('title') || '');
-                                var m2 = imgTxt.match(emailRegex);
-                                if (m2 && m2[0]) return m2[0].trim();
-                            }
-                            
-                            // D. Look in header or profile card text
-                            var headerEls = document.querySelectorAll('header, #gb, nav, [role="banner"], [role="navigation"]');
-                            for (var k = 0; k < headerEls.length; k++) {
-                                var hText = headerEls[k].innerText || headerEls[k].textContent || '';
-                                var m3 = hText.match(emailRegex);
-                                if (m3 && m3[0]) return m3[0].trim();
-                            }
-                            
-                            // E. Look in body text
-                            var bText = document.body ? (document.body.innerText || '') : '';
-                            var m4 = bText.match(emailRegex);
-                            if (m4 && m4[0]) return m4[0].trim();
-                        } catch(e) {}
-                        return '';
-                    }
-                    
-                    var fetchedName = extractGoogleEmail();
-                    
-                    // 2. Primary check: myaccount.google.com is explicitly the authenticated user portal
-                    if (url.includes('myaccount.google.com') && !isAuthScreen) {
-                        return JSON.stringify({loggedIn: true, name: fetchedName, debug: 'myaccount_dashboard,name:' + fetchedName});
-                    }
-                    
-                    // 3. Secondary check: Logged-in DOM selectors
-                    var loggedInSelectors = [
-                        'a[href*="accounts.google.com/SignOutOptions"]',
-                        'a[href*="/SignOutOptions"]',
-                        'a[href*="myaccount.google.com"]',
-                        'div.gb_d',
-                        'div.gb_b',
-                        'a.gb_d',
-                        '#gb div[aria-label]',
-                        '#gb a[href*="myaccount"]',
-                        'div[data-ogsr-up]',
-                        'div[jsname="EBc8Rd"]'
-                    ];
-                    
-                    var matchedSelector = '';
-                    for (var m = 0; m < loggedInSelectors.length; m++) {
-                        if (document.querySelector(loggedInSelectors[m]) != null) {
-                            matchedSelector = loggedInSelectors[m];
-                            break;
-                        }
-                    }
-                    
-                    if (matchedSelector) {
-                        return JSON.stringify({loggedIn: true, name: fetchedName, debug: 'matched:' + matchedSelector + ',name:' + fetchedName});
-                    }
-                    
-                    // 4. Tertiary check: search / services page with profile button
-                    if (url.includes('google.com') && !url.includes('accounts.google.com') && bodyText.length > 200) {
-                        var hasAccountBtn = document.querySelector('a[href*="myaccount"]') != null ||
-                                            document.querySelector('a[href*="SignOutOptions"]') != null;
-                        if (hasAccountBtn) {
-                            return JSON.stringify({loggedIn: true, name: fetchedName, debug: 'fallback_account_btn,name:' + fetchedName});
-                        }
-                    }
-                    
-                    return JSON.stringify({loggedIn: false, name: '', debug: 'no_match,bodyLen:' + bodyText.length + ',url:' + url.slice(0,60)});
-                } catch(err) {
-                    return JSON.stringify({loggedIn: false, name: '', debug: 'catch_error:' + (err && err.message ? err.message : err)});
-                }
-            })()
-            """
-        default:
-            return """
-            (function() {
-                return JSON.stringify({loggedIn: false, name: ''});
+                return JSON.stringify({loggedIn: true, name: document.title || 'Account'});
             })()
             """
         }
@@ -631,24 +504,39 @@ public final class AccountManager: ObservableObject {
             return
         }
         
-        // Clean up any phone number names back to "WhatsApp - 1", "WhatsApp - 2", etc.
-        var wpCount = 0
-        for i in 0..<list.count {
-            if list[i].platform == .whatsApp {
-                wpCount += 1
-                let name = list[i].accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-                if Self.isPhoneNumber(name) || name.isEmpty || name == "WhatsApp" {
-                    list[i].accountName = "WhatsApp - \(wpCount)"
+        // 1. Clean up and chronologically ensure unique WhatsApp numbers ("WhatsApp - 1", "WhatsApp - 2", etc.)
+        var assignedWpNumbers = Set<Int>()
+        let wpIndices = list.indices.filter { list[$0].platform == .whatsApp }
+                                    .sorted { list[$0].createdAt < list[$1].createdAt }
+        
+        for idx in wpIndices {
+            let name = list[idx].accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+            var currentNum: Int? = nil
+            for p in ["WhatsApp - ", "WT Scan - "] {
+                if name.starts(with: p), let n = Int(name.dropFirst(p.count)) {
+                    currentNum = n
+                    break
                 }
+            }
+            
+            if let n = currentNum, !assignedWpNumbers.contains(n) {
+                list[idx].accountName = "WhatsApp - \(n)"
+                assignedWpNumbers.insert(n)
+            } else if Self.isPhoneNumber(name) || name.isEmpty || name == "WhatsApp" || name == "WT Scan" || (currentNum != nil && assignedWpNumbers.contains(currentNum!)) {
+                var next = 1
+                while assignedWpNumbers.contains(next) {
+                    next += 1
+                }
+                list[idx].accountName = "WhatsApp - \(next)"
+                assignedWpNumbers.insert(next)
             }
         }
         
-        // Resolve duplicate fallback names (e.g. two accounts both named "Facebook - 1")
-        for plat in WebAppPlatform.allCases {
+        // 2. Ensure other platforms also have unique sequential numbers
+        for plat in WebAppPlatform.allCases where plat != .whatsApp {
             let prefix = "\(plat.displayName) - "
             let altPrefix = "\(plat.rawValue) - "
             let platIndices = list.indices.filter { list[$0].platform == plat }
-            // Sort by createdAt ascending so older account keeps lower number and newer gets next
             let sortedIndices = platIndices.sorted { list[$0].createdAt < list[$1].createdAt }
             
             var usedNumbers = Set<Int>()
@@ -678,7 +566,6 @@ public final class AccountManager: ObservableObject {
             }
         }
         
-        // Clean up any bogus Google names like "settings", "Open Help Center", etc.
         for i in 0..<list.count {
             if list[i].platform == .google {
                 let name = list[i].accountName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -692,7 +579,6 @@ public final class AccountManager: ObservableObject {
             }
         }
         
-        // Sort accounts descending by createdAt so latest is always at the top
         list.sort { $0.createdAt > $1.createdAt }
         self.accounts = list
     }
@@ -709,29 +595,37 @@ public final class AccountManager: ObservableObject {
     }
     
     public func whatsappIndex(for account: AppAccount) -> Int {
-        let whatsappAccounts = accounts.filter { $0.platform == .whatsApp }
-        if let idx = whatsappAccounts.firstIndex(where: { $0.id == account.id }) {
-            return idx + 1
+        // 1. If the account already has a numbered name like "WhatsApp - 2", preserve it!
+        let name = account.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+        for prefix in ["WhatsApp - ", "WT Scan - "] {
+            if name.starts(with: prefix), let num = Int(name.dropFirst(prefix.count)) {
+                return num
+            }
         }
-        return max(1, whatsappAccounts.count + 1)
+        // 2. Otherwise calculate next available number
+        return nextAvailableNumber(for: .whatsApp, excludingAccountId: account.id)
     }
     
     public func platformAccounts(for platform: WebAppPlatform) -> [AppAccount] {
         accounts.filter { $0.platform == platform }
     }
     
-    /// Finds the next unused number for fallback naming (e.g. 1 for "Facebook - 1", 2 for "Facebook - 2")
     public func nextAvailableNumber(for platform: WebAppPlatform, excludingAccountId: String? = nil) -> Int {
         let list = accounts.filter { $0.platform == platform && $0.id != excludingAccountId }
         var usedNumbers = Set<Int>()
-        let prefix1 = "\(platform.displayName) - "
-        let prefix2 = "\(platform.rawValue) - "
+        let prefixes = [
+            "\(platform.displayName) - ",
+            "\(platform.rawValue) - ",
+            "WhatsApp - ",
+            "WT Scan - "
+        ]
         for acc in list {
             let name = acc.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-            if name.starts(with: prefix1), let num = Int(name.dropFirst(prefix1.count)) {
-                usedNumbers.insert(num)
-            } else if name.starts(with: prefix2), let num = Int(name.dropFirst(prefix2.count)) {
-                usedNumbers.insert(num)
+            for prefix in prefixes {
+                if name.starts(with: prefix), let num = Int(name.dropFirst(prefix.count)) {
+                    usedNumbers.insert(num)
+                    break
+                }
             }
         }
         var next = 1
@@ -746,10 +640,10 @@ public final class AccountManager: ObservableObject {
             let prefix = "\(platform.displayName) - "
             let altPrefix = "\(platform.rawValue) - "
             let name = existing.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-            if name.starts(with: prefix), let num = Int(name.dropFirst(prefix.count)) {
-                return num
-            } else if name.starts(with: altPrefix), let num = Int(name.dropFirst(altPrefix.count)) {
-                return num
+            for p in [prefix, altPrefix, "WhatsApp - ", "WT Scan - "] {
+                if name.starts(with: p), let num = Int(name.dropFirst(p.count)) {
+                    return num
+                }
             }
         }
         return nextAvailableNumber(for: platform, excludingAccountId: accountId)
@@ -757,13 +651,14 @@ public final class AccountManager: ObservableObject {
     
     public func defaultAccountName(for platform: WebAppPlatform, accountId: String? = nil) -> String {
         if let id = accountId, let existing = accounts.first(where: { $0.id == id }) {
-            let prefix = "\(platform.displayName) - "
-            if existing.accountName.starts(with: prefix) {
-                return existing.accountName
+            let name = existing.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !name.isEmpty && name != platform.displayName && name != platform.rawValue && name != "WhatsApp" {
+                return name
             }
         }
         let next = nextAvailableNumber(for: platform, excludingAccountId: accountId)
-        return "\(platform.displayName) - \(next)"
+        let namePrefix = (platform == .whatsApp) ? "WhatsApp" : platform.displayName
+        return "\(namePrefix) - \(next)"
     }
     
     public func resetWhatsAppSession(for account: inout AppAccount) {
@@ -783,7 +678,7 @@ public final class AccountManager: ObservableObject {
     public func save(_ account: AppAccount) {
         var list = accounts
         var updatedAccount = account
-        updatedAccount.createdAt = Date() // Mark most recent time
+        updatedAccount.createdAt = Date()
         
         if let idx = list.firstIndex(where: { $0.id == updatedAccount.id }) {
             list.remove(at: idx)
@@ -793,7 +688,6 @@ public final class AccountManager: ObservableObject {
                 updatedAccount.accountName = "\(updatedAccount.platform.displayName) - \(next)"
             }
         }
-        // Insert at index 0 so the latest account is at the TOP!
         list.insert(updatedAccount, at: 0)
         persist(list)
     }
@@ -827,6 +721,13 @@ public final class AccountManager: ObservableObject {
         if let idx = list.firstIndex(where: { $0.id == account.id }) {
             list.remove(at: idx)
             var updated = account
+            let trimmed = updated.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty {
+                let next = nextAvailableNumber(for: updated.platform)
+                updated.accountName = "\(updated.platform.displayName) - \(next)"
+            } else {
+                updated.accountName = trimmed
+            }
             updated.createdAt = Date()
             list.insert(updated, at: 0)
             persist(list)

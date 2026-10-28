@@ -46,7 +46,6 @@ extension Font {
         }
     }
     
-    /// Inter font with automatic 1.5x scaling on iPad
     static func inter(_ weight: InterWeight = .regular, size: CGFloat, autoScaleForPad: Bool = true) -> Font {
         let finalSize = (autoScaleForPad && UIDevice.isIPad) ? (size * 1.5).rounded() : size
         if UIFont(name: weight.postscriptName, size: finalSize) != nil {

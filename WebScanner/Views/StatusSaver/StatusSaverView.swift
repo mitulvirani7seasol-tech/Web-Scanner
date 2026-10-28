@@ -21,17 +21,16 @@ public struct StatusSaverView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     
-    @State private var selectedTab: Int = 0 // 0: Photo, 1: Video
+    @State private var selectedTab: Int = 0
     @State private var photos: [StatusMediaItem] = []
     @State private var videos: [StatusMediaItem] = []
     @State private var isLoading: Bool = false
     @State private var hasPermission: Bool = false
     @State private var showPermissionAlert: Bool = false
     @State private var previewURL: URL?
-    @State private var showShareSheet: Bool = false
-    @State private var shareItems: [Any] = []
     @State private var selectedItemIds: Set<String> = []
     @State private var showDeleteConfirmAlert: Bool = false
+    @State private var showSavedToast: Bool = false
     
     private var isIPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
@@ -49,22 +48,18 @@ public struct StatusSaverView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 40 : 28) : 16
             
             ZStack(alignment: .bottom) {
-                // Background
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // 1. Top Custom Navigation Header: < Saved Status
                     headerBar(horizontalPadding: horizontalPadding)
                     
-                    // 2. Centered Segmented Control: [ Photo | Video ]
                     segmentedControl
                         .padding(.top, isIPad ? 14 : 10)
                         .padding(.bottom, isIPad ? 16 : 12)
                     
-                    // 3. Media Grid or Empty State
                     if isLoading {
                         Spacer()
                         ProgressView()
@@ -79,13 +74,34 @@ public struct StatusSaverView: View {
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
                 
-                // 4. Floating Bottom Action Bar (Image 4)
                 if !selectedItemIds.isEmpty {
                     bottomActionBar(horizontalPadding: horizontalPadding)
                         .transition(.asymmetric(
                             insertion: .move(edge: .bottom).combined(with: .opacity),
                             removal: .move(edge: .bottom).combined(with: .opacity)
                         ))
+                }
+                
+                if showSavedToast {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: isIPad ? 18 : 16, weight: .semibold))
+                            .foregroundColor(AppColors.primaryGreen)
+                        
+                        Text("Saved".localized)
+                            .font(.inter(.semiBold, size: isIPad ? 16 : 14))
+                            .foregroundColor(.white)
+                    }
+                    .padding(.horizontal, isIPad ? 24 : 20)
+                    .padding(.vertical, isIPad ? 14 : 12)
+                    .background(
+                        Capsule()
+                            .fill(Color(hex: "#1E2A30").opacity(0.95))
+                            .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
+                    )
+                    .padding(.bottom, isIPad ? 40 : 28)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .zIndex(100)
                 }
             }
         }
@@ -96,9 +112,6 @@ public struct StatusSaverView: View {
             requestPhotoPermission()
         }
         .quickLookPreview($previewURL)
-        .sheet(isPresented: $showShareSheet) {
-            ActivityView(activityItems: shareItems)
-        }
         .alert("Photo Access Required".localized, isPresented: $showPermissionAlert) {
             Button("Cancel".localized, role: .cancel) {}
             Button("Open Settings".localized) {
@@ -131,6 +144,7 @@ public struct StatusSaverView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -148,7 +162,6 @@ public struct StatusSaverView: View {
     // MARK: - Segmented Control [ Photo | Video ]
     private var segmentedControl: some View {
         HStack(spacing: 0) {
-            // Photo Tab Button
             tabButton(
                 title: "Photo".localized,
                 iconSelected: "ic_selected_Photo",
@@ -156,7 +169,6 @@ public struct StatusSaverView: View {
                 index: 0
             )
             
-            // Video Tab Button
             tabButton(
                 title: "Video".localized,
                 iconSelected: "ic_ic_selected_Video",
@@ -267,13 +279,11 @@ public struct StatusSaverView: View {
             LazyVStack(alignment: .leading, spacing: isIPad ? 22 : 16) {
                 ForEach(sections) { section in
                     VStack(alignment: .leading, spacing: isIPad ? 12 : 8) {
-                        // Date Header: "Today", "Yesterday", etc.
                         Text(section.title)
                             .font(.inter(.bold, size: isIPad ? 19 : 16))
                             .foregroundColor(AppColors.textPrimary(for: colorScheme))
                             .padding(.horizontal, 2)
                         
-                        // 3-Column Grid
                         LazyVGrid(columns: columns, spacing: 10) {
                             ForEach(section.items) { item in
                                 mediaGridCell(for: item)
@@ -291,10 +301,9 @@ public struct StatusSaverView: View {
     // MARK: - Media Grid Cell Component
     private func mediaGridCell(for item: StatusMediaItem) -> some View {
         let isSelected = selectedItemIds.contains(item.id)
-        let cellHeight: CGFloat = isIPad ? 150 : 112
+        let cellHeight: CGFloat = isIPad ? 220 : 120
         
         return ZStack(alignment: .topLeading) {
-            // Media Image
             Group {
                 if let thumb = item.thumbnail {
                     Image(uiImage: thumb)
@@ -312,7 +321,6 @@ public struct StatusSaverView: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: isIPad ? 20 : 16, style: .continuous))
             
-            // Video Duration Badge (Bottom-Right)
             if item.isVideo {
                 VStack {
                     Spacer()
@@ -334,13 +342,11 @@ public struct StatusSaverView: View {
                 }
             }
             
-            // Top-Left Selection Checkmark Circle (Image 2, 3, 4)
             Button(action: {
                 toggleSelection(for: item)
             }) {
                 ZStack {
                     if isSelected {
-                        // White circle with black checkmark (Image 4)
                         Circle()
                             .fill(Color.white)
                             .frame(width: isIPad ? 26 : 22, height: isIPad ? 26 : 22)
@@ -350,7 +356,6 @@ public struct StatusSaverView: View {
                             .font(.system(size: isIPad ? 13 : 11, weight: .bold))
                             .foregroundColor(.black)
                     } else {
-                        // Translucent white outlined circle (Image 2, 3)
                         Circle()
                             .stroke(Color.white.opacity(0.9), lineWidth: 1.5)
                             .background(Circle().fill(Color.black.opacity(0.12)))
@@ -373,32 +378,11 @@ public struct StatusSaverView: View {
         .onLongPressGesture {
             toggleSelection(for: item)
         }
-        .contextMenu {
-            Button(action: {
-                openPreview(for: item)
-            }) {
-                Label("Preview".localized, systemImage: "eye")
-            }
-            
-            Button(action: {
-                shareSingleMedia(item)
-            }) {
-                Label("Share".localized, systemImage: "square.and.arrow.up")
-            }
-            
-            Button(role: .destructive, action: {
-                selectedItemIds = [item.id]
-                showDeleteConfirmAlert = true
-            }) {
-                Label("Delete".localized, systemImage: "trash")
-            }
-        }
     }
     
     // MARK: - Floating Bottom Action Bar (Image 4)
     private func bottomActionBar(horizontalPadding: CGFloat) -> some View {
         HStack(alignment: .center) {
-            // Selected Counter
             VStack(alignment: .leading, spacing: 2) {
                 Text("Selected".localized)
                     .font(.inter(.medium, size: isIPad ? 14 : 12))
@@ -412,9 +396,7 @@ public struct StatusSaverView: View {
             
             Spacer()
             
-            // 3 Actions: Save | Share | Delete
             HStack(spacing: isIPad ? 32 : 24) {
-                // Save
                 actionButton(
                     title: "Save".localized,
                     iconName: "ic_status_Save"
@@ -422,7 +404,6 @@ public struct StatusSaverView: View {
                     saveSelectedItems()
                 }
                 
-                // Share
                 actionButton(
                     title: "Share".localized,
                     iconName: "ic_status_Share"
@@ -430,7 +411,6 @@ public struct StatusSaverView: View {
                     shareSelectedItems()
                 }
                 
-                // Delete
                 actionButton(
                     title: "Delete".localized,
                     iconName: "ic_status_Delete",
@@ -559,15 +539,32 @@ public struct StatusSaverView: View {
                         UISaveVideoAtPathToSavedPhotosAlbum(urlAsset.url.path, nil, nil, nil)
                     }
                 }
-            } else if let img = item.thumbnail {
-                UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil)
+            } else {
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .highQualityFormat
+                options.isNetworkAccessAllowed = true
+                options.isSynchronous = false
+                PHImageManager.default().requestImageDataAndOrientation(for: item.asset, options: options) { data, _, _, _ in
+                    if let data = data, let img = UIImage(data: data) {
+                        UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil)
+                    } else if let img = item.thumbnail {
+                        UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil)
+                    }
+                }
             }
         }
         
         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
             selectedItemIds.removeAll()
+            showSavedToast = true
         }
         HapticFeedback.generate(.success)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            withAnimation(.easeInOut(duration: 0.25)) {
+                showSavedToast = false
+            }
+        }
     }
     
     private func shareSelectedItems() {
@@ -588,19 +585,56 @@ public struct StatusSaverView: View {
                 options.isNetworkAccessAllowed = true
                 imageManager.requestAVAsset(forVideo: item.asset, options: options) { avAsset, _, _ in
                     if let urlAsset = avAsset as? AVURLAsset {
-                        toShare.append(urlAsset.url)
+                        DispatchQueue.main.async {
+                            let source = StatusShareActivityItemSource(item: urlAsset.url, title: "Status Video", thumbnail: item.thumbnail)
+                            toShare.append(source)
+                            group.leave()
+                        }
+                    } else if let asset = avAsset {
+                        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).mp4")
+                        if let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) {
+                            exportSession.outputURL = tempURL
+                            exportSession.outputFileType = .mp4
+                            exportSession.exportAsynchronously {
+                                DispatchQueue.main.async {
+                                    if exportSession.status == .completed {
+                                        let source = StatusShareActivityItemSource(item: tempURL, title: "Status Video", thumbnail: item.thumbnail)
+                                        toShare.append(source)
+                                    }
+                                    group.leave()
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async { group.leave() }
+                        }
+                    } else {
+                        DispatchQueue.main.async { group.leave() }
                     }
-                    group.leave()
                 }
-            } else if let img = item.thumbnail {
-                toShare.append(img)
+            } else {
+                group.enter()
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .highQualityFormat
+                options.isNetworkAccessAllowed = true
+                options.isSynchronous = false
+                imageManager.requestImageDataAndOrientation(for: item.asset, options: options) { data, _, _, _ in
+                    DispatchQueue.main.async {
+                        if let data = data, let image = UIImage(data: data) {
+                            let source = StatusShareActivityItemSource(item: image, title: "Status Photo", thumbnail: image)
+                            toShare.append(source)
+                        } else if let img = item.thumbnail {
+                            let source = StatusShareActivityItemSource(item: img, title: "Status Photo", thumbnail: img)
+                            toShare.append(source)
+                        }
+                        group.leave()
+                    }
+                }
             }
         }
         
         group.notify(queue: .main) {
             if !toShare.isEmpty {
-                self.shareItems = toShare
-                self.showShareSheet = true
+                ShareHelper.share(items: toShare)
             }
         }
     }
@@ -613,14 +647,41 @@ public struct StatusSaverView: View {
             PHImageManager.default().requestAVAsset(forVideo: item.asset, options: options) { avAsset, _, _ in
                 if let urlAsset = avAsset as? AVURLAsset {
                     DispatchQueue.main.async {
-                        self.shareItems = [urlAsset.url]
-                        self.showShareSheet = true
+                        let source = StatusShareActivityItemSource(item: urlAsset.url, title: "Status Video", thumbnail: item.thumbnail)
+                        ShareHelper.share(items: [source])
+                    }
+                } else if let asset = avAsset {
+                    let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).mp4")
+                    if let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) {
+                        exportSession.outputURL = tempURL
+                        exportSession.outputFileType = .mp4
+                        exportSession.exportAsynchronously {
+                            if exportSession.status == .completed {
+                                DispatchQueue.main.async {
+                                    let source = StatusShareActivityItemSource(item: tempURL, title: "Status Video", thumbnail: item.thumbnail)
+                                    ShareHelper.share(items: [source])
+                                }
+                            }
+                        }
                     }
                 }
             }
-        } else if let img = item.thumbnail {
-            shareItems = [img]
-            showShareSheet = true
+        } else {
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .highQualityFormat
+            options.isNetworkAccessAllowed = true
+            options.isSynchronous = false
+            PHImageManager.default().requestImageDataAndOrientation(for: item.asset, options: options) { data, _, _, _ in
+                DispatchQueue.main.async {
+                    if let data = data, let image = UIImage(data: data) {
+                        let source = StatusShareActivityItemSource(item: image, title: "Status Photo", thumbnail: image)
+                        ShareHelper.share(items: [source])
+                    } else if let img = item.thumbnail {
+                        let source = StatusShareActivityItemSource(item: img, title: "Status Photo", thumbnail: img)
+                        ShareHelper.share(items: [source])
+                    }
+                }
+            }
         }
     }
     
@@ -697,13 +758,15 @@ public struct StatusSaverView: View {
                 let requestOpts = PHImageRequestOptions()
                 requestOpts.isSynchronous = true
                 requestOpts.deliveryMode = .highQualityFormat
+                let isPad = UIDevice.current.userInterfaceIdiom == .pad
+                let targetThumbSize = isPad ? CGSize(width: 800, height: 800) : CGSize(width: 400, height: 400)
                 
                 assets.enumerateObjects { asset, _, _ in
                     let cDate = asset.creationDate ?? Date()
                     if asset.mediaType == .image {
                         imageManager.requestImage(
                             for: asset,
-                            targetSize: CGSize(width: 400, height: 400),
+                            targetSize: targetThumbSize,
                             contentMode: .aspectFill,
                             options: requestOpts
                         ) { image, _ in
@@ -721,7 +784,7 @@ public struct StatusSaverView: View {
                     } else if asset.mediaType == .video {
                         imageManager.requestImage(
                             for: asset,
-                            targetSize: CGSize(width: 400, height: 400),
+                            targetSize: targetThumbSize,
                             contentMode: .aspectFill,
                             options: requestOpts
                         ) { image, _ in
@@ -758,12 +821,27 @@ public struct StatusSaverView: View {
                     }
                 }
             }
-        } else if let img = item.thumbnail {
-            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).jpg")
-            if let data = img.jpegData(compressionQuality: 0.95) {
-                try? data.write(to: tempURL)
-                DispatchQueue.main.async {
-                    self.previewURL = tempURL
+        } else {
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .highQualityFormat
+            options.isNetworkAccessAllowed = true
+            options.isSynchronous = false
+            PHImageManager.default().requestImageDataAndOrientation(for: item.asset, options: options) { data, uti, _, _ in
+                if let data = data {
+                    let ext = (uti?.lowercased().contains("png") == true) ? "png" : "jpg"
+                    let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).\(ext)")
+                    try? data.write(to: tempURL)
+                    DispatchQueue.main.async {
+                        self.previewURL = tempURL
+                    }
+                } else if let img = item.thumbnail {
+                    let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).jpg")
+                    if let data = img.jpegData(compressionQuality: 0.95) {
+                        try? data.write(to: tempURL)
+                        DispatchQueue.main.async {
+                            self.previewURL = tempURL
+                        }
+                    }
                 }
             }
         }

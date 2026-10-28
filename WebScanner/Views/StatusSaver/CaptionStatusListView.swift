@@ -32,10 +32,8 @@ public struct CaptionStatusListView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            // 1. Top Custom Navigation Header: < Caption Status
             headerBar
             
-            // 2. Categories Grid
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVGrid(columns: gridColumns, spacing: isIPad ? 18 : 12) {
                     ForEach(categories) { category in
@@ -80,6 +78,7 @@ public struct CaptionStatusListView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -117,10 +116,6 @@ public struct CaptionStatusListView: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: isIPad ? 140 : 106.scaled)
-//            .background(
-//                RoundedRectangle(cornerRadius: isIPad ? 22 : 16, style: .continuous)
-//                    .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.white.opacity(0.88))
-//            )
             .overlay(
                 RoundedRectangle(cornerRadius: isIPad ? 22 : 16, style: .continuous)
                     .stroke(
@@ -135,7 +130,6 @@ public struct CaptionStatusListView: View {
                         lineWidth: 1
                     )
             )
-//            .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.25 : 0.04), radius: 6, x: 0, y: 3)
             .contentShape(RoundedRectangle(cornerRadius: isIPad ? 22 : 16, style: .continuous))
             .glassModifier(cornerRadius: isIPad ? 22 : 16)
         }

@@ -24,6 +24,7 @@ public struct ChatBackupView: View {
     @State private var swipedConversationId: String? = nil
     @State private var showPaywall: Bool = false
     @State private var pendingConversationToOpen: ChatConversation? = nil
+    @State private var showNoInternetAlert: Bool = false
     @AppStorage(WS_SessionKeys.isPro) private var isPro = false
     
     private var isIPad: Bool {
@@ -35,10 +36,8 @@ public struct ChatBackupView: View {
     public var body: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
-                // Top Custom Header: < Backup Chats     (?)
                 headerView
                 
-                // Main Content: Empty State or Populated List
                 if backupManager.conversations.isEmpty {
                     emptyStateView
                 } else {
@@ -53,7 +52,6 @@ public struct ChatBackupView: View {
                     .ignoresSafeArea()
             )
             
-            // Bottom Sheet Modal for Import Chat Sources
             if showImportSourceSheet {
                 importChatSourceSheet
             }
@@ -65,8 +63,12 @@ public struct ChatBackupView: View {
             backupManager.loadConversations()
             if TabBarManager.shared.shouldShowImportSheet {
                 TabBarManager.shared.shouldShowImportSheet = false
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
-                    showImportSourceSheet = true
+                if NetworkMonitor.shared.isNetworkAvailable {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                        showImportSourceSheet = true
+                    }
+                } else {
+                    showNoInternetAlert = true
                 }
             }
         }
@@ -139,6 +141,11 @@ public struct ChatBackupView: View {
         } message: { _ in
             Text("Are you sure you want to delete this chat?".localized)
         }
+        .alert("No Internet Connection".localized, isPresented: $showNoInternetAlert) {
+            Button("OK".localized, role: .cancel) {}
+        } message: {
+            Text("Please check your internet connection and try again.".localized)
+        }
         .fullScreenCover(isPresented: $showPaywall, onDismiss: {
             if isPro, let pending = pendingConversationToOpen {
                 selectedConversation = pending
@@ -158,7 +165,6 @@ public struct ChatBackupView: View {
     // MARK: - Header View
     private var headerView: some View {
         HStack(alignment: .center, spacing: 12) {
-            // Back Button
             Button(action: {
                 HapticFeedback.generate(.light)
                 dismiss()
@@ -168,10 +174,10 @@ public struct ChatBackupView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
-            // Title: Backup Chats
             Text("Backup Chats".localized)
                 .font(.inter(.bold, size: isIPad ? 20 : 20))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -184,7 +190,6 @@ public struct ChatBackupView: View {
                     .padding(.trailing, 6)
             }
             
-            // Help / Info Button (?) -> Navigates to ExportChatGuideView
             Button(action: {
                 HapticFeedback.generate(.light)
                 TR_AdCountViewModel.sharedd.registerTap {
@@ -292,6 +297,10 @@ public struct ChatBackupView: View {
     private var importBackupButton: some View {
         Button(action: {
             HapticFeedback.generate(.medium)
+            guard NetworkMonitor.shared.isNetworkAvailable else {
+                showNoInternetAlert = true
+                return
+            }
             TR_AdCountViewModel.sharedd.registerTap {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                     showImportSourceSheet = true
@@ -404,7 +413,6 @@ public struct ChatBackupView: View {
     // MARK: - Import Chat Source Sheet Modal
     private var importChatSourceSheet: some View {
         ZStack(alignment: isIPad ? .center : .bottom) {
-            // Semi-transparent backdrop overlay
             Color.black.opacity(0.45)
                 .ignoresSafeArea()
                 .onTapGesture {
@@ -413,15 +421,12 @@ public struct ChatBackupView: View {
                     }
                 }
             
-            // Sheet / Center Modal Card
             VStack(spacing: 0) {
-                // Title: Import Chat
                 Text("Import Chat".localized)
                     .font(.inter(.bold, size: isIPad ? 24 : 22))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .padding(.top, isIPad ? 26 : 24)
                 
-                // Subtitle: Where would you like to import chats from?
                 Text("Where would you like to import chats from?".localized)
                     .font(.inter(.regular, size: isIPad ? 16 : 14))
                     .foregroundColor(AppColors.textSecondary(for: colorScheme))
@@ -429,7 +434,6 @@ public struct ChatBackupView: View {
                     .padding(.top, 8)
                     .padding(.horizontal, 24)
                 
-                // 3 Options: WhatsApp, WA Business, Files
                 HStack(spacing: isIPad ? 18 : 12) {
                     importSourceCard(
                         title: "Whatsapp".localized,
@@ -517,7 +521,6 @@ public struct ChatBackupView: View {
             showImportSourceSheet = false
         }
         
-        // Priority 1: Direct Consumer app scheme
         let waConsumerSchemes = ["whatsapp-consumer://app", "whatsapp-consumer://"]
         for scheme in waConsumerSchemes {
             if let url = URL(string: scheme), UIApplication.shared.canOpenURL(url) {
@@ -526,7 +529,6 @@ public struct ChatBackupView: View {
             }
         }
         
-        // Priority 2: Generic whatsapp scheme (if consumer scheme wasn't registered by user's WhatsApp build)
         let waSchemes = ["whatsapp://app", "whatsapp://"]
         for scheme in waSchemes {
             if let url = URL(string: scheme), UIApplication.shared.canOpenURL(url) {
@@ -535,7 +537,6 @@ public struct ChatBackupView: View {
             }
         }
         
-        // Fallback to App Store
         if let appStoreURL = URL(string: "https://apps.apple.com/app/whatsapp-messenger/id310633997") {
             UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
         }
@@ -554,7 +555,6 @@ public struct ChatBackupView: View {
             }
         }
         
-        // Fallback to App Store for WhatsApp Business
         if let appStoreURL = URL(string: "https://apps.apple.com/app/whatsapp-business/id1386432906") {
             UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
         }
@@ -620,7 +620,6 @@ private struct BackupChatRow: View {
     
     var body: some View {
         ZStack(alignment: .trailing) {
-            // Red Delete Button (revealed on swipe to left with spring animation and horizontal spacing)
             Button(action: {
                 HapticFeedback.generate(.medium)
                 onDelete()
@@ -640,9 +639,7 @@ private struct BackupChatRow: View {
             .scaleEffect(offset < -8 ? min(1.0, 0.75 + 0.25 * (Double(-offset) / Double(actionWidth))) : 0.75)
             .animation(.spring(response: 0.35, dampingFraction: 0.78), value: offset)
             
-            // Foreground Card (Entire card is clickable & swipeable)
             HStack(spacing: isIPad ? 16 : 12.scaled) {
-                // Green Avatar Circle with Person Silhouette
                 ZStack {
                     Circle()
                         .fill(AppColors.primaryGreen)
@@ -653,7 +650,6 @@ private struct BackupChatRow: View {
                         .foregroundColor(.white)
                 }
                 
-                // Name & Last Message
                 VStack(alignment: .leading, spacing: 4.scaled) {
                     Text(conversation.name)
                         .font(.inter(.semiBold, size: isIPad ? 17 : 15))
@@ -668,7 +664,6 @@ private struct BackupChatRow: View {
                 
                 Spacer()
                 
-                // Green Count Badge
                 Text("\(max(conversation.messageCount, 1))")
                     .font(.inter(.bold, size: isIPad ? 13 : 11))
                     .foregroundColor(.white)
@@ -740,13 +735,6 @@ private struct BackupChatRow: View {
                     offset = swiped ? -totalOffset : 0
                 }
             }
-//            .contextMenu {
-//                Button(role: .destructive, action: {
-//                    onDelete()
-//                }) {
-//                    Label("Delete Chat".localized, systemImage: "trash")
-//                }
-//            }
         }
     }
 }

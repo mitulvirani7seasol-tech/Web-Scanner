@@ -38,16 +38,12 @@ public struct QRCodeDetailsView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < QR Code Details
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Main Scrollable Content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 20 : 16.scaled) {
-                        // Card 1: QR Code Preview Card
                         qrPreviewCard
                         
-                        // Card 2: Result text + Copy & Share buttons
                         resultCard
                     }
                     .padding(.horizontal, horizontalPadding)
@@ -86,6 +82,7 @@ public struct QRCodeDetailsView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -149,7 +146,6 @@ public struct QRCodeDetailsView: View {
                 .font(.inter(.bold, size: isIPad ? 17 : 15.scaled))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
-            // Inner Scanned Text Container
             Text(resultText)
                 .font(.inter(.medium, size: isIPad ? 15 : 13.5.scaled))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -162,9 +158,7 @@ public struct QRCodeDetailsView: View {
                         .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.05))
                 )
             
-            // Action Buttons: Copy (outlined) & Share (filled green)
             HStack(spacing: 12) {
-                // Copy Button (Outlined green)
                 Button(action: {
                     TR_AdCountViewModel.sharedd.registerTap()
                     copyToClipboard()
@@ -195,7 +189,6 @@ public struct QRCodeDetailsView: View {
                 .contentShape(Rectangle())
                 .glassModifier(cornerRadius: 24)
                 
-                // Share Button (Solid green)
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()

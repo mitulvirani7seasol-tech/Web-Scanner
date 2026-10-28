@@ -25,7 +25,6 @@ public final class PasscodeManager: ObservableObject {
     
     private init() {
         self.isPasscodeEnabled = UserDefaults.standard.bool(forKey: isPasscodeEnabledKey)
-        // If passcode is not enabled, mark app unlocked
         if !isPasscodeEnabled {
             self.isAppUnlocked = true
         }

@@ -12,7 +12,10 @@ typealias TR_AdCountViewModel = WS_AdCountViewModel
 typealias SM_AdCountViewModel = WS_AdCountViewModel
 
 final class WS_AdCountViewModel: NSObject, ObservableObject {
-    @AppStorage(WS_SessionKeys.isPro) var isPro = false
+    var isPro: Bool {
+        get { UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro) }
+        set { UserDefaults.standard.set(newValue, forKey: WS_SessionKeys.isPro) }
+    }
     @Published var tapCount: Int = 0
     @Published var afterClick: Int = 1
 
@@ -24,7 +27,6 @@ final class WS_AdCountViewModel: NSObject, ObservableObject {
     // MARK: - Init
     override init() {
         super.init()
-        print("🚀 WS_AdCountViewModel initialized — preloading interstitial ad...")
         interstitialManager.load()
         observeAfterClickChange()
     }
@@ -37,11 +39,8 @@ final class WS_AdCountViewModel: NSObject, ObservableObject {
         .sink { [weak self] _ in
             guard let self else { return }
             
-            print("📡 Notification received")
-            print("🔥 adsCount latest: \(adsCount)")
-            
             self.afterClick = adsCount
-            print("⚙️ Updated afterClick: \(self.afterClick)")
+            print("Updated afterClick: \(self.afterClick)")
         }
         .store(in: &cancellables)
     }
@@ -49,12 +48,12 @@ final class WS_AdCountViewModel: NSObject, ObservableObject {
     // MARK: - Tap Logic
     func registerTap() {
         tapCount += 1
-        print("🔹 Total Tap Count: \(tapCount)")
+        print("Total Tap Count: \(tapCount)")
 
         guard !isPro else { return }
 
         if tapCount >= afterClick {
-            print("🟢 Tap count reached threshold (\(afterClick)) — showing ad.")
+            print("Tap count reached threshold (\(afterClick)) — showing ad.")
             showInterstitial()
             tapCount = 0
         }
@@ -88,7 +87,7 @@ final class WS_AdCountViewModel: NSObject, ObservableObject {
     }
 
     func reloadAd() {
-        print("🔄 Reloading interstitial ad...")
+        print("Reloading interstitial ad...")
         interstitialManager.load()
     }
 }

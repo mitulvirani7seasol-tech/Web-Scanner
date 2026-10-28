@@ -17,7 +17,6 @@ public struct PhoneNumberValidationResult {
 
 public enum PhoneNumberValidator {
     
-    /// Returns allowed subscriber digit lengths for a country ISO code
     public static func allowedLengths(for countryCode: String) -> [Int] {
         switch countryCode.uppercased() {
         case "IN": // India
@@ -135,7 +134,6 @@ public enum PhoneNumberValidator {
             return PhoneNumberValidationResult(isValid: true, errorMessage: "")
         }
         
-        // Build localized error message
         if allowed.count == 1, let exact = allowed.first {
             let msg = String(format: "Please enter a valid %d-digit phone number for %@.".localized, exact, country.name)
             return PhoneNumberValidationResult(isValid: false, errorMessage: msg)

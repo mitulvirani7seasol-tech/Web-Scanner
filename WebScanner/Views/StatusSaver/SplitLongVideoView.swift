@@ -27,7 +27,7 @@ public struct MovieTransferable: Transferable {
 }
 
 public struct DurationOption: Identifiable, Equatable {
-    public let id: Int // seconds
+    public let id: Int
     public let title: String
 }
 
@@ -37,7 +37,6 @@ public struct SplitLongVideoView: View {
     
     private var navPath: Binding<NavigationPath>?
     
-    // Picker & Video state
     @State private var selectedPickerItem: PhotosPickerItem? = nil
     @State private var selectedVideoURL: URL? = nil
     @State private var selectedVideoThumbnail: UIImage? = nil
@@ -45,8 +44,7 @@ public struct SplitLongVideoView: View {
     @State private var selectedVideoDurationSeconds: Double = 0
     @State private var isLoadingVideo: Bool = false
     
-    // Configuration
-    @State private var selectedDurationIndex: Int = 1 // Default to 30 Seconds
+    @State private var selectedDurationIndex: Int = 1
     @State private var fileName: String = ""
     @FocusState private var isFileNameFocused: Bool
     
@@ -54,17 +52,14 @@ public struct SplitLongVideoView: View {
         !fileName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
-    // Splitting
     @State private var isSplitting: Bool = false
     @State private var splitProgress: Double = 0.0
     @State private var generatedParts: [SplitVideoPart] = []
     
-    // Navigation destinations
     @State private var navigateToSaveParts: Bool = false
     @State private var navigateToSavedVideos: Bool = false
     @State private var previewPlayerURL: URL? = nil
     
-    // Duration options: 15s, 30s (Default), 1 Min, 2 Min, 3 Min ... 30 Min (+1 min each after 1 min)
     private static func buildDurationOptions() -> [DurationOption] {
         var options: [DurationOption] = [
             DurationOption(id: 15, title: "15 " + "Seconds".localized),
@@ -91,9 +86,9 @@ public struct SplitLongVideoView: View {
         GeometryReader { geo in
             let isLandscape = geo.size.width > geo.size.height
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 40 : 28) : 18
+            let cardWidth = max(0, geo.size.width - (horizontalPadding * 2))
             
             ZStack {
-                // Background
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -104,41 +99,28 @@ public struct SplitLongVideoView: View {
                     }
                 
                 VStack(spacing: 0) {
-                    // 1. Top Custom Navigation Header: < Split Long Video      [Folder Icon]
                     headerBar(horizontalPadding: horizontalPadding)
                     
                     if selectedVideoURL == nil {
-                        // SCREEN 1: Choose a Video State
                         emptyChooseVideoView
                     } else {
-                        // SCREEN 2: Video Configuration State
-                        videoConfigView(horizontalPadding: horizontalPadding)
+                        videoView(cardWidth: cardWidth, horizontalPadding: horizontalPadding, geo: geo)
                     }
                     
-                    // Bottom Button (hidden when keyboard is open so TextField is fully visible)
                     if !isFileNameFocused {
                         bottomActionButton(horizontalPadding: horizontalPadding)
                     }
                 }
-//                .frame(width: geo.size.width, height: geo.size.height)
-                .frame(maxWidth: isIPad ? .infinity : .infinity)
+                .frame(width: geo.size.width, height: geo.size.height)
                 
-                // Loading Overlay for Picker
                 if isLoadingVideo {
                     loadingPickerOverlay
                 }
                 
-                // Splitting Progress Overlay
                 if isSplitting {
                     splittingProgressOverlay
                 }
             }
-            .contentShape(Rectangle())
-            .simultaneousGesture(
-                TapGesture().onEnded {
-                    dismissKeyboard()
-                }
-            )
         }
         .navigationBarHidden(true)
         .enableNativeSwipeBack()
@@ -183,7 +165,6 @@ public struct SplitLongVideoView: View {
             Button(action: {
                 HapticFeedback.generate(.light)
                 if selectedVideoURL != nil {
-                    // Back returns to Choose a Video state
                     withAnimation(.spring(response: 0.32, dampingFraction: 0.8)) {
                         selectedVideoURL = nil
                         selectedVideoThumbnail = nil
@@ -198,6 +179,7 @@ public struct SplitLongVideoView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -207,7 +189,6 @@ public struct SplitLongVideoView: View {
             
             Spacer()
             
-            // Top Right Folder Icon -> Saved Video Screen (Screen 4)
             if selectedVideoURL == nil {
                 Button(action: {
                     HapticFeedback.generate(.light)
@@ -264,45 +245,43 @@ public struct SplitLongVideoView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
-    // MARK: - SCREEN 2: Video Configuration View (Image 2)
-    private func videoConfigView(horizontalPadding: CGFloat) -> some View {
-        ScrollViewReader { proxy in
+    private func videoView(cardWidth: CGFloat, horizontalPadding: CGFloat, geo: GeometryProxy) -> some View {
+        ScrollViewReader { scrollR in
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: isIPad ? 24 : 18) {
-                    // Video Preview Card
-                    videoPreviewCard
+                    videoPreviewCard(cardWidth: cardWidth)
                     
-                    // Select Duration (Per Video)
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Select Duration (Per Video)".localized)
                             .font(.inter(.semiBold, size: isIPad ? 17 : 14))
                             .foregroundColor(AppColors.textPrimary(for: colorScheme))
                         
-                        durationStepperCard
+                        durationStepperCard(cardWidth: cardWidth)
                     }
+                    .frame(width: cardWidth, alignment: .leading)
                     
-                    // File Name
                     VStack(alignment: .leading, spacing: 8) {
                         Text("File Name".localized)
                             .font(.inter(.semiBold, size: isIPad ? 17 : 14))
                             .foregroundColor(AppColors.textPrimary(for: colorScheme))
                         
-                        fileNameTextField
+                        fileNameTextField(cardWidth: cardWidth)
                             .id("fileNameField")
                     }
+                    .frame(width: cardWidth, alignment: .leading)
                 }
                 .padding(.horizontal, horizontalPadding)
                 .padding(.top, 10)
                 .padding(.bottom, isIPad ? 120 : 100)
-                .frame(maxWidth: isIPad ? .infinity : .infinity)
-                .frame(maxWidth: .infinity)
+                .frame(width: geo.size.width, alignment: .center)
             }
+            .frame(width: geo.size.width)
             .scrollDismissesKeyboard(.immediately)
             .onChange(of: isFileNameFocused) { focused in
                 if focused {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                         withAnimation(.easeOut(duration: 0.3)) {
-                            proxy.scrollTo("fileNameField", anchor: .center)
+                            scrollR.scrollTo("fileNameField", anchor: .center)
                         }
                     }
                 }
@@ -311,23 +290,20 @@ public struct SplitLongVideoView: View {
     }
     
     // MARK: - Video Preview Card
-    private var videoPreviewCard: some View {
+    private func videoPreviewCard(cardWidth: CGFloat) -> some View {
         ZStack {
             if let thumb = selectedVideoThumbnail {
                 Image(uiImage: thumb)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: isIPad ? 540 : 230)
+                    .frame(width: cardWidth, height: isIPad ? 540 : 230)
                     .clipped()
             } else {
                 RoundedRectangle(cornerRadius: isIPad ? 26 : 20, style: .continuous)
                     .fill(Color.black.opacity(0.85))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: isIPad ? 540 : 230)
+                    .frame(width: cardWidth, height: isIPad ? 540 : 230)
             }
             
-            // Duration badge at top-left (e.g. 15:36)
             VStack {
                 HStack {
                     Text(selectedVideoDurationText)
@@ -344,7 +320,6 @@ public struct SplitLongVideoView: View {
                 Spacer()
             }
             
-            // Play Button in center
             Button(action: {
                 if let url = selectedVideoURL {
                     HapticFeedback.generate(.light)
@@ -365,14 +340,14 @@ public struct SplitLongVideoView: View {
             }
             .buttonStyle(ScaleButtonStyle(scaleAmount: 0.92))
         }
+        .frame(width: cardWidth, height: isIPad ? 540 : 230)
         .clipShape(RoundedRectangle(cornerRadius: isIPad ? 26 : 20, style: .continuous))
         .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.35 : 0.08), radius: 10, x: 0, y: 4)
     }
     
     // MARK: - Duration Stepper Card `[-]  5 Minutes  [+]`
-    private var durationStepperCard: some View {
+    private func durationStepperCard(cardWidth: CGFloat) -> some View {
         HStack {
-            // Minus Button (-)
             Button(action: {
                 TR_AdCountViewModel.sharedd.registerTap()
                 if selectedDurationIndex > 0 {
@@ -398,14 +373,12 @@ public struct SplitLongVideoView: View {
             
             Spacer()
             
-            // Selected Duration Text
             Text(durationOptions[selectedDurationIndex].title)
                 .font(.inter(.bold, size: isIPad ? 17 : 14))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
             Spacer()
             
-            // Plus Button (+)
             Button(action: {
                 TR_AdCountViewModel.sharedd.registerTap()
                 if selectedDurationIndex < durationOptions.count - 1 {
@@ -430,7 +403,7 @@ public struct SplitLongVideoView: View {
             .buttonStyle(ScaleButtonStyle(scaleAmount: 0.9))
         }
         .padding(.horizontal, isIPad ? 16 : 12)
-        .frame(height: isIPad ? 58 : 48)
+        .frame(width: cardWidth, height: isIPad ? 58 : 48)
         .overlay(
             RoundedRectangle(cornerRadius: isIPad ? 18 : 14, style: .continuous)
                 .stroke(
@@ -449,7 +422,7 @@ public struct SplitLongVideoView: View {
     }
     
     // MARK: - File Name Text Field
-    private var fileNameTextField: some View {
+    private func fileNameTextField(cardWidth: CGFloat) -> some View {
         HStack {
             TextField("Eg. My_Video_Part".localized, text: $fileName)
                 .font(.inter(.regular, size: isIPad ? 16 : 14))
@@ -463,7 +436,11 @@ public struct SplitLongVideoView: View {
                 }
         }
         .padding(.horizontal, isIPad ? 18 : 14)
-        .frame(height: isIPad ? 58 : 48)
+        .frame(width: cardWidth, height: isIPad ? 58 : 48)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isFileNameFocused = true
+        }
         .overlay(
             RoundedRectangle(cornerRadius: isIPad ? 18 : 14, style: .continuous)
                 .stroke(
@@ -485,7 +462,6 @@ public struct SplitLongVideoView: View {
     private func bottomActionButton(horizontalPadding: CGFloat) -> some View {
         Group {
             if selectedVideoURL == nil {
-                // PhotosPicker for Choose Video
                 PhotosPicker(
                     selection: $selectedPickerItem,
                     matching: .videos
@@ -501,7 +477,6 @@ public struct SplitLongVideoView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
             } else {
-                // Button to perform Split Video (Disabled until file name text is entered)
                 Button(action: {
                     dismissKeyboard()
                     TR_AdCountViewModel.sharedd.registerTap {

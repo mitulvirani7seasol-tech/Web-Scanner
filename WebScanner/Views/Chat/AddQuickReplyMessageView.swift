@@ -39,10 +39,8 @@ public struct AddQuickReplyMessageView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Header Bar: ✕ Add Message (proper safe area inset)
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Scrollable Form Content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: isIPad ? 26 : 22.scaled) {
                         // Section 1: Add Quick Reply
@@ -54,7 +52,6 @@ public struct AddQuickReplyMessageView: View {
                             textEditorBox
                         }
                         
-                        // Section 2: Select Category
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Select Category".localized)
                                 .font(.inter(.bold, size: isIPad ? 18 : 16.scaled))
@@ -63,7 +60,6 @@ public struct AddQuickReplyMessageView: View {
                             categoryDropdownMenu
                         }
                         
-                        // Save Button (inside ScrollView so it's always accessible and reachable)
                         saveButton
                             .padding(.top, isIPad ? 22 : 16)
                     }
@@ -111,11 +107,12 @@ public struct AddQuickReplyMessageView: View {
                 dismiss()
             }) {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
+                    .font(.system(size: isIPad ? 22 : 18, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(ScaleButtonStyle())
             
             Text("Add Message".localized)
                 .font(.inter(.bold, size: isIPad ? 20 : 20))
@@ -148,9 +145,8 @@ public struct AddQuickReplyMessageView: View {
             .foregroundColor(AppColors.textPrimary(for: colorScheme))
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .padding(.bottom, 28) // Room for character counter
+            .padding(.bottom, 28)
             
-            // Placeholder
             if messageText.isEmpty {
                 Text("Type your message here...".localized)
                     .font(.inter(.regular, size: isIPad ? 16 : 14.scaled))
@@ -160,7 +156,6 @@ public struct AddQuickReplyMessageView: View {
                     .allowsHitTesting(false)
             }
             
-            // Character Counter (Bottom-Right)
             VStack {
                 Spacer()
                 HStack {
@@ -174,10 +169,6 @@ public struct AddQuickReplyMessageView: View {
             }
         }
         .frame(height: isIPad ? 180 : 150.scaled)
-//        .background(
-//            RoundedRectangle(cornerRadius: 18, style: .continuous)
-//                .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.white.opacity(0.85))
-//        )
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(
@@ -192,7 +183,6 @@ public struct AddQuickReplyMessageView: View {
                     lineWidth: 1
                 )
         )
-//        .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.25 : 0.04), radius: 6, x: 0, y: 3)
         .glassModifier(cornerRadius: 18)
     }
     
@@ -245,7 +235,6 @@ public struct AddQuickReplyMessageView: View {
             }
             .buttonStyle(PlainButtonStyle())
             
-            // Expanded Category Options List (stays inline, never hides the main box)
             if isDropdownOpen {
                 VStack(spacing: 0) {
                     ForEach(Array(categories.enumerated()), id: \.element) { index, cat in

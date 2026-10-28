@@ -23,7 +23,6 @@ public struct PremiumPaywallView: View {
     public var isFromAppOpen: Bool = false
     public var onDismiss: (() -> Void)? = nil
     
-    // StoreKit product IDs matching StoreKitFile.storekit
     private let yearProductID = "Re_Year"
     private let monthProductID = "Re_Month"
     private let weekProductID = "Re_Week"
@@ -40,7 +39,6 @@ public struct PremiumPaywallView: View {
     
     @AppStorage(WS_SessionKeys.isPro) private var isPro: Bool = false
     
-    // Web sheet state
     @State private var showWebSheet: Bool = false
     @State private var webURL: URL? = nil
     @State private var webTitle: String = ""
@@ -58,7 +56,6 @@ public struct PremiumPaywallView: View {
     private var availablePlans: [PaywallPlanItem] {
         var plans: [PaywallPlanItem] = []
         
-        // 1. Lifetime Plan
         if isLifetimePlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == lifetimeProductID || $0.id == "Life_Time_Cast" }) {
                 plans.append(PaywallPlanItem(
@@ -71,7 +68,6 @@ public struct PremiumPaywallView: View {
             }
         }
         
-        // 2. Yearly Plan
         if isYearlyPlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == yearProductID }) {
                 plans.append(PaywallPlanItem(
@@ -84,7 +80,6 @@ public struct PremiumPaywallView: View {
             }
         }
         
-        // 3. Monthly Plan
         if isMonthlyPlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == monthProductID }) {
                 plans.append(PaywallPlanItem(
@@ -97,7 +92,6 @@ public struct PremiumPaywallView: View {
             }
         }
         
-        // 4. Weekly Plan
         if isWeeklyPlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == weekProductID }) {
                 plans.append(PaywallPlanItem(
@@ -119,48 +113,41 @@ public struct PremiumPaywallView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 56 : 40) : 20.scaled
             
             ZStack {
-                // Background
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Top Bar (X Close on Timer & Restore)
                     topBar(horizontalPadding: horizontalPadding)
                     
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: isIPad ? 18 : 14.scaled) {
-                            // Top Illustration Image (ic_premium_Top)
                             Image("ic_premium_Top")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: isIPad ? (isLandscape ? 220 : 300) : 220.scaled, height: isIPad ? (isLandscape ? 180 : 300) : 180.scaled)
                                 .padding(.top, isIPad ? 6 : 2)
                             
-                            // Title: Unlock Premium Access
                             titleView
                                 .padding(.top, isIPad ? 8 : 6)
                             
-                            // Bullet Points / Features
                             featuresListView(horizontalPadding: horizontalPadding)
                                 .padding(.top, isIPad ? 8 : 6)
                             
-                            // Plans from API & StoreKit (Loader shown while fetching)
                             plansSection
                                 .padding(.top, isIPad ? 8 : 4)
                             
-                            // Subscribe Now Action Button
                             subscribeButton
                                 .padding(.top, isIPad ? 10 : 6)
                             
-                            // Legal Pre-Paid Plan Description
+                            legalFooter
+                                .padding(.top, isIPad ? 8 : 2)
+                            
                             subscriptionInfoView
                                 .padding(.top, isIPad ? 8 : 4)
                             
-                            // Legal Footer (Terms of use | Privacy policy | Eula)
-                            legalFooter
-                                .padding(.top, isIPad ? 6 : 2)
+                            
                         }
                         .padding(.horizontal, horizontalPadding)
                         .padding(.bottom, max(geo.safeAreaInsets.bottom, 20) + 16)
@@ -172,7 +159,7 @@ public struct PremiumPaywallView: View {
         }
         .onAppear {
             startCloseButtonTimer()
-            fetchPlansAndConfig()
+            fetchPlansAndSet()
         }
         .onChange(of: isPro) { pro in
             if pro {
@@ -186,7 +173,13 @@ public struct PremiumPaywallView: View {
             }
         }
         .alert(alertTitle, isPresented: $showAlert) {
-            Button("OK".localized) {}
+            Button("OK".localized) {
+                let isUserPro = self.isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+                if isUserPro {
+                    dismiss()
+                    onDismiss?()
+                }
+            }
         } message: {
             Text(alertMessage)
         }
@@ -204,11 +197,20 @@ public struct PremiumPaywallView: View {
     
     private func selectDefaultPlanIfNeeded() {
         let plans = availablePlans
-        if !plans.contains(where: { $0.id == selectedPlanId }) {
-            if plans.contains(where: { $0.id == yearProductID }) {
-                selectedPlanId = yearProductID
+        if !plans.contains(where: { $0.id == selectedPlanId }) || selectedPlanId.isEmpty {
+            let matchingProducts = storeKitProducts.filter { prod in
+                plans.contains(where: { $0.id == prod.id })
+            }
+            
+            if let highestPriceProduct = matchingProducts.max(by: { $0.price < $1.price }) {
+                selectedPlanId = highestPriceProduct.id
+                print("💎 [PremiumPaywallView] Default selected highest price plan: \(highestPriceProduct.id) (\(highestPriceProduct.displayPrice))")
             } else if plans.contains(where: { $0.id == lifetimeProductID || $0.id == "Life_Time_Cast" }) {
                 selectedPlanId = plans.first(where: { $0.id == lifetimeProductID || $0.id == "Life_Time_Cast" })?.id ?? ""
+            } else if plans.contains(where: { $0.id == yearProductID }) {
+                selectedPlanId = yearProductID
+            } else if plans.contains(where: { $0.id == monthProductID }) {
+                selectedPlanId = monthProductID
             } else if let first = plans.first {
                 selectedPlanId = first.id
             } else {
@@ -228,9 +230,11 @@ public struct PremiumPaywallView: View {
                     Image(systemName: "xmark")
                         .font(.system(size: isIPad ? 24 : 18.scaled, weight: .bold))
                         .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                        .frame(width: isIPad ? 36 : 28.scaled, height: isIPad ? 36 : 28.scaled)
+                        .frame(width: isIPad ? 44 : 36.scaled, height: isIPad ? 44 : 36.scaled)
+                        .clipShape(Circle())
+                        .glassCard(cornerRadius: isIPad ? 22 : 18.scaled)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(ScaleButtonStyle())
                 .transition(.opacity)
             } else {
                 Color.clear
@@ -256,7 +260,8 @@ public struct PremiumPaywallView: View {
     }
     
     private func handleCloseAction() {
-        let shouldShowInterOnClose = isFromAppOpen && (pro_close_inter == "true") && TR_AdsManager.isConnectedToNetwork() && !isPro
+        let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+        let shouldShowInterOnClose = isFromAppOpen && (pro_close_inter == "true") && TR_AdsManager.isConnectedToNetwork() && !isUserPro
         if shouldShowInterOnClose {
             var didDismiss = false
             let safeDismiss = {
@@ -364,7 +369,7 @@ public struct PremiumPaywallView: View {
                         
                         Button(action: {
                             HapticFeedback.generate(.light)
-                            fetchPlansAndConfig()
+                            fetchPlansAndSet()
                         }) {
                             Text("Retry".localized)
                                 .font(.inter(.bold, size: isIPad ? 15 : 13.scaled))
@@ -390,7 +395,6 @@ public struct PremiumPaywallView: View {
                     )
                     .glassModifier(cornerRadius: 18)
                 } else {
-                    // No Plan Available Card (API flags are false)
                     VStack(spacing: 10) {
                         Image(systemName: "exclamationmark.circle")
                             .font(.system(size: isIPad ? 30 : 24.scaled))
@@ -449,7 +453,6 @@ public struct PremiumPaywallView: View {
         }) {
             ZStack(alignment: .topTrailing) {
                 HStack(alignment: .center) {
-                    // Left: Price & Period
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
                         Text(price)
                             .font(.inter(.bold, size: isIPad ? 18 : 16.scaled))
@@ -457,12 +460,11 @@ public struct PremiumPaywallView: View {
                         
                         Text(period)
                             .font(.inter(.regular, size: isIPad ? 13 : 11.5.scaled))
-                            .foregroundColor(AppColors.textSecondary(for: colorScheme))
+                            .foregroundColor(AppColors.SaticColor(for: colorScheme))
                     }
                     
                     Spacer()
                     
-                    // Right: Plan Title
                     Text(title)
                         .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
                         .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -473,7 +475,7 @@ public struct PremiumPaywallView: View {
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                         .fill(
                             isSelected
-                            ? (colorScheme == .dark ? Color(hex: "#16A34A").opacity(0.12) : Color(hex: "#16A34A").opacity(0.08))
+                            ? (colorScheme == .dark ? Color(hex: "#16A34A").opacity(0.12) : Color(hex: "#16A34A").opacity(0.4))
                             : (colorScheme == .dark ? Color.white.opacity(0.04) : Color.white.opacity(0.35))
                         )
                 )
@@ -488,7 +490,6 @@ public struct PremiumPaywallView: View {
                 )
                 .glassModifier(cornerRadius: 18)
                 
-                // Badge on Top Right
                 if let badge = badge {
                     Text(badge)
                         .font(.inter(.bold, size: isIPad ? 11 : 9.5.scaled))
@@ -607,7 +608,7 @@ public struct PremiumPaywallView: View {
     }
     
     // MARK: - Helpers & StoreKit Logic
-    private func fetchPlansAndConfig() {
+    private func fetchPlansAndSet() {
         isLoadingPlans = true
         
         let fetchStoreKitBlock: () -> Void = {
@@ -623,12 +624,10 @@ public struct PremiumPaywallView: View {
         }
         
         if TR_AdsManager.isConnectedToNetwork() {
-            print("🌐 [PremiumPaywallView] Fetching remote configuration & StoreKit products...")
-            WS_AppConsentManager.shared.fetchRemoteConfiguration {
+            WS_AppConsentManager.shared.fetchRemoteration {
                 fetchStoreKitBlock()
             }
         } else {
-            // When internet is offline, attempt loading local StoreKit products
             fetchStoreKitBlock()
         }
     }
@@ -672,21 +671,29 @@ public struct PremiumPaywallView: View {
                     self.isProcessing = false
                     switch result {
                     case .success(let verification):
+                        let transaction: StoreKit.Transaction?
                         switch verification {
-                        case .verified(let transaction):
+                        case .verified(let t):
+                            transaction = t
+                        case .unverified(let t, _):
+                            transaction = t
+                        }
+                        
+                        if let transaction = transaction {
                             Task {
                                 await transaction.finish()
                             }
-                            self.isPro = true
-                            self.alertTitle = "Premium Activated".localized
-                            self.alertMessage = "Thank you for subscribing! All premium features are now unlocked.".localized
-                            self.showAlert = true
-                            HapticFeedback.generate(.success)
-                        case .unverified:
-                            self.alertTitle = "Purchase Unverified".localized
-                            self.alertMessage = "The purchase could not be verified.".localized
-                            self.showAlert = true
                         }
+                        
+                        self.isPro = true
+                        UserDefaults.standard.set(true, forKey: WS_SessionKeys.isPro)
+                        UserDefaults.standard.synchronize()
+                        WS_AdCountViewModel.shared.isPro = true
+                        
+                        self.alertTitle = "Premium Activated".localized
+                        self.alertMessage = "Thank you for subscribing! All premium features are now unlocked.".localized
+                        self.showAlert = true
+                        HapticFeedback.generate(.success)
                     case .userCancelled:
                         break
                     case .pending:
@@ -714,13 +721,28 @@ public struct PremiumPaywallView: View {
         Task {
             do {
                 try await AppStore.sync()
+                await WS_SubscriptionManager.shared.checkSubscriptionStatus()
+                let isStillPro = UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
                 await MainActor.run {
                     self.isProcessing = false
-                    self.isPro = true
-                    self.alertTitle = "Restore Purchases".localized
-                    self.alertMessage = "Your purchases have been successfully restored.".localized
-                    self.showAlert = true
-                    HapticFeedback.generate(.success)
+                    if isStillPro {
+                        self.isPro = true
+                        UserDefaults.standard.set(true, forKey: WS_SessionKeys.isPro)
+                        UserDefaults.standard.synchronize()
+                        WS_AdCountViewModel.shared.isPro = true
+                        self.alertTitle = "Restore Purchases".localized
+                        self.alertMessage = "Your purchases have been successfully restored.".localized
+                        self.showAlert = true
+                        HapticFeedback.generate(.success)
+                    } else {
+                        self.isPro = false
+                        UserDefaults.standard.set(false, forKey: WS_SessionKeys.isPro)
+                        UserDefaults.standard.synchronize()
+                        WS_AdCountViewModel.shared.isPro = false
+                        self.alertTitle = "Restore Purchases".localized
+                        self.alertMessage = "No active subscription found for this account.".localized
+                        self.showAlert = true
+                    }
                 }
             } catch {
                 await MainActor.run {

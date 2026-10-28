@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -183,7 +183,7 @@
 "Start Chats Without Saving Contacts" = "Start chats zonder contacten op te slaan";
 "Message anyone without adding new contacts." = "Stuur berichten zonder contacten toe te voegen.";
 "Save Your Favorite Status Easily" = "Sla uw favoriete status eenvoudig op";
-"Download and save statuses in seconds." = "Download en bewaar statussen binnen enkele seconden.";
+"Save and manage statuses with ease." = "Sla statussen eenvoudig op en beheer ze.";
 "Backup Your Chats With Ease" = "Maak eenvoudig een back-up van chats";
 "Keep Important Messages Safe Forever." = "Bewaar belangrijke berichten voor altijd veilig.";
 "Get Started" = "Aan de slag";
@@ -479,3 +479,29 @@
 "13 digit barcode" = "13-cijferige streepjescode";
 "6-8 digit barcode" = "6-8-cijferige streepjescode";
 "12 digit barcode" = "12-cijferige streepjescode";
+
+"Update Available" = "Update beschikbaar";
+"Update Now" = "Nu bijwerken";
+"Later" = "Later";
+"A new version of our app is available on the App Store. Please update for the best experience." = "Er is een nieuwe versie van onze app beschikbaar in de App Store. Werk bij voor de beste ervaring.";
+"Do you like our App?" = "Vind je onze app leuk?";
+"Help us improve it app by answering this quick poll" = "Help ons de app te verbeteren door deze korte poll te beantwoorden";
+"No" = "Nee";
+"Yes" = "Ja";
+"No Backup Chats" = "Geen reservekopieën van chats";
+"Import Backup" = "Reservekopie importeren";
+"Export Chat Guide" = "Handleiding chat exporteren";
+"How to Backup Chats" = "Hoe u chats kunt back-uppen";
+"Export Chat" = "Exporteer chat";
+"Got It" = "Begrepen";
+"Open Web Scanner and tap on 'Backup Chats'." = "Open Web Scanner en tik op 'Backup chats'.";
+"Open the app and tap on WA Backup Chats." = "Open de app en tik op WA Backup chats.";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "Open het chatgedeelte, veeg naar links op een gesprek en tik op 'Meer'.";
+"Tap on Contact or Group info." = "Tik op Contact- of Groepsinformatie.";
+"Tap on Export Chat." = "Tik op Exporteer chat.";
+"Choose Attach Media or Without Media." = "Kies Voeg media toe of Zonder media.";
+"Choose Wp Chat." = "Kies Wp Chat.";
+"Tap on Saved to Files." = "Tik op Opslaan in bestanden.";
+"Tap on the 'Import Backup' button at the bottom." = "Tik onderaan op de knop 'Reservekopie importeren'.";
+"Tap Import Backup Chat." = "Tik op Reservekopiechat importeren.";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Selecteer uw opgeslagen WhatsApp-reservekopie (.zip of .txt) uit Bestanden.";

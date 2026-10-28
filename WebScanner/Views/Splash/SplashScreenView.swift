@@ -32,14 +32,12 @@ public struct SplashScreenView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Dynamic Background Image (Clamped to device dimensions)
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geo.size.width, height: geo.size.height)
                     .clipped()
                 
-                // Centered App Logo & Title (Appears AFTER Open App Ad)
                 if showSplashContent {
                     VStack(spacing: isIPad ? 24 : 16) {
                         Image("Logo")
@@ -56,7 +54,6 @@ public struct SplashScreenView: View {
                     .opacity(logoOpacity)
                     .transition(.opacity)
                     
-                    // Bottom Pinned Loader
                     VStack {
                         Spacer()
                         
@@ -82,35 +79,40 @@ public struct SplashScreenView: View {
     
     // MARK: - Initial Flow: Open App Ad FIRST -> Splash Screen -> Continue Flow
     private func startInitialFlow() {
+        Task {
+            await WS_SubscriptionManager.shared.checkSubscriptionStatus()
+            await MainActor.run {
+                if UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro) {
+                    self.isPro = true
+                }
+            }
+        }
         TR_AdCountViewModel.sharedd.reloadAd()
         
-        if isPro {
+        let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+        if isUserPro {
             startSplashAnimation()
             return
         }
         
-        // When there is NO internet, ads cannot load, so show splash animation for 2.0s then proceed to App/Paywall
         if !TR_AdsManager.isConnectedToNetwork() {
-            print("🌐 [SplashScreenView] Offline launch -> Showing splash for 2.0s then navigating to app/paywall...")
+            print("[SplashScreenView] Offline launch -> Showing splash for 2.0s then navigating to app/paywall...")
             startSplashAnimation()
             return
         }
         
-        // Cancellable 6.0s timeout fallback for slow internet
         let workItem = DispatchWorkItem {
-            // NEVER interrupt if an ad is actively showing on screen or splash already running
             if TR_AppOpenAdManager.shared.isShowingAd || TR_AppOpenBackAdManager.shared.isShowingAd || self.hasPresentedAd || self.hasStartedSplashAnimation || self.hasCompleted {
-                print("⏱️ [SplashScreenView] 6.0s timeout ignored because Open App Ad is actively showing.")
+                print("[SplashScreenView] 6.0s timeout ignored because Open App Ad is actively showing.")
                 return
             }
-            print("⏱️ [SplashScreenView] 6.0s slow internet timeout reached without ad -> Starting splash animation.")
+            print("[SplashScreenView] 6.0s slow internet timeout reached without ad -> Starting splash animation.")
             self.startSplashAnimation()
         }
         self.timeoutWorkItem = workItem
         DispatchQueue.main.asyncAfter(deadline: .now() + 6.0, execute: workItem)
         
-        print("🌐 [SplashScreenView] Fetching remote config for initial Open App Ad...")
-        WS_AppConsentManager.shared.fetchRemoteConfiguration {
+        WS_AppConsentManager.shared.fetchRemoteration {
             Task {
                 await loadAndShowOpenAppAd()
             }
@@ -120,7 +122,8 @@ public struct SplashScreenView: View {
     private func loadAndShowOpenAppAd() async {
         guard !hasStartedSplashAnimation, !hasCompleted else { return }
         
-        if isPro || !TR_AdsManager.isConnectedToNetwork() {
+        let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+        if isUserPro || !TR_AdsManager.isConnectedToNetwork() {
             await MainActor.run { startSplashAnimation() }
             return
         }
@@ -133,18 +136,17 @@ public struct SplashScreenView: View {
             await MainActor.run {
                 guard !hasStartedSplashAnimation, !hasCompleted else { return }
                 guard TR_AppOpenBackAdManager.shared.appOpenAd != nil else {
-                    print("⚠️ [SplashScreenView] No App Open Back ad available -> Showing splash screen.")
+                    print("[SplashScreenView] No App Open Back ad available -> Showing splash screen.")
                     startSplashAnimation()
                     return
                 }
                 
-                // Cancel timeout so ad is NEVER prematurely dismissed!
                 timeoutWorkItem?.cancel()
                 timeoutWorkItem = nil
                 hasPresentedAd = true
-                print("🎬 [SplashScreenView] Presenting App Open Back ad FIRST (waiting indefinitely for user to tap Continue to app)...")
+                print("[SplashScreenView] Presenting App Open Back ad FIRST (waiting indefinitely for user to tap Continue to app)...")
                 TR_AppOpenBackAdManager.shared.showAdIfAvailable {
-                    print("✅ [SplashScreenView] User manually dismissed Open App Ad. Now showing splash screen...")
+                    print("[SplashScreenView] User manually dismissed Open App Ad. Now showing splash screen...")
                     TR_AppOpenBackAdManager.shared.isShowingAd = false
                     TR_AppOpenAdManager.shared.isShowingAd = false
                     startSplashAnimation()
@@ -157,18 +159,17 @@ public struct SplashScreenView: View {
             await MainActor.run {
                 guard !hasStartedSplashAnimation, !hasCompleted else { return }
                 guard TR_AppOpenAdManager.shared.appOpenAd != nil else {
-                    print("⚠️ [SplashScreenView] No App Open ad available -> Showing splash screen.")
+                    print("[SplashScreenView] No App Open ad available -> Showing splash screen.")
                     startSplashAnimation()
                     return
                 }
                 
-                // Cancel timeout so ad is NEVER prematurely dismissed!
                 timeoutWorkItem?.cancel()
                 timeoutWorkItem = nil
                 hasPresentedAd = true
                 print("🎬 [SplashScreenView] Presenting App Open ad FIRST (waiting indefinitely for user to tap Continue to app)...")
                 TR_AppOpenAdManager.shared.showAdIfAvailable {
-                    print("✅ [SplashScreenView] User manually dismissed Open App Ad. Now showing splash screen...")
+                    print("[SplashScreenView] User manually dismissed Open App Ad. Now showing splash screen...")
                     TR_AppOpenBackAdManager.shared.isShowingAd = false
                     TR_AppOpenAdManager.shared.isShowingAd = false
                     startSplashAnimation()
@@ -179,9 +180,8 @@ public struct SplashScreenView: View {
     
     // MARK: - Splash Screen Animation Phase
     private func startSplashAnimation() {
-        // Never start splash animation if an ad is actively displaying to the user!
         if TR_AppOpenAdManager.shared.isShowingAd || TR_AppOpenBackAdManager.shared.isShowingAd {
-            print("⛔ [SplashScreenView] Open App Ad is actively showing! Blocking startSplashAnimation.")
+            print("[SplashScreenView] Open App Ad is actively showing! Blocking startSplashAnimation.")
             return
         }
         
@@ -200,9 +200,8 @@ public struct SplashScreenView: View {
     }
     
     private func safeFinishSplash() {
-        // Never dismiss splash screen if an ad is actively displaying to the user!
         if TR_AppOpenAdManager.shared.isShowingAd || TR_AppOpenBackAdManager.shared.isShowingAd {
-            print("⛔ [SplashScreenView] Open App Ad is actively showing! Blocking safeFinishSplash.")
+            print("[SplashScreenView] Open App Ad is actively showing! Blocking safeFinishSplash.")
             return
         }
         

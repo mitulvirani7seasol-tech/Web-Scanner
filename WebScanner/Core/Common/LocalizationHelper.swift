@@ -43,7 +43,6 @@ public class LocalizationHelper: ObservableObject {
         if let localized = bundle?.localizedString(forKey: key, value: nil, table: nil), localized != key {
             return localized
         }
-        // Fallback to English bundle if translation missing
         if let enPath = Bundle.main.path(forResource: "en", ofType: "lproj"),
            let enBundle = Bundle(path: enPath) {
             let enVal = enBundle.localizedString(forKey: key, value: nil, table: nil)

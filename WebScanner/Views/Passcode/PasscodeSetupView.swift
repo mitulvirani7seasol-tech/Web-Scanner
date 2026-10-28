@@ -34,7 +34,6 @@ public struct PasscodeSetupView: View {
                 
                 ScrollView {
                     VStack(spacing: 20.scaled) {
-                        // Header icon
                         ZStack {
                             Circle()
                                 .fill(AppColors.primaryGreen.opacity(0.12))
@@ -56,7 +55,6 @@ public struct PasscodeSetupView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 20.scaled)
                         
-                        // Passcode fields
                         VStack(alignment: .leading, spacing: 14.scaled) {
                             Text("Passcode (4 Digits)")
                                 .font(.inter(.semiBold, size: 14))
@@ -77,7 +75,6 @@ public struct PasscodeSetupView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
                         }
                         
-                        // Security Question
                         VStack(alignment: .leading, spacing: 10.scaled) {
                             Text("Security Recovery Question")
                                 .font(.inter(.semiBold, size: 14))

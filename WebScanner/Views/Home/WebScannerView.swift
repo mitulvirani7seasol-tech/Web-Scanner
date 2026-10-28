@@ -9,6 +9,7 @@ import WebKit
 public struct WebScannerView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var localizationHelper = LocalizationHelper.shared
     
     @State private var sessionAccount: AppAccount
     @State private var qrImage: UIImage? = nil
@@ -26,17 +27,16 @@ public struct WebScannerView: View {
         if let existing = existingAccount {
             _sessionAccount = State(initialValue: existing)
         } else {
-            let count = AccountManager.shared.accounts.filter { $0.platform == .whatsApp }.count
-            let newAccount = AppAccount(platform: .whatsApp, accountName: "WhatsApp - \(count + 1)", isSessionActive: false)
+            let defaultName = AccountManager.shared.defaultAccountName(for: .whatsApp)
+            let newAccount = AppAccount(platform: .whatsApp, accountName: defaultName, isSessionActive: false)
             _sessionAccount = State(initialValue: newAccount)
         }
-        _isLoggedIn = State(initialValue: false)
+        _isLoggedIn = State(initialValue: existingAccount?.isSessionActive ?? false)
     }
     
     public var body: some View {
         VStack(spacing: 0) {
             if isLoggedIn {
-                // MARK: - Active WhatsApp Web Header (Positioned above WebView, so top is NEVER cut off)
                 loggedInHeader
             }
             
@@ -56,25 +56,27 @@ public struct WebScannerView: View {
                 .allowsHitTesting(isLoggedIn)
                 
                 if !isLoggedIn {
-                    // Background Image over WKWebView while waiting for QR scan
                     Image(colorScheme == .dark ? "BG_Dark" : "BG")
                         .resizable()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         .ignoresSafeArea()
                     
-                    // Not logged in: Show Native QR Code & Instructions View immediately
                     VStack(spacing: 0) {
                         headerBar
                         
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack(spacing: isIPad ? 40 : 22.scaled) {
-                                // 1. Central Card: Real WhatsApp QR Code filled to frame
                                 qrCard
                                 
-                                // 2. Instructions: "Use WhatsApp on your computer"
                                 instructionsSection
                                 
+                                if !isPro {
+                                    TR_NativeAd6()
+                                }
+                                
                                 Spacer(minLength: 40)
+                                
+                               
                             }
                             .padding(.horizontal, isIPad ? 40 : 20.scaled)
                             .padding(.top, isIPad ? 18 : 10.scaled)
@@ -119,7 +121,6 @@ public struct WebScannerView: View {
         }
         .onDisappear {
             if !isLoggedIn {
-                // If user left without scanning QR, only remove unlinked temporary data stores
                 let isSavedAccount = AccountManager.shared.accounts.contains(where: { $0.id == sessionAccount.id })
                 if !isSavedAccount {
                     if #available(iOS 17.0, *) {
@@ -130,6 +131,7 @@ public struct WebScannerView: View {
                 }
             }
         }
+        .id(localizationHelper.refreshID)
     }
     
     // MARK: - Header Bar (< Web Scanner [↻])
@@ -257,42 +259,45 @@ public struct WebScannerView: View {
                 .padding(.bottom, 2)
             
             VStack(alignment: .leading, spacing: isIPad ? 20 : 12.scaled) {
-                // Step 1: Open WhatsApp on your phone
                 instructionStepRow(
                     step: 1,
-                    part1: "Open ".localized,
-                    highlight1: "WhatsApp",
-                    part2: " on your phone".localized
+                    text: "Open WhatsApp on your phone".localized,
+                    highlightWords: ["WhatsApp"]
                 )
                 
-                // Step 2: Tap Menu on Android, or Settings on iPhone
                 instructionStepRow(
                     step: 2,
-                    part1: "Tap ".localized,
-                    highlight1: "Menu",
-                    part2: " on Android, or ".localized,
-                    highlight2: "Settings",
-                    part3: " on iPhone".localized
+                    text: "Tap Menu on Android, or Settings on iPhone".localized,
+                    highlightWords: [
+                        "Menu", "Menü", "Menú", "Меню", "मेनू", "メニュー", "메뉴", "菜单",
+                        "Settings", "Indstillinger", "Einstellungen", "Ajustes", "Réglages",
+                        "सेटिंग्स", "Impostazioni", "設定", "设置", "설정", "Instellingen", "Definições",
+                        "Configurações", "Настройки", "Ayarlar"
+                    ]
                 )
                 
-                // Step 3: Tap Linked devices and then Link a device
                 instructionStepRow(
                     step: 3,
-                    part1: "Tap ".localized,
-                    highlight1: "Linked devices",
-                    part2: " and then ".localized,
-                    highlight2: "Link a device"
+                    text: "Tap Linked devices and then Link a device".localized,
+                    highlightWords: [
+                        "Linked devices", "Forbundne enheder", "Verknüpfte Geräte",
+                        "Dispositivos vinculados", "Appareils connectés", "लिंक किए गए डिवाइस",
+                        "Dispositivi collegati", "リンクされたデバイス", "연결된 기기",
+                        "Gekoppelde apparaten", "Dispositivos associados", "Aparelhos conectados",
+                        "Связанные устройства", "Bağlı cihazlar", "已关联的设备",
+                        "Link a device", "Forbind en enhed", "Gerät verknüpfen",
+                        "Vincular un dispositivo", "Connecter un appareil", "डिवाइस लिंक करें",
+                        "Collega un dispositivo", "デバイスをリンク", "기기 연결",
+                        "Een apparaat koppelen", "Associar um dispositivo", "Conectar um aparelho",
+                        "Привязать устройство", "Cihaz bağla", "关联设备"
+                    ]
                 )
                 
-                // Step 4: Point your phone at this screen to capture the QR code
-                HStack(alignment: .top, spacing: 12.scaled) {
-                    stepBadge(4)
-                    
-                    Text("Point your phone at this screen to capture the QR code".localized)
-                        .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
-                        .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+                instructionStepRow(
+                    step: 4,
+                    text: "Point your phone at this screen to capture the QR code".localized,
+                    highlightWords: []
+                )
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -313,39 +318,92 @@ public struct WebScannerView: View {
     
     private func instructionStepRow(
         step: Int,
-        part1: String,
-        highlight1: String,
-        part2: String,
-        highlight2: String = "",
-        part3: String = ""
+        text: String,
+        highlightWords: [String] = []
     ) -> some View {
         HStack(alignment: .top, spacing: 12.scaled) {
             stepBadge(step)
             
-            (
-                Text(part1)
-                    .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
-                    .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                +
-                Text(highlight1)
-                    .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
-                    .foregroundColor(AppColors.primaryGreen)
-                +
-                Text(part2)
-                    .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
-                    .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                +
-                Text(highlight2)
-                    .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
-                    .foregroundColor(AppColors.primaryGreen)
-                +
-                Text(part3)
-                    .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
-                    .foregroundColor(AppColors.textPrimary(for: colorScheme))
-            )
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            buildHighlightedText(fullText: text, highlightWords: highlightWords)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+    
+    private func buildHighlightedText(fullText: String, highlightWords: [String]) -> Text {
+        guard !highlightWords.isEmpty else {
+            return Text(fullText)
+                .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
+                .foregroundColor(AppColors.textPrimary(for: colorScheme))
+        }
+        
+        var matches: [Range<String.Index>] = []
+        for word in highlightWords {
+            guard !word.isEmpty else { continue }
+            var searchStart = fullText.startIndex
+            while searchStart < fullText.endIndex,
+                  let range = fullText.range(of: word, options: .caseInsensitive, range: searchStart..<fullText.endIndex) {
+                matches.append(range)
+                searchStart = range.upperBound
+            }
+        }
+        
+        matches.sort { $0.lowerBound < $1.lowerBound }
+        
+        var merged: [Range<String.Index>] = []
+        for r in matches {
+            if let last = merged.last {
+                if r.lowerBound <= last.upperBound {
+                    let newRange = last.lowerBound..<max(last.upperBound, r.upperBound)
+                    merged[merged.count - 1] = newRange
+                } else {
+                    merged.append(r)
+                }
+            } else {
+                merged.append(r)
+            }
+        }
+        
+        if merged.isEmpty {
+            return Text(fullText)
+                .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
+                .foregroundColor(AppColors.textPrimary(for: colorScheme))
+        }
+        
+        var segments: [(text: String, isHighlighted: Bool)] = []
+        var currentIndex = fullText.startIndex
+        for r in merged {
+            if currentIndex < r.lowerBound {
+                segments.append((String(fullText[currentIndex..<r.lowerBound]), false))
+            }
+            segments.append((String(fullText[r]), true))
+            currentIndex = r.upperBound
+        }
+        if currentIndex < fullText.endIndex {
+            segments.append((String(fullText[currentIndex..<fullText.endIndex]), false))
+        }
+        
+        guard let first = segments.first else {
+            return Text("")
+        }
+        
+        func styledText(_ seg: (text: String, isHighlighted: Bool)) -> Text {
+            if seg.isHighlighted {
+                return Text(seg.text)
+                    .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
+                    .foregroundColor(AppColors.primaryGreen)
+            } else {
+                return Text(seg.text)
+                    .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
+                    .foregroundColor(AppColors.textPrimary(for: colorScheme))
+            }
+        }
+        
+        var result = styledText(first)
+        for seg in segments.dropFirst() {
+            result = result + styledText(seg)
+        }
+        return result
     }
     
     private func refreshQRCode() {
@@ -386,17 +444,18 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
     let isPro: Bool
     
     func makeUIView(context: Context) -> WKWebView {
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
-        config.mediaTypesRequiringUserActionForPlayback = []
-        config.allowsAirPlayForMediaPlayback = false
-        config.websiteDataStore = AccountManager.shared.dataStore(for: account)
+        let makeUI = WKWebViewConfiguration()
+        makeUI.allowsInlineMediaPlayback = true
+        makeUI.mediaTypesRequiringUserActionForPlayback = []
+        makeUI.allowsAirPlayForMediaPlayback = false
+        makeUI.preferences.javaScriptCanOpenWindowsAutomatically = true
+        makeUI.websiteDataStore = AccountManager.shared.dataStore(for: account)
         
         let defaultWebpagePreferences = WKWebpagePreferences()
         defaultWebpagePreferences.preferredContentMode = .desktop
-        config.defaultWebpagePreferences = defaultWebpagePreferences
+        defaultWebpagePreferences.allowsContentJavaScript = true
+        makeUI.defaultWebpagePreferences = defaultWebpagePreferences
         
-        // 1. desktopSpoofScript: Spoof desktop platform & touch properties to prevent WhatsApp from redirecting to the mobile download page
         let desktopSpoofScript = WKUserScript(
             source: """
             (function() {
@@ -428,9 +487,8 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
             injectionTime: .atDocumentStart,
             forMainFrameOnly: false
         )
-        config.userContentController.addUserScript(desktopSpoofScript)
+        makeUI.userContentController.addUserScript(desktopSpoofScript)
         
-        // 2. inlineVideoScript (From CloneVC: play status video inline)
         let inlineVideoScript = WKUserScript(
             source: """
             document.addEventListener('DOMContentLoaded', function() {
@@ -445,9 +503,8 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
             injectionTime: .atDocumentEnd,
             forMainFrameOnly: true
         )
-        config.userContentController.addUserScript(inlineVideoScript)
+        makeUI.userContentController.addUserScript(inlineVideoScript)
         
-        // 3. statusButtonScript (Inject download button ONLY in status viewer)
         let statusButtonScript = WKUserScript(
             source: """
             const domObserver = new MutationObserver(() => {
@@ -508,19 +565,31 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
                   e.preventDefault();
                   e.stopPropagation();
 
+                  function sendDataToSwift(mediaType, base64Data) {
+                      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusHandler) {
+                          window.webkit.messageHandlers.statusHandler.postMessage({
+                              mediaType: mediaType,
+                              base64Data: base64Data
+                          });
+                      }
+                  }
+
                   function fetchBlobAndSendToSwift(blobUrl, fallbackType) {
+                      if (blobUrl.startsWith('data:')) {
+                          const parts = blobUrl.split(',');
+                          const mimeMatch = parts[0].match(/:(.*?);/);
+                          const mimeType = mimeMatch ? mimeMatch[1] : (fallbackType || 'image/jpeg');
+                          sendDataToSwift(mimeType, parts[1] || '');
+                          return;
+                      }
+
                       fetch(blobUrl)
                           .then(response => response.blob())
                           .then(blob => {
                               const reader = new FileReader();
                               reader.onloadend = function() {
                                   const base64data = reader.result;
-                                  if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusHandler) {
-                                      window.webkit.messageHandlers.statusHandler.postMessage({
-                                          mediaType: blob.type || fallbackType || 'image/jpeg',
-                                          base64Data: (base64data || '').split(',')[1] || ''
-                                      });
-                                  }
+                                  sendDataToSwift(blob.type || fallbackType || 'image/jpeg', (base64data || '').split(',')[1] || '');
                               };
                               reader.readAsDataURL(blob);
                           })
@@ -529,23 +598,73 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
                           });
                   }
 
-                  const videoElement = document.querySelector('video[src^="blob:"]') || document.querySelector('video');
-                  if (videoElement && videoElement.src) {
-                      fetchBlobAndSendToSwift(videoElement.src, 'video/mp4');
-                      return;
+                  function extractAndSendMedia(retriesLeft) {
+                      // 1. Check video
+                      const videos = Array.from(document.querySelectorAll('video')).filter(v => !v.closest('#side, #pane-side, [data-testid="chat-list"]'));
+                      const videoElement = videos.find(v => v.src && v.src.startsWith('blob:')) || videos.find(v => v.src);
+                      if (videoElement && videoElement.src) {
+                          fetchBlobAndSendToSwift(videoElement.src, 'video/mp4');
+                          return;
+                      }
+
+                      // 2. Candidate images outside side-pane, chat-list, header
+                      const allImages = Array.from(document.querySelectorAll('img')).filter(img => {
+                          if (img.closest('#side, #pane-side, [data-testid="chat-list"], header')) return false;
+                          if (img.src && (img.src.includes('emoji') || img.src.includes('data:image/svg+xml'))) return false;
+                          return true;
+                      });
+
+                      // 2a. Priority 1: blob images sorted by resolution
+                      const blobImages = allImages.filter(img => img.src && img.src.includes('blob:'));
+                      if (blobImages.length > 0) {
+                          blobImages.sort((a, b) => ((b.naturalWidth * b.naturalHeight) || (b.clientWidth * b.clientHeight)) - ((a.naturalWidth * a.naturalHeight) || (a.clientWidth * a.clientHeight)));
+                          fetchBlobAndSendToSwift(blobImages[0].src, 'image/jpeg');
+                          return;
+                      }
+
+                      // 2b. Priority 2: Canvas in viewer
+                      const canvases = Array.from(document.querySelectorAll('canvas')).filter(c => {
+                          return !c.closest('#side, #pane-side, [data-testid="chat-list"], header') && c.width > 200 && c.height > 200;
+                      });
+                      if (canvases.length > 0) {
+                          canvases.sort((a, b) => (b.width * b.height) - (a.width * a.height));
+                          try {
+                              const dataUrl = canvases[0].toDataURL('image/jpeg', 0.95);
+                              if (dataUrl && dataUrl.startsWith('data:')) {
+                                  sendDataToSwift('image/jpeg', dataUrl.split(',')[1] || '');
+                                  return;
+                              }
+                          } catch (err) {
+                              console.error('Canvas export failed:', err);
+                          }
+                      }
+
+                      // 2c. Priority 3: Non-blob images with high natural resolution
+                      if (allImages.length > 0) {
+                          allImages.sort((a, b) => (b.naturalWidth * b.naturalHeight) - (a.naturalWidth * a.naturalHeight));
+                          const bestImage = allImages[0];
+                          if (bestImage.naturalWidth >= 300 || (bestImage.naturalWidth * bestImage.naturalHeight) >= 60000) {
+                              fetchBlobAndSendToSwift(bestImage.src, 'image/jpeg');
+                              return;
+                          }
+                      }
+
+                      // If only low-res thumbnail is found and retries remain, wait for high-res blob
+                      if (retriesLeft > 0) {
+                          setTimeout(() => extractAndSendMedia(retriesLeft - 1), 350);
+                          return;
+                      }
+
+                      // Fallback: send whatever image was found
+                      if (allImages.length > 0) {
+                          fetchBlobAndSendToSwift(allImages[0].src, 'image/jpeg');
+                          return;
+                      }
+
+                      console.log('No media found to download');
                   }
 
-                  const images = Array.from(document.querySelectorAll('img[src^="blob:"], img[src*="blob"], div[data-animate-modal-body] img, div[role="dialog"] img, img'));
-                  const imageElement = images.find(img => (img.naturalWidth > 150 || img.clientWidth > 150) && !img.closest('#side'))
-                                    || images.find(img => img.src.includes('blob:'))
-                                    || images[0];
-
-                  if (imageElement && imageElement.src) {
-                      fetchBlobAndSendToSwift(imageElement.src, 'image/jpeg');
-                      return;
-                  }
-
-                  console.log('No blob media found');
+                  extractAndSendMedia(2);
                 });
 
                 if (targetBtn.parentElement && targetBtn.parentElement !== containerElement) {
@@ -566,28 +685,236 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
             injectionTime: .atDocumentEnd,
             forMainFrameOnly: true
         )
-        config.userContentController.addUserScript(statusButtonScript)
-        config.userContentController.add(context.coordinator, name: "statusHandler")
+        makeUI.userContentController.addUserScript(statusButtonScript)
+        makeUI.userContentController.add(context.coordinator, name: "statusHandler")
         
-        let webView = WKWebView(frame: .zero, configuration: config)
+        let whatsAppTouchMenuScript = WKUserScript(
+            source: """
+            (function() {
+                try {
+                    var style = document.createElement('style');
+                    style.innerHTML = `
+                        * {
+                            -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+                        }
+                        #pane-side, #pane-side *, header, header * {
+                            touch-action: manipulation !important;
+                        }
+                    `;
+                    (document.head || document.documentElement).appendChild(style);
+                } catch(e) {}
+
+                var startX = 0;
+                var startY = 0;
+                var startTime = 0;
+                var activeTouch = false;
+                var isMenuJustOpened = false;
+
+                function isEditable(el) {
+                    if (!el || !(el instanceof Element)) return false;
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return true;
+                    if (el.isContentEditable) return true;
+                    if (el.closest('[contenteditable="true"], input, textarea')) return true;
+                    return false;
+                }
+
+                function isChatHeaderMenuButton(el) {
+                    if (!el || !(el instanceof Element)) return false;
+                    var menuMatch = el.closest('[data-icon="menu"], [data-testid="menu"], [aria-label="Menu"], [title="Menu"], [aria-label="Options"], [title="Options"]');
+                    if (menuMatch && menuMatch.closest('#main header, header')) {
+                        return true;
+                    }
+                    var header = el.closest('#main header, header');
+                    if (header) {
+                        var actionBtns = header.querySelectorAll('button, [role="button"], div[tabindex="0"]');
+                        if (actionBtns && actionBtns.length > 0) {
+                            var lastBtn = actionBtns[actionBtns.length - 1];
+                            if (lastBtn.contains(el) || el === lastBtn) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+
+                function clickElement(el, clientX, clientY) {
+                    if (!el) return;
+                    var htmlEl = (el instanceof HTMLElement) ? el : (el.closest('button, [role="button"], div') || el.parentElement || el);
+                    var rect = htmlEl.getBoundingClientRect();
+                    var cx = (typeof clientX === 'number' && clientX > 0) ? clientX : (rect.left + rect.width / 2);
+                    var cy = (typeof clientY === 'number' && clientY > 0) ? clientY : (rect.top + rect.height / 2);
+
+                    var eventProps = {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window,
+                        clientX: cx,
+                        clientY: cy,
+                        screenX: cx,
+                        screenY: cy,
+                        button: 0,
+                        buttons: 1
+                    };
+
+                    try {
+                        if (window.PointerEvent) {
+                            htmlEl.dispatchEvent(new PointerEvent('pointerdown', Object.assign({ pointerType: 'mouse', isPrimary: true }, eventProps)));
+                            htmlEl.dispatchEvent(new PointerEvent('pointerup', Object.assign({ pointerType: 'mouse', isPrimary: true }, eventProps)));
+                        }
+                    } catch(e) {}
+
+                    try {
+                        htmlEl.dispatchEvent(new MouseEvent('mousedown', eventProps));
+                        htmlEl.dispatchEvent(new MouseEvent('mouseup', eventProps));
+                        htmlEl.dispatchEvent(new MouseEvent('click', eventProps));
+                    } catch(e) {}
+
+                    try {
+                        if (typeof htmlEl.click === 'function') {
+                            htmlEl.click();
+                        }
+                    } catch(e) {}
+                }
+
+                // Protect newly opened dropdown menu from instant outside-click dismissal
+                document.addEventListener('mousedown', function(e) {
+                    if (isMenuJustOpened) {
+                        var inDropdown = e.target && e.target.closest && e.target.closest('[role="application"], [data-testid="dropdown-menu"], [role="menu"], ul[role="menu"]');
+                        if (!inDropdown) {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                        }
+                    }
+                }, true);
+
+                document.addEventListener('click', function(e) {
+                    if (isMenuJustOpened) {
+                        var inDropdown = e.target && e.target.closest && e.target.closest('[role="application"], [data-testid="dropdown-menu"], [role="menu"], ul[role="menu"]');
+                        if (!inDropdown) {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                        }
+                    }
+                }, true);
+
+                document.addEventListener('touchstart', function(e) {
+                    if (e.touches && e.touches.length === 1) {
+                        startX = e.touches[0].clientX;
+                        startY = e.touches[0].clientY;
+                        startTime = Date.now();
+                        activeTouch = true;
+                    } else {
+                        activeTouch = false;
+                    }
+                }, { passive: true, capture: true });
+
+                document.addEventListener('touchend', function(e) {
+                    if (!activeTouch) return;
+                    activeTouch = false;
+
+                    if (!e.changedTouches || e.changedTouches.length !== 1) return;
+
+                    var endX = e.changedTouches[0].clientX;
+                    var endY = e.changedTouches[0].clientY;
+                    var dx = Math.abs(endX - startX);
+                    var dy = Math.abs(endY - startY);
+                    var dt = Date.now() - startTime;
+
+                    if (dx > 10 || dy > 10 || dt > 400) {
+                        return;
+                    }
+
+                    var target = e.target;
+                    if (!target || !(target instanceof Element)) return;
+
+                    if (isEditable(target)) {
+                        return;
+                    }
+
+                    if (target.closest('.custom-download-btn')) {
+                        return;
+                    }
+
+                    // 1. SPECIFIC HANDLING: 3-Dot Menu in Chat Screen Header or Main Header
+                    if (isChatHeaderMenuButton(target)) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        isMenuJustOpened = true;
+                        setTimeout(function() { isMenuJustOpened = false; }, 400);
+
+                        var header = target.closest('#main header, header');
+                        var btn = target.closest('button, [role="button"], div[tabindex="0"]');
+                        if (!btn && header) {
+                            var allBtns = header.querySelectorAll('button, [role="button"], div[tabindex="0"]');
+                            if (allBtns && allBtns.length > 0) {
+                                btn = allBtns[allBtns.length - 1];
+                            }
+                        }
+                        if (!btn) btn = target;
+
+                        clickElement(btn, endX, endY);
+                        if (target !== btn) {
+                            clickElement(target, endX, endY);
+                        }
+
+                        setTimeout(function() {
+                            var menuOpen = document.querySelector('[role="application"], [data-testid="dropdown-menu"], [role="menu"], ul[role="menu"]');
+                            if (!menuOpen) {
+                                try { btn.click(); } catch(e) {}
+                                try { target.click(); } catch(e) {}
+                            }
+                        }, 60);
+
+                        return;
+                    }
+
+                    // 2. GENERAL HANDLING: Chat rows, buttons, tabs, options
+                    var isChatRow = target.closest('#pane-side [role="listitem"], #pane-side [data-testid^="list-item"], #pane-side [role="row"], #pane-side [data-testid="cell-frame-container"]');
+                    var isInsidePaneSide = target.closest('#pane-side');
+                    var isHeaderButton = target.closest('header button, header [role="button"], #main header [role="button"], #side header [role="button"], header [tabindex="0"]');
+                    var isInteractive = target.closest('button, [role="button"], [role="menuitem"], [role="tab"], [role="option"], a[href]');
+
+                    if (isChatRow || isInsidePaneSide || isHeaderButton || isInteractive) {
+                        e.preventDefault();
+
+                        var clickTarget = null;
+                        if (isHeaderButton) {
+                            clickTarget = target.closest('button, [role="button"], [tabindex="0"]') || target;
+                        } else if (isInteractive) {
+                            clickTarget = target.closest('button, [role="button"], [role="menuitem"], [role="tab"], [role="option"], a[href]') || target;
+                        } else if (isChatRow) {
+                            clickTarget = isChatRow;
+                        } else {
+                            clickTarget = (target instanceof SVGElement) ? (target.parentElement || target) : target;
+                        }
+
+                        clickElement(clickTarget, endX, endY);
+                    }
+                }, { passive: false, capture: true });
+            })();
+            """,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: false
+        )
+        makeUI.userContentController.addUserScript(whatsAppTouchMenuScript)
+        
+        let webView = WKWebView(frame: .zero, configuration: makeUI)
         webView.configuration.allowsInlineMediaPlayback = true
         webView.scrollView.bounces = false
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         
-        // WhatsApp Desktop User Agent
         webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .desktop
         
         context.coordinator.webView = webView
         
-        // Load Selected Web immediately with desktop language headers
         var request = URLRequest(url: URL(string: "https://web.whatsapp.com/")!)
         request.setValue("en-US,en;q=0.9", forHTTPHeaderField: "Accept-Language")
         print("🚀 [WebScanner] Loading https://web.whatsapp.com/ for account: '\(account.accountName)' (id: \(account.id), storeID: \(account.webDataStoreID), isSessionActive: \(account.isSessionActive))")
         webView.load(request)
         
-        // Start capturing QR and login check as done in CloneVC
         context.coordinator.startQRCodeCapture()
         context.coordinator.startLoginCheckTimer(webView: webView)
         
@@ -659,7 +986,9 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
             if navigationAction.targetFrame == nil {
-                webView.load(navigationAction.request)
+                if let url = navigationAction.request.url, !url.absoluteString.isEmpty, url.absoluteString != "about:blank" {
+                    webView.load(navigationAction.request)
+                }
             }
             return nil
         }
@@ -667,7 +996,6 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             if let url = navigationAction.request.url {
                 let urlString = url.absoluteString.lowercased()
-                // Block redirection to WhatsApp mobile download page or marketing page
                 if urlString.contains("/download") || (urlString.contains("whatsapp.com") && !urlString.contains("web.whatsapp.com")) {
                     print("🚫 [WebScanner Navigation] Blocked redirection to mobile/download page: \(url.absoluteString). Re-routing to https://web.whatsapp.com/...")
                     decisionHandler(.cancel)
@@ -848,7 +1176,6 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
                     guard let jsonString = result as? String,
                           let jsonData = jsonString.data(using: .utf8),
                           let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
-                        // Fallback in case raw string is returned
                         if let raw = result as? String, !raw.isEmpty {
                             print("ℹ️ [WebScanner QR #\(attempt)] Raw JS result: \(raw.prefix(80))...")
                         }
@@ -1065,8 +1392,13 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
                     if !rawName.isEmpty && !AccountManager.isPhoneNumber(rawName) {
                         displayName = rawName
                     } else {
-                        let idx = AccountManager.shared.whatsappIndex(for: self.parent.account)
-                        displayName = "WhatsApp - \(idx)"
+                        let currentName = self.parent.account.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if currentName.starts(with: "WhatsApp - ") || currentName.starts(with: "WT Scan - ") {
+                            displayName = currentName
+                        } else {
+                            let idx = AccountManager.shared.whatsappIndex(for: self.parent.account)
+                            displayName = "WhatsApp - \(idx)"
+                        }
                     }
                     
                     print("🎉 [WebScanner] Login detected for '\(displayName)'! Stopping QR capture.")
@@ -1095,7 +1427,6 @@ struct WebScannerWKWebViewRepresentable: UIViewRepresentable {
                         }
                     }
                 } else if isQR {
-                    // Session is on QR code (not logged in or logged out)
                     if self.parent.isLoggedIn {
                         print("ℹ️ [WebScanner] Session logged out / returned to QR page. Resetting session.")
                         UserDefaults.standard.set(false, forKey: "is_whatsapp_web_logged_in")

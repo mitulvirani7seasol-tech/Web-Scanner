@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -183,7 +183,7 @@
 "Start Chats Without Saving Contacts" = "연락처 저장 없이 대화 시작";
 "Message anyone without adding new contacts." = "새 연락처를 추가하지 않고 누구에게나 메시지를 보낼 수 있습니다.";
 "Save Your Favorite Status Easily" = "좋아하는 상태를 쉽게 저장";
-"Download and save statuses in seconds." = "몇 초 만에 상태를 다운로드하고 저장하세요.";
+"Save and manage statuses with ease." = "상태를 간편하게 저장하고 관리하세요.";
 "Backup Your Chats With Ease" = "대화 내용을 손쉽게 백업";
 "Keep Important Messages Safe Forever." = "중요한 메시지를 영원히 안전하게 보관하세요.";
 "Get Started" = "시작하기";
@@ -479,3 +479,29 @@
 "13 digit barcode" = "13자리 바코드";
 "6-8 digit barcode" = "6-8자리 바코드";
 "12 digit barcode" = "12자리 바코드";
+
+"Update Available" = "업데이트 가능";
+"Update Now" = "지금 업데이트";
+"Later" = "나중에";
+"A new version of our app is available on the App Store. Please update for the best experience." = "App Store에서 새 버전의 앱을 사용할 수 있습니다. 최상의 경험을 위해 업데이트하세요.";
+"Do you like our App?" = "저희 앱이 마음에 드시나요?";
+"Help us improve it app by answering this quick poll" = "간단한 설문에 응답하여 앱 개선에 도움을 주세요";
+"No" = "아니요";
+"Yes" = "예";
+"No Backup Chats" = "백업 채팅 없음";
+"Import Backup" = "백업 가져오기";
+"Export Chat Guide" = "채팅 내보내기 가이드";
+"How to Backup Chats" = "채팅 백업 방법";
+"Export Chat" = "채팅 내보내기";
+"Got It" = "확인";
+"Open Web Scanner and tap on 'Backup Chats'." = "웹 스캐너를 열고 '백업 채팅'을 탭합니다.";
+"Open the app and tap on WA Backup Chats." = "앱을 열고 WA 백업 채팅을 탭합니다.";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "채팅 섹션을 열고 대화를 왼쪽으로 스와이프한 후 '더 보기'를 탭합니다.";
+"Tap on Contact or Group info." = "연락처 또는 그룹 정보를 탭합니다.";
+"Tap on Export Chat." = "채팅 내보내기를 탭합니다.";
+"Choose Attach Media or Without Media." = "미디어 포함 또는 미디어 제외를 선택합니다.";
+"Choose Wp Chat." = "Wp Chat을 선택합니다.";
+"Tap on Saved to Files." = "파일에 저장하기를 탭합니다.";
+"Tap on the 'Import Backup' button at the bottom." = "하단의 '백업 가져오기' 버튼을 탭합니다.";
+"Tap Import Backup Chat." = "백업 채팅 가져오기를 탭합니다.";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "파일에서 저장된 WhatsApp 백업(.zip 또는 .txt) 파일을 선택합니다.";

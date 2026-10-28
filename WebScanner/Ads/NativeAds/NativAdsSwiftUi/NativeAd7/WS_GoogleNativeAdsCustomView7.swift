@@ -44,7 +44,6 @@ class WS_GoogleNativeAdsCustomView7: UIView {
     func setup() {
         bgTagView.roundCorners(corners: UIRectCorner.allCorners, radius: 2)
         
-        // Configure the ad view
         let adView: NativeAdView = adUIView
         adView.nativeAd = nativeAd
         setStarRating(nativeAd.starRating)
@@ -55,7 +54,6 @@ class WS_GoogleNativeAdsCustomView7: UIView {
         adView.mediaView?.mediaContent = nativeAd.mediaContent
         (adView.bodyView as? UILabel)?.text = nativeAd.body ?? ""
         (adView.bodyView as? UILabel)?.textColor = hexStringToUIColor(hex: "#BDBDBD")
-//        (adView.callToActionView as? UIButton)?.backgroundColor = hexStringToUIColor(hex: SessionManager.shared.getSplashData()?.addButtonColor ?? "#000000")
         (adView.callToActionView as? UIButton)?.backgroundColor = hexStringToUIColor(hex: addButtonColor)
 
         if let ctaButton = adView.callToActionView as? UIButton {
@@ -85,7 +83,6 @@ class WS_GoogleNativeAdsCustomView7: UIView {
     }
 }
 
-// MARK: - UIView Extension for Rounded Corners
 extension UIView {
     func roundCorners(corners: UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: bounds,

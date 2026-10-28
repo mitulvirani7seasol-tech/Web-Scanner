@@ -27,7 +27,6 @@ public final class CountryCodeManager: ObservableObject {
     public func loadCountries() {
         guard let url = Bundle.main.url(forResource: "Country_Codes", withExtension: "json") ??
                 Bundle.main.url(forResource: "Country_Codes", withExtension: "json", subdirectory: nil) else {
-            // Fallback default list
             self.countries = [
                 CountryCodeItem(name: "India", code: "IN", emoji: "🇮🇳", dial_code: "+91"),
                 CountryCodeItem(name: "United States", code: "US", emoji: "🇺🇸", dial_code: "+1"),

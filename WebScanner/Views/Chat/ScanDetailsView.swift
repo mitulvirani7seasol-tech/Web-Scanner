@@ -38,22 +38,16 @@ public struct ScanDetailsView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Scan Details
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Main Scrollable Content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 20 : 16.scaled) {
-                        // Card 1: QR Code Preview Card
                         qrPreviewCard
                         
-                        // Card 2: QR Scanner Result Card (with img_QR_code + checkmark)
                         scannerResultCard
                         
-                        // Card 3: Result text + Copy & Share buttons
                         resultCard
                         
-                        // 3. Scan Again Action Button
                         scanAgainButton
                             .padding(.top, isIPad ? 12 : 8)
                     }
@@ -90,6 +84,7 @@ public struct ScanDetailsView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -149,7 +144,6 @@ public struct ScanDetailsView: View {
     // MARK: - Card 2: QR Scanner Result
     private var scannerResultCard: some View {
         HStack(spacing: 12) {
-            // Icon from Assets: img_QR_code (40x40 green QR icon)
             Image("img_QR_code")
                 .resizable()
                 .scaledToFit()
@@ -198,7 +192,6 @@ public struct ScanDetailsView: View {
                 .font(.inter(.bold, size: isIPad ? 17 : 15.scaled))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
-            // Inner Scanned Text Container
             Text(scannedText)
                 .font(.inter(.medium, size: isIPad ? 15 : 13.5.scaled))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -211,9 +204,7 @@ public struct ScanDetailsView: View {
                         .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.05))
                 )
             
-            // Action Buttons: Copy (outlined) & Share (filled green)
             HStack(spacing: 12) {
-                // Copy Button (Outlined green)
                 Button(action: {
                     TR_AdCountViewModel.sharedd.registerTap()
                     copyToClipboard()
@@ -244,7 +235,6 @@ public struct ScanDetailsView: View {
                 .contentShape(Rectangle())
                 .glassModifier(cornerRadius: 24)
                 
-                // Share Button (Solid green)
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()

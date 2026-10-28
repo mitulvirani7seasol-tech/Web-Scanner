@@ -40,16 +40,12 @@ public struct BarcodeDetailsView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Barcode Details
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Main Scrollable Content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 20 : 16.scaled) {
-                        // Card 1: Barcode Preview Card (Matches Screenshot 5)
                         barcodePreviewCard
                         
-                        // Card 2: Result text + Copy & Share buttons
                         resultCard
                     }
                     .padding(.horizontal, horizontalPadding)
@@ -89,9 +85,10 @@ public struct BarcodeDetailsView: View {
                 handleBack()
             }) {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
+                    .font(.system(size: isIPad ? 22 : 18, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -135,10 +132,6 @@ public struct BarcodeDetailsView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-//            .background(
-//                RoundedRectangle(cornerRadius: 14, style: .continuous)
-//                    .fill(Color.white)
-//            )
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .stroke(Color.black.opacity(0.08), lineWidth: 1)
@@ -170,7 +163,6 @@ public struct BarcodeDetailsView: View {
                 .font(.inter(.bold, size: isIPad ? 17 : 15.scaled))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
-            // Inner Result Barcode Number Container
             Text(barcodeText)
                 .font(.inter(.medium, size: isIPad ? 16 : 14.5.scaled))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -182,9 +174,7 @@ public struct BarcodeDetailsView: View {
                         .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.05))
                 )
             
-            // Action Buttons: Copy (outlined) & Share (filled green)
             HStack(spacing: 12) {
-                // Copy Button (Outlined green)
                 Button(action: {
                     TR_AdCountViewModel.sharedd.registerTap()
                     copyToClipboard()
@@ -215,7 +205,6 @@ public struct BarcodeDetailsView: View {
                 .contentShape(Rectangle())
                 .glassModifier(cornerRadius: 24)
                 
-                // Share Button (Solid green)
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()

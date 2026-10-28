@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -183,7 +183,7 @@
 "Start Chats Without Saving Contacts" = "Iniciar conversas sem guardar contactos";
 "Message anyone without adding new contacts." = "Envie mensagens sem adicionar novos contactos.";
 "Save Your Favorite Status Easily" = "Guarde facilmente os seus estados favoritos";
-"Download and save statuses in seconds." = "Transfira e guarde estados em segundos.";
+"Save and manage statuses with ease." = "Guarde e gira estados com facilidade.";
 "Backup Your Chats With Ease" = "Cópia de segurança fácil das conversas";
 "Keep Important Messages Safe Forever." = "Mantenha as mensagens importantes seguras para sempre.";
 "Get Started" = "Começar";
@@ -479,3 +479,29 @@
 "13 digit barcode" = "Código de barras de 13 dígitos";
 "6-8 digit barcode" = "Código de barras de 6-8 dígitos";
 "12 digit barcode" = "Código de barras de 12 dígitos";
+
+"Update Available" = "Atualização disponível";
+"Update Now" = "Atualizar agora";
+"Later" = "Mais tarde";
+"A new version of our app is available on the App Store. Please update for the best experience." = "Uma nova versão do nosso aplicativo está disponível na App Store. Atualize para a melhor experiência.";
+"Do you like our App?" = "Você gosta do nosso aplicativo?";
+"Help us improve it app by answering this quick poll" = "Ajude-nos a melhorar o aplicativo respondendo a esta rápida enquete";
+"No" = "Não";
+"Yes" = "Sim";
+"No Backup Chats" = "Sem conversas de backup";
+"Import Backup" = "Importar backup";
+"Export Chat Guide" = "Guia para exportar conversas";
+"How to Backup Chats" = "Como fazer backup de conversas";
+"Export Chat" = "Exportar conversa";
+"Got It" = "Entendi";
+"Open Web Scanner and tap on 'Backup Chats'." = "Abra o Web Scanner e toque em 'Backup de conversas'.";
+"Open the app and tap on WA Backup Chats." = "Abra o app e toque em Backup de conversas do WA.";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "Abra a seção de conversas, deslize para a esquerda em qualquer conversa e toque em 'Mais'.";
+"Tap on Contact or Group info." = "Toque nas informações do contato ou grupo.";
+"Tap on Export Chat." = "Toque em Exportar conversa.";
+"Choose Attach Media or Without Media." = "Escolha Anexar mídia ou Sem mídia.";
+"Choose Wp Chat." = "Escolha Wp Chat.";
+"Tap on Saved to Files." = "Toque em Salvar em Arquivos.";
+"Tap on the 'Import Backup' button at the bottom." = "Toque no botão 'Importar backup' na parte inferior.";
+"Tap Import Backup Chat." = "Toque em Importar conversa de backup.";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Selecione seu arquivo de backup do WhatsApp (.zip ou .txt) salvo no app Arquivos.";

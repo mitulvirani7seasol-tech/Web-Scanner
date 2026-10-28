@@ -12,14 +12,12 @@ typealias SM_GoogleNativeAdsCustomeView6 = WS_GoogleNativeAdsCustomView6
 
 class WS_GoogleNativeAdsCustomView6: UIView {
     
-    // OUTLET
     @IBOutlet var adUIView: NativeAdView!
     @IBOutlet weak var nativeAdsWidth: NSLayoutConstraint!
     
     @IBOutlet weak var tagAd: UIView!
     
     @IBOutlet weak var btnopen: UIButton!
-    // VARIABLE
     var nativeAd: NativeAd = NativeAd()
     var blackColor:Bool = false
     
@@ -52,17 +50,7 @@ class WS_GoogleNativeAdsCustomView6: UIView {
         (adView?.callToActionView as? UIButton)?.isUserInteractionEnabled = false
         (adView?.callToActionView as? UIButton)?.setTitle(nativeAd.callToAction, for: .normal)
         (adView?.callToActionView as? UIButton)?.layer.cornerRadius = 4
-//        (adView!.callToActionView as? UIButton)?.backgroundColor = Common().hexStringToUIColor(hex: Application.addButtonColor)
         self.btnopen.backgroundColor = hexStringToUIColor(hex: addButtonColor)
-//        if blackColor == true {
-//            (adView?.headlineView as? UILabel)?.textColor = .black
-//            (adView?.bodyView as? UILabel)?.textColor = .darkGray
-//        } else {
-//            (adView?.headlineView as? UILabel)?.textColor = .white
-//            (adView?.bodyView as? UILabel)?.textColor = .systemGray6
-//        }
-        
-        
         
         let data = (adView?.iconView as? UIImageView)?.image?.pngData()
         if data == nil {

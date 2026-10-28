@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -183,7 +183,7 @@
 "Start Chats Without Saving Contacts" = "Kişi Kaydetmeden Sohbet Başlatın";
 "Message anyone without adding new contacts." = "Yeni kişi eklemeden herkese mesaj gönderin.";
 "Save Your Favorite Status Easily" = "Favori Durumunuzu Kolayca Kaydedin";
-"Download and save statuses in seconds." = "Durumları saniyeler içinde indirin ve kaydedin.";
+"Save and manage statuses with ease." = "Durumları kolayca kaydedin ve yönetin.";
 "Backup Your Chats With Ease" = "Sohbetlerinizi Kolayca Yedekleyin";
 "Keep Important Messages Safe Forever." = "Önemli mesajlarınızı sonsuza kadar güvende tutun.";
 "Get Started" = "Başla";
@@ -479,3 +479,29 @@
 "13 digit barcode" = "13 haneli barkod";
 "6-8 digit barcode" = "6-8 haneli barkod";
 "12 digit barcode" = "12 haneli barkod";
+
+"Update Available" = "Güncelleme Mevcut";
+"Update Now" = "Şimdi Güncelle";
+"Later" = "Daha Sonra";
+"A new version of our app is available on the App Store. Please update for the best experience." = "Uygulamamızın yeni bir sürümü App Store'da mevcut. En iyi deneyim için lütfen güncelleyin.";
+"Do you like our App?" = "Uygulamamızı beğendiniz mi?";
+"Help us improve it app by answering this quick poll" = "Bu kısa anketi yanıtlayarak uygulamamızı geliştirmemize yardımcı olun";
+"No" = "Hayır";
+"Yes" = "Evet";
+"No Backup Chats" = "Yedeklenmiş Sohbet Yok";
+"Import Backup" = "Yedeği İçe Aktar";
+"Export Chat Guide" = "Sohbet Dışa Aktarma Kılavuzu";
+"How to Backup Chats" = "Sohbetler Nasıl Yedeklenir";
+"Export Chat" = "Sohbeti Dışa Aktar";
+"Got It" = "Anladım";
+"Open Web Scanner and tap on 'Backup Chats'." = "Web Tarayıcıyı açın ve 'Yedek Sohbetler'e dokunun.";
+"Open the app and tap on WA Backup Chats." = "Uygulamayı açın ve WA Yedek Sohbetler'e dokunun.";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "Sohbet bölümünü açın, herhangi bir sohbette sola kaydırın ve 'Daha Fazla'ya dokunun.";
+"Tap on Contact or Group info." = "Kişi veya Grup bilgisine dokunun.";
+"Tap on Export Chat." = "Sohbeti Dışa Aktar'a dokunun.";
+"Choose Attach Media or Without Media." = "Medyayı Ekle veya Medyasız'ı seçin.";
+"Choose Wp Chat." = "Wp Chat'i seçin.";
+"Tap on Saved to Files." = "Dosyalara Kaydet'e dokunun.";
+"Tap on the 'Import Backup' button at the bottom." = "Alttaki 'Yedeği İçe Aktar' düğmesine dokunun.";
+"Tap Import Backup Chat." = "Yedek Sohbeti İçe Aktar'a dokunun.";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Dosyalar'dan kaydedilmiş WhatsApp yedekleme (.zip veya .txt) dosyanızı seçin.";

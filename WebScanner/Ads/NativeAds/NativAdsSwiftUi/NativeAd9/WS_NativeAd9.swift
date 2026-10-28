@@ -18,29 +18,31 @@ struct WS_NativeAd9: View {
     @State var hasLoadedOnce = false
     
     var body: some View {
-        VStack {
-            if !isPro {
+        let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+        VStack(spacing: 0) {
+            if !isUserPro {
                 if let _ = nativeViewModel.secondNativeAd {
                     WS_NativeAd9Container(nativeViewModel: nativeViewModel)
                         .frame(height: isIpad() ? 240 : 210)
                         .background(Color.white.opacity(0.50))
                         .cornerRadius(8)
-                        .transition(.opacity.combined(with: .scale))
-                        .animation(.easeInOut(duration: 0.3), value: nativeViewModel.secondNativeAd)
+                        .transition(.opacity)
                 } else if nativeViewModel.didFailToSecondLoad {
                     Color.clear
                         .frame(height: 0)
-                        .animation(.easeOut(duration: 0.3), value: nativeViewModel.didFailToSecondLoad)
                 } else {
                     WS_ShimmerPlaceholderView()
                         .frame(height: isIpad() ? 240 : 210)
                         .padding(.horizontal, 8)
                         .transition(.opacity)
-                        .animation(.easeInOut(duration: 0.3), value: nativeViewModel.secondNativeAd)
                 }
             }
         }
+        .animation(.easeInOut(duration: 0.35), value: nativeViewModel.secondNativeAd != nil)
+        .animation(.easeOut(duration: 0.3), value: nativeViewModel.didFailToSecondLoad)
         .onAppear {
+            let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+            guard !isUserPro else { return }
             if !hasLoadedOnce {
                 nativeViewModel.refreshSecondNative()
                 hasLoadedOnce = true

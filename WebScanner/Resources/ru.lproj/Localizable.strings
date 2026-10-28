@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -187,7 +187,7 @@
 "Start Chats Without Saving Contacts" = "Начните чат без сохранения контактов";
 "Message anyone without adding new contacts." = "Отправляйте сообщения, не добавляя новые контакты.";
 "Save Your Favorite Status Easily" = "Легко сохраняйте любимый статус";
-"Download and save statuses in seconds." = "Скачивайте и сохраняйте статусы за считанные секунды.";
+"Save and manage statuses with ease." = "Легко сохраняйте статусы и управляйте ими.";
 "Backup Your Chats With Ease" = "Легкое резервное копирование чатов";
 "Keep Important Messages Safe Forever." = "Храните важные сообщения в безопасности навсегда.";
 "Get Started" = "Начать";
@@ -208,7 +208,7 @@
 "About" = "О приложении";
 "Terms of Use" = "Условия использования";
 "EULA" = "EULA";
-
+"Privacy policy" = "Политика конфиденциальности";
 
 /* Added Localizations */
 "Home" = "Главная";
@@ -242,7 +242,7 @@
 "Yes, delete" = "Да, удалить";
 "Dismiss" = "Отмена";
 "Your backup chats will appear here." = "Ваши сохраненные чаты появятся здесь.";
-
+"Language" = "Язык";
 "Invalid Phone Number" = "Недействительный номер телефона";
 "Please enter a valid phone number for %@." = "Пожалуйста, введите действительный номер телефона для %@.";
 "Please enter a valid %d-digit phone number for %@." = "Пожалуйста, введите действительный номер телефона из %d цифр для %@.";
@@ -304,7 +304,7 @@
 "Seconds" = "Секунд";
 "Minutes" = "Минут";
 "Minute" = "Минута";
-
+"Privacy policy" = "Политика конфиденциальности";
 "Caption" = "Подпись";
 "Copy" = "Копировать";
 "Copied!" = "Скопировано!";
@@ -483,3 +483,29 @@
 "13 digit barcode" = "13-значный штрихкод";
 "6-8 digit barcode" = "6-8-значный штрихкод";
 "12 digit barcode" = "12-значный штрихкод";
+
+"Update Available" = "Доступно обновление";
+"Update Now" = "Обновить сейчас";
+"Later" = "Позже";
+"A new version of our app is available on the App Store. Please update for the best experience." = "В App Store доступна новая версия нашего приложения. Пожалуйста, обновитесь для лучшей работы.";
+"Do you like our App?" = "Вам нравится наше приложение?";
+"Help us improve it app by answering this quick poll" = "Помогите нам улучшить приложение, ответив на этот короткий опрос";
+"No" = "Нет";
+"Yes" = "Да";
+"No Backup Chats" = "Нет резервных чатов";
+"Import Backup" = "Импорт резервной копии";
+"Export Chat Guide" = "Руководство по экспорту чата";
+"How to Backup Chats" = "Как создать резервную копию чатов";
+"Export Chat" = "Экспорт чата";
+"Got It" = "Понятно";
+"Open Web Scanner and tap on 'Backup Chats'." = "Откройте Веб-сканер и нажмите «Резервные копии чатов».";
+"Open the app and tap on WA Backup Chats." = "Откройте приложение и нажмите «Резервные копии чатов WA».";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "Откройте раздел чатов, проведите пальцем влево по любому разговору и нажмите «Еще».";
+"Tap on Contact or Group info." = "Нажмите на информацию о контакте или группе.";
+"Tap on Export Chat." = "Нажмите «Экспорт чата».";
+"Choose Attach Media or Without Media." = "Выберите «Прикрепить медиа» или «Без медиа».";
+"Choose Wp Chat." = "Выберите Wp Chat.";
+"Tap on Saved to Files." = "Нажмите «Сохранить в Файлы».";
+"Tap on the 'Import Backup' button at the bottom." = "Нажмите кнопку «Импорт резервной копии» внизу.";
+"Tap Import Backup Chat." = "Нажмите «Импорт резервной копии чата».";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Выберите сохраненный файл резервной копии WhatsApp (.zip или .txt) из файлов.";

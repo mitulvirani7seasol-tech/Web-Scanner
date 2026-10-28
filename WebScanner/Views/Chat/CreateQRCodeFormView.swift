@@ -34,38 +34,30 @@ public struct CreateQRCodeFormView: View {
     public let category: QRCodeCategory
     private var navPath: Binding<NavigationPath>?
     
-    // Form fields state
     @State private var textInput: String = ""
     @State private var urlInput: String = ""
     
-    // Contact
     @State private var contactName: String = ""
     @State private var contactPhone: String = ""
     @State private var contactAddress: String = ""
     @State private var contactEmail: String = ""
     
-    // Email
     @State private var emailAddress: String = ""
     @State private var emailSubject: String = ""
     @State private var emailMessage: String = ""
     
-    // Geo Location
     @State private var geoLatitude: String = ""
     @State private var geoLongitude: String = ""
     
-    // SMS
     @State private var smsPhone: String = ""
     @State private var smsMessage: String = ""
     
-    // Phone
     @State private var phoneNumber: String = ""
     
-    // Wi-Fi
     @State private var wifiSSID: String = ""
     @State private var wifiPassword: String = ""
-    @State private var wifiSecurity: String = "WPA" // WPA, WEP, Open
+    @State private var wifiSecurity: String = "WPA"
     
-    // Navigation & Validation alert state
     @State private var generatedPayloadToPresent: String? = nil
     @State private var hasNavigatedToDetails: Bool = false
     @State private var showValidationAlert: Bool = false
@@ -81,7 +73,6 @@ public struct CreateQRCodeFormView: View {
         self.navPath = navPath
     }
     
-    // Check if ALL fields of the selected category are fulfilled
     private var isFormFulfilled: Bool {
         switch category {
         case .text:
@@ -133,19 +124,14 @@ public struct CreateQRCodeFormView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Create QR Code
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Main Scrollable Form Content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 22 : 18.scaled) {
-                        // Category Header Summary Card (matching Screenshot 3)
                         categorySummaryCard
                         
-                        // Dynamic Form Inputs
                         formFieldsSection
                         
-                        // Generate QR Code Action Button
                         generateButton
                             .padding(.top, isIPad ? 14 : 10)
                     }
@@ -187,7 +173,6 @@ public struct CreateQRCodeFormView: View {
         } message: {
             Text(validationAlertMessage)
         }
-        // Fallback navigation when navPath is nil
         .navigationDestination(isPresented: Binding(
             get: { generatedPayloadToPresent != nil && navPath == nil },
             set: { if !$0 { generatedPayloadToPresent = nil } }
@@ -210,6 +195,7 @@ public struct CreateQRCodeFormView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -286,7 +272,6 @@ public struct CreateQRCodeFormView: View {
                 )
                 
             case .contact:
-                // Contact Fields (Matches Screenshot 3)
                 formInputField(
                     title: "Name".localized,
                     placeholder: "Enter name here...".localized,
@@ -376,7 +361,6 @@ public struct CreateQRCodeFormView: View {
                 )
                 
             case .wifi:
-                // 1. Wi-Fi SSID (Matches Screenshot)
                 formInputField(
                     title: "Wi-Fi SSID".localized,
                     placeholder: "Enter SSID here...".localized,
@@ -384,10 +368,8 @@ public struct CreateQRCodeFormView: View {
                     field: .wifiSSID
                 )
                 
-                // 2. Select Security Type (WPA | WEP | Nopass)
                 wifiSecurityPicker
                 
-                // 3. Wi-Fi Password (Visible when not Nopass)
                 if wifiSecurity != "Nopass" {
                     formInputField(
                         title: "Wi-Fi Password".localized,
@@ -463,7 +445,6 @@ public struct CreateQRCodeFormView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     
-                    // Vertical divider between unselected adjacent options
                     if index < securityOptions.count - 1 {
                         let nextSec = securityOptions[index + 1]
                         if wifiSecurity != sec && wifiSecurity != nextSec {
@@ -546,7 +527,6 @@ public struct CreateQRCodeFormView: View {
             }
             
         case .contact:
-            // vCard 3.0 format matching Screenshot 4
             var lines: [String] = []
             lines.append("BEGIN : VCARD")
             lines.append("VERSION : 3.0")
@@ -596,7 +576,6 @@ public struct CreateQRCodeFormView: View {
     }
     
     private func generateAndNavigate() {
-        // Validation checks per category before generating
         switch category {
         case .phone:
             guard isValidPhone(phoneNumber) else {

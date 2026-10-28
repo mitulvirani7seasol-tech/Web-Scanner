@@ -5,7 +5,6 @@
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.com.WebScanner.app</string>
-		<string>group.com.WebScanner.app1</string>
 	</array>
 </dict>
 </plist>

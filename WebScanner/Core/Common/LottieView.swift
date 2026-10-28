@@ -33,7 +33,6 @@ public struct LottieView: UIViewRepresentable {
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.configuration = LottieConfiguration(renderingEngine: .mainThread)
         
-        // Robust search for animation JSON
         var loadedAnimation: LottieAnimation? = nil
         if let direct = LottieAnimation.named(animationName, bundle: .main) {
             loadedAnimation = direct
@@ -59,7 +58,6 @@ public struct LottieView: UIViewRepresentable {
             }
             container.setup(animationView: animationView)
         } else {
-            // Safety fallback: Native iOS spinner so loader is never missing
             container.setupFallbackSpinner(isDarkMode: isDarkMode)
         }
         

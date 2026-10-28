@@ -28,7 +28,7 @@ public struct FunnyMessagesView: View {
     @State private var currentTab: FunnyMessageTab = .stylish
     @State private var inputText: String = ""
     @State private var resultText: String = ""
-    @State private var repeatCount: Int = 5 // User specified 1 to 10, default 5 as in design
+    @State private var repeatCount: Int = 5
     @State private var isCopied: Bool = false
     @State private var showShareSheet: Bool = false
     
@@ -58,22 +58,16 @@ public struct FunnyMessagesView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Funny Messages
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Main Content inside ScrollView
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 20 : 16.scaled) {
-                        // Segmented Control Tabs (Stylish | Flip it | Repeat Text)
                         segmentedTabsBar
                         
-                        // Card 1: Type Here Input Card
                         typeHereCard
                         
-                        // Card 2: Result Output Card
                         resultCard
                         
-                        // Convert Action Button
                         convertButton
                             .padding(.top, isIPad ? 14 : 10)
                     }
@@ -120,6 +114,7 @@ public struct FunnyMessagesView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -174,7 +169,6 @@ public struct FunnyMessagesView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                // Vertical Divider between unselected tabs
                 if tab.rawValue < FunnyMessageTab.allCases.count - 1 {
                     let nextTab = FunnyMessageTab(rawValue: tab.rawValue + 1)
                     if !isSelected && currentTab != nextTab {
@@ -204,14 +198,12 @@ public struct FunnyMessagesView: View {
                     lineWidth: 1
                 )
         )
-//        .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.25 : 0.04), radius: 6, x: 0, y: 3)
         .glassModifier(cornerRadius: 26)
     }
     
     // MARK: - Card 1: Type Here Card
     private var typeHereCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Header Row: Type Here + 0/500
             HStack {
                 Text("Type Here".localized)
                     .font(.inter(.bold, size: isIPad ? 17 : 15.scaled))
@@ -221,19 +213,17 @@ public struct FunnyMessagesView: View {
                 
                 Text("\(inputText.count)/\(maxCharacters)")
                     .font(.inter(.regular, size: isIPad ? 13 : 11.scaled))
-                    .foregroundColor(AppColors.textSecondary(for: colorScheme))
+                    .foregroundColor(AppColors.SaticColor(for: colorScheme))
             }
             
-            // Inner Input Box
             ZStack(alignment: .topTrailing) {
                 ZStack(alignment: .topLeading) {
-                    // Invisible text driving dynamic auto-growing height
                     Text(inputText.isEmpty ? " " : (inputText + "\n "))
                         .font(.inter(.regular, size: isIPad ? 15 : 13.5.scaled))
                         .lineSpacing(3)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 12)
-                        .padding(.trailing, 28) // Room for clear button
+                        .padding(.trailing, 28)
                         .opacity(0)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                     
@@ -253,7 +243,7 @@ public struct FunnyMessagesView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
-                    .padding(.trailing, 28) // Room for clear button
+                    .padding(.trailing, 28)
                     
                     if inputText.isEmpty {
                         Text("Enter Your text here...".localized)
@@ -265,7 +255,6 @@ public struct FunnyMessagesView: View {
                     }
                 }
                 
-                // Clear Button (✕)
                 if !inputText.isEmpty {
                     Button(action: {
                         HapticFeedback.generate(.light)
@@ -287,7 +276,6 @@ public struct FunnyMessagesView: View {
                     .fill(colorScheme == .dark ? Color.white.opacity(0.06) : Color.black.opacity(0.04))
             )
             
-            // Repeat Times Stepper Row (Visible only for Repeat Text tab)
             if currentTab == .repeatText {
                 HStack(alignment: .center) {
                     Text("Repeat Times".localized)
@@ -296,7 +284,6 @@ public struct FunnyMessagesView: View {
                     
                     Spacer()
                     
-                    // Stepper: [-]  count  [+] (1 to 10)
                     HStack(spacing: 12) {
                         Button(action: {
                             if repeatCount > 1 {
@@ -360,10 +347,6 @@ public struct FunnyMessagesView: View {
         }
         .padding(.horizontal, isIPad ? 20 : 16.scaled)
         .padding(.vertical, isIPad ? 18 : 14.scaled)
-//        .background(
-//            RoundedRectangle(cornerRadius: 18, style: .continuous)
-//                .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.white.opacity(0.85))
-//        )
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(
@@ -378,14 +361,12 @@ public struct FunnyMessagesView: View {
                     lineWidth: 1
                 )
         )
-//        .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.25 : 0.04), radius: 6, x: 0, y: 3)
         .glassModifier(cornerRadius: 18)
     }
     
     // MARK: - Card 2: Result Output Card
     private var resultCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Header Row: Result + [Copy] [Share] [WhatsApp]
             HStack {
                 Text("Result".localized)
                     .font(.inter(.bold, size: isIPad ? 17 : 15.scaled))
@@ -394,7 +375,6 @@ public struct FunnyMessagesView: View {
                 Spacer()
                 
                 HStack(spacing: 14) {
-                    // Copy Action
                     Button(action: {
                         TR_AdCountViewModel.sharedd.registerTap()
                         copyResult()
@@ -412,7 +392,6 @@ public struct FunnyMessagesView: View {
                     .disabled(resultText.isEmpty)
                     .buttonStyle(PlainButtonStyle())
                     
-                    // Share Action
                     Button(action: {
                         TR_AdCountViewModel.sharedd.registerTap()
                         shareResult()
@@ -426,10 +405,8 @@ public struct FunnyMessagesView: View {
                 }
             }
             
-            // Inner Result Box
             Group {
                 if resultText.isEmpty {
-                    // Empty State (Matching Image 1)
                     VStack(spacing: 8) {
                         Image("ic_convert_massage")
                             .resizable()
@@ -446,7 +423,6 @@ public struct FunnyMessagesView: View {
                     .padding(.vertical, 20)
                     .frame(maxWidth: .infinity)
                 } else {
-                    // Converted Result Text View (expands to text height)
                     Text(resultText)
                         .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
                         .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -530,26 +506,22 @@ public struct FunnyMessagesView: View {
         }
     }
     
-    // Mathematical Bold Serif Unicode conversion
     private func toStylish(_ input: String) -> String {
         var output = ""
         for scalar in input.unicodeScalars {
             let val = scalar.value
-            // A-Z: 65 - 90 -> 0x1D400 - 0x1D419
             if val >= 65 && val <= 90 {
                 if let s = UnicodeScalar(0x1D400 + (val - 65)) {
                     output.append(Character(s))
                     continue
                 }
             }
-            // a-z: 97 - 122 -> 0x1D41A - 0x1D433
             else if val >= 97 && val <= 122 {
                 if let s = UnicodeScalar(0x1D41A + (val - 97)) {
                     output.append(Character(s))
                     continue
                 }
             }
-            // 0-9: 48 - 57 -> 0x1D7CE - 0x1D7D7
             else if val >= 48 && val <= 57 {
                 if let s = UnicodeScalar(0x1D7CE + (val - 48)) {
                     output.append(Character(s))
@@ -561,7 +533,6 @@ public struct FunnyMessagesView: View {
         return output
     }
     
-    // Upside-Down Flip It conversion
     private func toFlipIt(_ input: String) -> String {
         let flipDict: [Character: Character] = [
             "a": "ɐ", "b": "q", "c": "ɔ", "d": "p", "e": "ǝ", "f": "ɟ", "g": "ƃ", "h": "ɥ",

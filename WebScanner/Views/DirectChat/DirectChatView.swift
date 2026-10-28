@@ -22,16 +22,14 @@ public struct DirectChatView: View {
     @State private var navigateToRecentChats: Bool = false
     @State private var navigateToQuickMessages: Bool = false
     
-    // Country phone number validation alert
     @State private var showValidationAlert: Bool = false
     @State private var validationErrorMessage: String = ""
     
-    // Swipe to delete in recent chats
     @State private var swipedChatId: String? = nil
     @State private var chatToDelete: RecentChatItem? = nil
     @State private var showDeleteConfirmation: Bool = false
+    @State private var showNoInternetAlert: Bool = false
     @AppStorage(WS_SessionKeys.isPro) var isPro = false
-    // Track redirect to clear inputs upon returning
     @State private var shouldClearOnReturn: Bool = false
     
     private enum InputField: Hashable {
@@ -65,23 +63,19 @@ public struct DirectChatView: View {
                     VStack(spacing: 0) {
                         headerBar(topInset: geo.safeAreaInsets.top)
                         
-                        // Scrollable Content
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack(spacing: isIPad ? 24 : 18.scaled) {
                                 
-                                // 1. Main Direct Chat Card
                                 directChatCard
-                                
+                             
                                 if !isPro {
-                                    TR_NativeAd7()
+                                    TR_NativeAd6()
                                 }
                                 
-                                // 2. Recent Chats Section
                                 recentChatsSection
                                 
-                                // Bottom spacing to clear floating tab bar
                                 Spacer()
-                                    .frame(height: isIPad ? 140 : 110.scaled)
+                                    .frame(height: isIPad ? 32 : 24)
                             }
                             .padding(.horizontal, isIPad ? 32 : 16)
                             .padding(.top, isIPad ? 6 : 4.scaled)
@@ -105,7 +99,6 @@ public struct DirectChatView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 }
-//                .frame(width: geo.size.width, height: geo.size.height)
             }
             
             .contentShape(Rectangle())
@@ -157,12 +150,22 @@ public struct DirectChatView: View {
             } message: { _ in
                 Text("Are you sure you want to delete this chat?".localized)
             }
+            .alert("No Internet Connection".localized, isPresented: $showNoInternetAlert) {
+                Button("OK".localized, role: .cancel) {}
+            } message: {
+                Text("Please check your internet connection and try again.".localized)
+            }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                 clearInputsIfReturning()
             }
             .onAppear {
                 clearInputsIfReturning()
                 swipedChatId = nil
+            }
+            .onChange(of: messageText) { newValue in
+                if let selected = selectedQuickMessage, newValue != selected {
+                    selectedQuickMessage = nil
+                }
             }
             .id(localizationHelper.refreshID)
         }
@@ -213,14 +216,11 @@ public struct DirectChatView: View {
     private var directChatCard: some View {
         VStack(alignment: .leading, spacing: isIPad ? 18 : 14.scaled) {
             
-            // 1. Enter WhatsApp Number Label
             Text("Enter WhatsApp Number".localized)
                 .font(.inter(.bold, size: isIPad ? 17 : 14))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
-            // 2. Phone Input Row
             HStack(spacing: isIPad ? 12 : 8.scaled) {
-                // Country Code Button (Pushes SelectCountryView)
                 Button(action: {
                     focusedField = nil
                     hideKeyboard()
@@ -245,7 +245,6 @@ public struct DirectChatView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                // Phone Number TextField
                 HStack(spacing: 8) {
                     TextField("Enter phone number".localized, text: $phoneNumber)
                         .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
@@ -267,13 +266,11 @@ public struct DirectChatView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14.scaled, style: .continuous))
             }
             
-            // 3. Message Label
             Text("Message".localized)
                 .font(.inter(.bold, size: isIPad ? 17 : 14))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
                 .padding(.top, 2)
             
-            // 4. Message Input Box (Type or message here...)
             ZStack(alignment: .topLeading) {
                 if messageText.isEmpty {
                     Text("Type or message here...".localized)
@@ -295,7 +292,6 @@ public struct DirectChatView: View {
             .background(inputPillBackground)
             .clipShape(RoundedRectangle(cornerRadius: 16.scaled, style: .continuous))
             
-            // 5. Quick Messages Section
             VStack(alignment: .leading, spacing: isIPad ? 12 : 8.scaled) {
                 HStack {
                     Text("Quick Messages".localized)
@@ -318,7 +314,6 @@ public struct DirectChatView: View {
                     }
                 }
                 
-                // Horizontal pills from QuickMessageManager.defaultMessages
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: isIPad ? 10 : 8.scaled) {
                         ForEach(QuickMessageManager.defaultMessages, id: \.self) { pill in
@@ -354,10 +349,13 @@ public struct DirectChatView: View {
                 }
             }
             
-            // 6. Action Button: Open WhatsApp Chat (Disabled when phone number is empty)
             Button(action: {
                 focusedField = nil
                 hideKeyboard()
+                guard NetworkMonitor.shared.isNetworkAvailable else {
+                    showNoInternetAlert = true
+                    return
+                }
                 TR_AdCountViewModel.sharedd.registerTap {
                     if !isPro {
                         showPaywall = true
@@ -413,7 +411,6 @@ public struct DirectChatView: View {
                 
                 Spacer()
                 
-                // Hide View All when recent chats is empty
                 if !recentChatManager.recentChats.isEmpty {
                     Button(action: {
                         focusedField = nil
@@ -444,7 +441,6 @@ public struct DirectChatView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, isIPad ? 32 : 24.scaled)
             } else {
-                // Show latest 10 on iPhone, latest 20 on iPad
                 let maxRecentCount = isIPad ? 20 : 10
                 let displayed = Array(recentChatManager.recentChats.prefix(maxRecentCount))
                 
@@ -474,6 +470,10 @@ public struct DirectChatView: View {
                                 focusedField = nil
                                 hideKeyboard()
                                 HapticFeedback.generate(.medium)
+                                guard NetworkMonitor.shared.isNetworkAvailable else {
+                                    showNoInternetAlert = true
+                                    return
+                                }
                                 TR_AdCountViewModel.sharedd.registerTap {
                                     if !isPro {
                                         showPaywall = true

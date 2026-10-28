@@ -34,20 +34,16 @@ public struct StatusMainView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 48 : 32) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Status
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Cards List
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 18 : 14.scaled) {
                         
-                        // Native Ad 7
                         if !isPro {
                             TR_NativeAd7()
                                 .padding(.top, 10)
                         }
                         
-                        // 1. WhatsApp Status Card
                         statusCard(
                             title: "WhatsApp Status".localized,
                             subtitle: "Save status videos and photos".localized,
@@ -68,7 +64,6 @@ public struct StatusMainView: View {
                             }
                         }
                         
-                        // 2. Saved Status Card
                         statusCard(
                             title: "Saved Status".localized,
                             subtitle: "Save your favorite status moments".localized,
@@ -89,7 +84,6 @@ public struct StatusMainView: View {
                             }
                         }
                         
-                        // 3. Split Long Video Card
                         statusCard(
                             title: "Split Long Video".localized,
                             subtitle: "Split long videos into status".localized,
@@ -110,7 +104,6 @@ public struct StatusMainView: View {
                             }
                         }
                         
-                        // 4. Caption Status Card
                         statusCard(
                             title: "Caption Status".localized,
                             subtitle: "Find perfect captions for posts".localized,
@@ -182,6 +175,7 @@ public struct StatusMainView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             

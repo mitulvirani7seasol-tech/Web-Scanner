@@ -198,10 +198,8 @@ public final class SplitVideoManager: ObservableObject {
             let outputFileName = "\(safeName)_\(i + 1)_\(uniquePartId.prefix(6)).mp4"
             let outputURL = Self.splitVideosDirectory.appendingPathComponent(outputFileName)
             
-            // Remove any existing file
             try? FileManager.default.removeItem(at: outputURL)
             
-            // Thumbnail creation
             var thumbFileName: String? = nil
             do {
                 let cgImage = try imageGenerator.copyCGImage(at: startTime, actualTime: nil)
@@ -213,7 +211,6 @@ public final class SplitVideoManager: ObservableObject {
                     thumbFileName = tName
                 }
             } catch {
-                // thumbnail failed, proceed anyway
             }
             
             // Export Session

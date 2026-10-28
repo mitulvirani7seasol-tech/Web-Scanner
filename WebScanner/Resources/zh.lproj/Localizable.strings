@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -187,7 +187,7 @@
 "Start Chats Without Saving Contacts" = "无需保存联系人即可发起聊天";
 "Message anyone without adding new contacts." = "无需添加新联系人即可向任何人发送消息。";
 "Save Your Favorite Status Easily" = "轻松保存喜爱的状态";
-"Download and save statuses in seconds." = "数秒内下载并保存状态。";
+"Save and manage statuses with ease." = "轻松保存和管理状态。";
 "Backup Your Chats With Ease" = "轻松备份您的聊天记录";
 "Keep Important Messages Safe Forever." = "永久安全保存重要消息。";
 "Get Started" = "立即开始";
@@ -208,7 +208,7 @@
 "About" = "关于";
 "Terms of Use" = "使用条款";
 "EULA" = "最终用户许可协议";
-
+"Privacy policy" = "隐私政策";
 
 /* Added Localizations */
 "Home" = "首页";
@@ -250,7 +250,7 @@
 "Please enter a valid phone number for %@." = "请输入%@的有效电话号码。";
 "Please enter a valid %d-digit phone number for %@." = "请输入%@的有效%d位电话号码。";
 "Close" = "关闭";
-
+"Language" = "语言";
 "Use WhatsApp on your computer" = "在电脑上使用 WhatsApp";
 "Open WhatsApp on your phone" = "在手机上打开 WhatsApp";
 "Tap Menu on Android, or Settings on iPhone" = "在 Android 上点击菜单，或在 iPhone 上点击设置";
@@ -276,7 +276,7 @@
 "How to download?" = "如何下载？";
 "Click on the status you want to download." = "点击要下载的状态。";
 "Click on download button." = "点击下载按钮。";
-
+"Privacy policy" = "隐私政策";
 "Nothing Saved Yet" = "尚未保存任何内容";
 "Save your favorite statuses for later." = "保存您最喜欢的状态供日后查看。";
 "Today" = "今天";
@@ -486,3 +486,27 @@
 "13 digit barcode" = "13位条形码";
 "6-8 digit barcode" = "6-8位条形码";
 "12 digit barcode" = "12位条形码";
+
+"Update Available" = "有可用更新";
+"Update Now" = "立即更新";
+"Later" = "稍后";
+"A new version of our app is available on the App Store. Please update for the best experience." = "App Store 上有我们应用的新版本。请更新以获得最佳体验。";
+"Do you like our App?" = "您喜欢我们的应用吗？";
+"Help us improve it app by answering this quick poll" = "请回答此简短问卷，帮助我们改进应用";
+"No Backup Chats" = "无备份聊天";
+"Import Backup" = "导入备份";
+"Export Chat Guide" = "导出聊天指南";
+"How to Backup Chats" = "如何备份聊天";
+"Export Chat" = "导出聊天";
+"Got It" = "知道了";
+"Open Web Scanner and tap on 'Backup Chats'." = "打开网页扫描器并点击“备份聊天”。";
+"Open the app and tap on WA Backup Chats." = "打开应用并点击“WA 备份聊天”。";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "打开聊天部分，在任何对话上向左滑动，然后点击“更多”。";
+"Tap on Contact or Group info." = "点击联系人或群组信息。";
+"Tap on Export Chat." = "点击导出聊天。";
+"Choose Attach Media or Without Media." = "选择附带媒体或不附带媒体。";
+"Choose Wp Chat." = "选择 Wp Chat。";
+"Tap on Saved to Files." = "点击保存到文件。";
+"Tap on the 'Import Backup' button at the bottom." = "点击底部的“导入备份”按钮。";
+"Tap Import Backup Chat." = "点击导入备份聊天。";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "从文件中选择保存的 WhatsApp 备份（.zip 或 .txt）文件。";

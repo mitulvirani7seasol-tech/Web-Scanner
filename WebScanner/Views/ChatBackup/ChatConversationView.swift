@@ -230,6 +230,7 @@ public struct ChatConversationView: View {
     @State private var showScrollToBottomButton: Bool = false
     @State private var showShareSheet: Bool = false
     @State private var shareItems: [Any] = []
+    @State private var showCopiedToast: Bool = false
     
     private var isIPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
@@ -260,9 +261,8 @@ public struct ChatConversationView: View {
     private static func estimateIsScrollable(messages: [ChatMessage], sectionCount: Int) -> Bool {
         if messages.isEmpty { return false }
         
-        // Base overhead: Encryption banner (~85pt) + bottom spacing (75pt) + top/bottom padding (30pt)
         var estimatedHeight: CGFloat = 190
-        estimatedHeight += CGFloat(sectionCount) * 40 // date pills
+        estimatedHeight += CGFloat(sectionCount) * 40
         
         for msg in messages {
             switch msg.type {
@@ -287,7 +287,6 @@ public struct ChatConversationView: View {
         return estimatedHeight > viewportH
     }
     
-    // WhatsApp Colors
     private var whatsappBackground: Color {
         colorScheme == .dark ? Color(hex: "#0B141A") : Color(hex: "#EFEAE2")
     }
@@ -338,12 +337,23 @@ public struct ChatConversationView: View {
                 }
             }
         }
-        // Exclude duplicate encryption notices since it is pinned in the official WhatsApp banner at top
+        let invisibleChars = CharacterSet(charactersIn: "\u{200B}\u{200C}\u{200D}\u{200E}\u{200F}\u{FEFF}\u{2060}\u{202A}\u{202C}\u{202F}\u{00A0}")
+        let combinedWhitespace = CharacterSet.whitespacesAndNewlines.union(invisibleChars)
+        
         return base.filter { msg in
-            if case .header(let txt) = msg.type, txt.lowercased().contains("end-to-end") {
-                return false
+            switch msg.type {
+            case .header(let txt):
+                let cleaned = txt.trimmingCharacters(in: combinedWhitespace)
+                if cleaned.isEmpty || cleaned.lowercased().contains("end-to-end") {
+                    return false
+                }
+                return true
+            case .text(let txt):
+                let cleaned = txt.trimmingCharacters(in: combinedWhitespace)
+                return !cleaned.isEmpty
+            default:
+                return true
             }
-            return true
         }
     }
     
@@ -368,7 +378,6 @@ public struct ChatConversationView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .top) {
-                // 1. Screen Main Background (Assets: BG and BG_Dark)
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -377,12 +386,9 @@ public struct ChatConversationView: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // WhatsApp Header matching Images
                     whatsappHeader
                     
-                    // Chat Messages Container with Chat BG
                     ZStack {
-                        // Authentic WhatsApp Pattern Background (Assets: Chat BG / Chat_BG and Chat_BG_Dark)
                         Image(colorScheme == .dark ? "Chat_BG_Dark" : "Chat_BG")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -390,7 +396,6 @@ public struct ChatConversationView: View {
                             .clipped()
                             .ignoresSafeArea(edges: .bottom)
                         
-                        // Messages list grouped by date
                         if messages.isEmpty {
                             emptyChatView
                         } else {
@@ -399,13 +404,11 @@ public struct ChatConversationView: View {
                                     ZStack(alignment: .bottomTrailing) {
                                         ScrollView(.vertical, showsIndicators: true) {
                                             VStack(spacing: 10.scaled) {
-                                                // WhatsApp End-to-End Encryption Banner (Image 4)
                                                 encryptionNoticeBanner
                                                     .padding(.top, 10.scaled)
                                                     .padding(.bottom, 4.scaled)
                                                 
                                                 ForEach(groupedSections) { section in
-                                                    // WhatsApp Sticky Date Pill
                                                     datePill(for: section.title)
                                                         .padding(.vertical, 6)
                                                     
@@ -420,7 +423,6 @@ public struct ChatConversationView: View {
                                                     }
                                                 }
                                                 
-                                                // Dedicated bottom space so the last message is NEVER hidden or cut off
                                                 Color.clear
                                                     .frame(height: 75.scaled)
                                                     .id("BOTTOM_SCROLL_ANCHOR")
@@ -448,7 +450,6 @@ public struct ChatConversationView: View {
                                             }
                                         }
                                         
-                                        // Floating Scroll-to-Bottom Button - visible only when scrolled away from bottom
                                         if showScrollToBottomButton {
                                             Button(action: {
                                                 HapticFeedback.generate(.light)
@@ -493,6 +494,38 @@ public struct ChatConversationView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
+                
+                // Floating Copied Toast
+                if showCopiedToast {
+                    VStack {
+                        Spacer()
+                        
+                        HStack(spacing: 8.scaled) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 15.scaled, weight: .semibold))
+                                .foregroundColor(AppColors.primaryGreen)
+                            
+                            Text("Copied!".localized)
+                                .font(.inter(.medium, size: isIPad ? 16 : 14.scaled))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 20.scaled)
+                        .padding(.vertical, 12.scaled)
+                        .background(
+                            Capsule()
+                                .fill(Color(hex: "#1E2A30").opacity(0.95))
+                                .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
+                        )
+                        .overlay(
+                            Capsule()
+                                .stroke(Color.white.opacity(0.12), lineWidth: 1)
+                        )
+                        .padding(.bottom, isIPad ? 50 : 35.scaled)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .zIndex(999)
+                }
             }
         }
         .navigationBarHidden(true)
@@ -528,7 +561,6 @@ public struct ChatConversationView: View {
     // MARK: - WhatsApp Navigation Header (Clean Chevron & Contact info)
     private var whatsappHeader: some View {
         HStack(spacing: 8.scaled) {
-            // Clean Back Chevron Button (matching Images)
             Button(action: {
                 HapticFeedback.generate(.light)
                 dismiss()
@@ -538,17 +570,16 @@ public struct ChatConversationView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
-            // Contact Avatar & Name Button (Tap to open ContactDetailsView)
             Button(action: {
                 HapticFeedback.generate(.light)
                 let num = conversation.name.contains("+") ? conversation.name : "+91 98765 43210"
                 navigateToContact = ContactCardInfo(name: conversation.name, number: num)
             }) {
                 HStack(spacing: 10.scaled) {
-                    // Avatar Circle
                     ZStack {
                         Circle()
                             .fill(Color(hex: colorScheme == .dark ? "#2A3942" : "#DFE5E7"))
@@ -571,7 +602,6 @@ public struct ChatConversationView: View {
                         }
                     }
                     
-                    // Contact Name
                     Text(conversation.name)
                         .font(.system(size: isIPad ? 17 : 16, weight: .semibold))
                         .foregroundColor(AppColors.textPrimary(for: colorScheme))
@@ -644,19 +674,24 @@ public struct ChatConversationView: View {
     }
     
     // MARK: - Message Bubble
+    @ViewBuilder
     private func messageBubble(for msg: ChatMessage) -> some View {
-        HStack(alignment: .bottom, spacing: 6.scaled) {
+        let invisibleChars = CharacterSet(charactersIn: "\u{200B}\u{200C}\u{200D}\u{200E}\u{200F}\u{FEFF}\u{2060}\u{202A}\u{202C}\u{202F}\u{00A0}")
+        let combinedWhitespace = CharacterSet.whitespacesAndNewlines.union(invisibleChars)
+        
+        if case .text(let txt) = msg.type, txt.trimmingCharacters(in: combinedWhitespace).isEmpty {
+            EmptyView()
+        } else {
+            HStack(alignment: .bottom, spacing: 6.scaled) {
             if msg.isMe {
                 Spacer(minLength: isIPad ? 100 : 45.scaled)
                 
-                // Forward button next to outgoing documents/cards (Image 3)
                 if case .documentCard(let doc) = msg.type {
                     forwardButton(for: doc.url)
                 }
             }
             
             VStack(alignment: msg.isMe ? .trailing : .leading, spacing: 3.scaled) {
-                // Sender name if incoming in group
                 if !msg.isMe && conversation.messageCount > 1 {
                     Text(msg.sender)
                         .font(.system(size: 12.5, weight: .bold))
@@ -664,17 +699,14 @@ public struct ChatConversationView: View {
                         .padding(.top, 1)
                 }
                 
-                // Bubble Body Content
                 bubbleContent(for: msg)
                 
-                // Timestamp & WhatsApp Double Checkmark
                 HStack(spacing: 3) {
                     Text(msg.formattedTime)
                         .font(.system(size: 10.5, weight: .regular))
                         .foregroundColor(timestampColor)
                     
                     if msg.isMe {
-                        // WhatsApp Read Receipts (Double Blue Checkmark)
                         HStack(spacing: -5) {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 9, weight: .bold))
@@ -693,10 +725,24 @@ public struct ChatConversationView: View {
                     .fill(msg.isMe ? outgoingBubbleColor : incomingBubbleColor)
                     .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.35 : 0.06), radius: 2, x: 0, y: 1)
             )
+            .contentShape(WhatsAppBubbleShape(isMe: msg.isMe))
+            .onTapGesture {
+                if case .images(let urls) = msg.type, let first = urls.first {
+                    previewItemURL = first
+                }
+            }
             .contextMenu {
                 Button(action: {
                     UIPasteboard.general.string = msg.previewText
                     HapticFeedback.generate(.success)
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        showCopiedToast = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            showCopiedToast = false
+                        }
+                    }
                 }) {
                     Label("Copy Text", systemImage: "doc.on.doc")
                 }
@@ -710,7 +756,6 @@ public struct ChatConversationView: View {
             }
             
             if !msg.isMe {
-                // Forward button next to incoming documents/cards
                 if case .documentCard(let doc) = msg.type {
                     forwardButton(for: doc.url)
                 }
@@ -719,6 +764,7 @@ public struct ChatConversationView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: msg.isMe ? .trailing : .leading)
+    }
     }
     
     private func scrollToBottom(proxy: ScrollViewProxy, animated: Bool = false) {
@@ -768,8 +814,10 @@ public struct ChatConversationView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 240.scaled, maxHeight: 220.scaled)
+                        .frame(width: isIPad ? 280 : 240.scaled, height: isIPad ? 240 : 200.scaled)
+                        .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
+                        .contentShape(RoundedRectangle(cornerRadius: 8.scaled))
                         .onTapGesture {
                             previewItemURL = url
                         }
@@ -847,14 +895,12 @@ public struct ChatConversationView: View {
     // MARK: - Document Card View (Images 3 & 4)
     private func documentCardView(doc: ChatDocumentInfo) -> some View {
         VStack(spacing: 0) {
-            // Document Layout / Slide Preview Thumbnail
             ZStack {
                 RoundedRectangle(cornerRadius: 6.scaled)
                     .fill(Color(hex: colorScheme == .dark ? "#262D31" : "#E2E8EB"))
                     .frame(height: 84.scaled)
                 
                 if doc.ext.contains("ppt") {
-                    // Presentation slide placeholder graphic
                     VStack(alignment: .leading, spacing: 5.scaled) {
                         RoundedRectangle(cornerRadius: 2)
                             .fill(Color(hex: "#E25736").opacity(0.8))
@@ -873,7 +919,6 @@ public struct ChatConversationView: View {
                     }
                     .padding(8.scaled)
                 } else if doc.ext.contains("doc") {
-                    // Word text document placeholder graphic
                     VStack(alignment: .leading, spacing: 4.scaled) {
                         RoundedRectangle(cornerRadius: 2)
                             .fill(Color(hex: "#185ABD").opacity(0.8))
@@ -886,7 +931,6 @@ public struct ChatConversationView: View {
                     }
                     .padding(10.scaled)
                 } else {
-                    // Generic document / PDF graphic
                     VStack(spacing: 6.scaled) {
                         Image(systemName: "doc.text.fill")
                             .font(.system(size: 28.scaled))
@@ -896,9 +940,7 @@ public struct ChatConversationView: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 6.scaled))
             
-            // Bottom Info Bar
             HStack(spacing: 8.scaled) {
-                // Application Icon Square
                 ZStack {
                     RoundedRectangle(cornerRadius: 4.scaled)
                         .fill(docAppColor(for: doc.ext))
@@ -958,7 +1000,6 @@ public struct ChatConversationView: View {
             navigateToContact = ContactCardInfo(name: name, number: number, vcfURL: vcfURL)
         }) {
             VStack(spacing: 0) {
-                // Top Section: Avatar + Name + Chevron
                 HStack(spacing: 12.scaled) {
                     ZStack {
                         Circle()
@@ -993,12 +1034,10 @@ public struct ChatConversationView: View {
                 .padding(.top, 12.scaled)
                 .padding(.bottom, 12.scaled)
                 
-                // Divider
                 Rectangle()
                     .fill(Color(hex: colorScheme == .dark ? "#263238" : "#E2E8EB"))
                     .frame(height: 1)
                 
-                // Bottom Action Buttons: Message | Add contact (Whole Card is Clickable)
                 HStack(spacing: 0) {
                     Text("Message".localized)
                         .font(.system(size: 14.5, weight: .semibold))
@@ -1026,13 +1065,11 @@ public struct ChatConversationView: View {
         let totalVotes = max(1, options.reduce(0) { $0 + $1.count })
         
         return VStack(alignment: .leading, spacing: 8.scaled) {
-            // Question Title
             Text(question)
                 .font(.system(size: 16, weight: .bold))
                 .foregroundColor(messageTextColor)
                 .padding(.top, 2.scaled)
             
-            // Subtitle: Checkmark circle + Select one
             HStack(spacing: 5.scaled) {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 13))
@@ -1043,7 +1080,6 @@ public struct ChatConversationView: View {
             }
             .padding(.bottom, 4.scaled)
             
-            // Options List
             VStack(spacing: 12.scaled) {
                 ForEach(options, id: \.text) { opt in
                     VStack(alignment: .leading, spacing: 6.scaled) {
@@ -1070,7 +1106,6 @@ public struct ChatConversationView: View {
                             Spacer()
                             
                             if opt.count > 0 {
-                                // Voter Avatar Circle
                                 Circle()
                                     .fill(Color(hex: "#EA4335"))
                                     .frame(width: 18.scaled, height: 18.scaled)
@@ -1081,7 +1116,6 @@ public struct ChatConversationView: View {
                                 .foregroundColor(timestampColor)
                         }
                         
-                        // Progress Bar
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
                                 Capsule()
@@ -1102,13 +1136,11 @@ public struct ChatConversationView: View {
             }
             .padding(.vertical, 4.scaled)
             
-            // Divider
             Rectangle()
                 .fill(Color(hex: colorScheme == .dark ? "#263238" : "#E2E8EB"))
                 .frame(height: 1)
                 .padding(.top, 4.scaled)
             
-            // Centered "View votes" in green
             HStack {
                 Spacer()
                 Text("View votes".localized)
@@ -1185,7 +1217,6 @@ public struct ChatConversationView: View {
                     .fill(Color(hex: colorScheme == .dark ? "#263238" : "#E2E8EB"))
                     .frame(height: 120.scaled)
                 
-                // Simulated map roads
                 VStack(spacing: 14.scaled) {
                     Rectangle().fill(Color.white.opacity(0.12)).frame(height: 2)
                     Rectangle().fill(Color.white.opacity(0.12)).frame(height: 3)
@@ -1238,7 +1269,6 @@ public struct ChatConversationView: View {
         }()
         
         return HStack(alignment: .center, spacing: 10.scaled) {
-            // Play / Pause Circle Button
             Button(action: {
                 HapticFeedback.generate(.light)
                 audioManager.toggle(url: url)
@@ -1256,7 +1286,6 @@ public struct ChatConversationView: View {
             }
             .buttonStyle(ScaleButtonStyle())
             
-            // Waveform on top + Running Time / Duration on left bottom
             VStack(alignment: .leading, spacing: 4.scaled) {
                 // Audio Waveform
                 HStack(spacing: 2.2.scaled) {
@@ -1271,7 +1300,6 @@ public struct ChatConversationView: View {
                 }
                 .frame(height: 24.scaled)
                 
-                // Left-side bottom time (counts elapsed while playing / shows duration)
                 Text(displayTime)
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(timestampColor)

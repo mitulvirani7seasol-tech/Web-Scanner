@@ -25,7 +25,6 @@ public struct PasscodeLockOverlayView: View {
             VStack(spacing: 28.scaled) {
                 Spacer()
                 
-                // App Logo / Lock Icon
                 ZStack {
                     Circle()
                         .fill(AppColors.primaryGreen.opacity(0.15))
@@ -46,7 +45,6 @@ public struct PasscodeLockOverlayView: View {
                         .foregroundColor(errorMessage.isEmpty ? AppColors.textSecondary(for: colorScheme) : .red)
                 }
                 
-                // 4 PIN Dots
                 HStack(spacing: 20.scaled) {
                     ForEach(0..<4, id: \.self) { idx in
                         Circle()
@@ -61,10 +59,8 @@ public struct PasscodeLockOverlayView: View {
                 
                 Spacer()
                 
-                // Numeric Keypad
                 numericKeypad
                 
-                // Forgot Passcode Button
                 Button(action: {
                     HapticFeedback.generate(.light)
                     showForgotSheet = true
@@ -221,7 +217,6 @@ public struct PasscodeRecoverySheet: View {
                 
                 VStack(spacing: 20.scaled) {
                     if !isAnswerVerified {
-                        // Answer Security Question
                         VStack(alignment: .leading, spacing: 8.scaled) {
                             Text("Security Question")
                                 .font(.inter(.bold, size: 16))
@@ -265,7 +260,6 @@ public struct PasscodeRecoverySheet: View {
                         }
                         .buttonStyle(ScaleButtonStyle())
                     } else {
-                        // Enter New Passcode
                         VStack(alignment: .leading, spacing: 14.scaled) {
                             Text("Set New 4-Digit Passcode")
                                 .font(.inter(.bold, size: 16))

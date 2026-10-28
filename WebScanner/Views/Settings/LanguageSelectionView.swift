@@ -61,7 +61,6 @@ public struct LanguageSelectionView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Background image strictly bounded
                 Image(colorScheme == .dark ? "BG_Dark" : "BG")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -69,21 +68,19 @@ public struct LanguageSelectionView: View {
                     .clipped()
                 
                 VStack(spacing: 0) {
-                    // Fixed Header View (Pinned at the top with safe area)
                     headerView
                         .padding(.horizontal, isIPad ? 32 : 20)
                         .padding(.top, max(geo.safeAreaInsets.top, 20) + (isIPad ? 40 : 40))
                         .padding(.bottom, isIPad ? 18 : 12)
                         .frame(maxWidth: .infinity)
                         
-                    // Scrollable Language List
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(alignment: .leading, spacing: isIPad ? 24 : 18) {
                             
                             // MARK: - Section 1: Select Language
                             VStack(alignment: .leading, spacing: isIPad ? 12 : 8) {
                                 Text("Select Language".localized)
-                                    .font(.inter(.semiBold, size: isIPad ? 18 : 14))
+                                    .font(.inter(.semiBold, size: isIPad ? 18 : 17))
                                     .foregroundColor(AppColors.textSecondary(for: colorScheme))
                                     .padding(.horizontal, 4)
                                 
@@ -93,7 +90,7 @@ public struct LanguageSelectionView: View {
                             // MARK: - Section 2: All Language
                             VStack(alignment: .leading, spacing: isIPad ? 12 : 8) {
                                 Text("All Language".localized)
-                                    .font(.inter(.semiBold, size: isIPad ? 18 : 14))
+                                    .font(.inter(.semiBold, size: isIPad ? 18 : 17))
                                     .foregroundColor(AppColors.textSecondary(for: colorScheme))
                                     .padding(.horizontal, 4)
                                 
@@ -109,7 +106,6 @@ public struct LanguageSelectionView: View {
                         .frame(maxWidth: .infinity)
                     }
                     
-                    // Bottom Native Ad
                     if !isPro {
                         TR_NativeAd6()
                             .padding(.horizontal, isIPad ? 32 : 20)
@@ -142,7 +138,6 @@ public struct LanguageSelectionView: View {
             
             Spacer()
             
-            // Capsule Checkmark Button (Green Gradient Capsule)
             Button(action: {
                 HapticFeedback.generate(.medium)
                 selectedLanguageCode = tempSelectedCode
@@ -201,7 +196,6 @@ public struct LanguageSelectionView: View {
                 
                 Spacer()
                 
-                // Checkmark Badge
                 ZStack {
                     Circle()
                         .fill(Color(hex: "#17AE60"))
@@ -234,7 +228,7 @@ public struct LanguageSelectionView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 tempSelectedCode = lang.code
             }
-        }) {
+        }) {   
             HStack(spacing: 14.scaled) {
                 Image(lang.flagImage)
                     .resizable()

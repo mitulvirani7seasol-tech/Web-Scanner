@@ -107,30 +107,24 @@ public struct ExportChatGuideView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 48 : 32) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Export Chat Guide
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Segmented Liquid Glass Pill Switcher: [Export Chat | Import Chat]
                 tabSelector
                     .frame(maxWidth: isIPad ? 520 : .infinity)
                     .padding(.horizontal, horizontalPadding)
                     .padding(.top, isIPad ? (isLandscape ? 8 : 14) : 8)
                 
-                // 3. Liquid Glass Step Pill Badge: STEP X OF Y
                 stepBadge
                     .padding(.top, isIPad ? (isLandscape ? 10 : 16) : 12)
                 
-                // 4. Description Text (Never cut off, multiline with full height adaptation)
                 stepDescriptionText
                     .padding(.horizontal, horizontalPadding)
                     .padding(.top, isIPad ? (isLandscape ? 8 : 12) : 10)
                     .frame(maxWidth: isIPad ? .infinity : .infinity)
                 
-                // 5. Swipeable Device Preview Mockup (Full scale on iPad portrait & landscape)
                 devicePreviewCarousel(geo: geo, isLandscape: isLandscape)
                     .frame(maxWidth: isIPad ? .infinity : .infinity)
                 
-                // 6. Bottom Navigation Controls (< and >)
                 bottomControls(isLandscape: isLandscape)
                     .padding(.top, isIPad ? (isLandscape ? 4 : 10) : 6)
                     .padding(.bottom, max(geo.safeAreaInsets.bottom + (isIPad ? (isLandscape ? 8 : 14) : 6), isIPad ? (isLandscape ? 16 : 24) : 14))
@@ -166,6 +160,7 @@ public struct ExportChatGuideView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -188,9 +183,9 @@ public struct ExportChatGuideView: View {
                 let isSelected = selectedTab == tab
                 Button(action: {
                     HapticFeedback.generate(.light)
+                    currentStepIndex = 0
                     withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
                         selectedTab = tab
-                        currentStepIndex = 0
                     }
                 }) {
                     HStack(spacing: 8) {
@@ -323,6 +318,7 @@ public struct ExportChatGuideView: View {
                 .tag(step.id)
             }
         }
+        .id(selectedTab)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -330,7 +326,6 @@ public struct ExportChatGuideView: View {
     // MARK: - Bottom Controls (< and >)
     private func bottomControls(isLandscape: Bool) -> some View {
         HStack(spacing: isIPad ? (isLandscape ? 24 : 32) : 20) {
-            // Previous Step Button (<)
             Button(action: {
                 if currentStepIndex > 0 {
                     HapticFeedback.generate(.light)
@@ -344,7 +339,6 @@ public struct ExportChatGuideView: View {
             .disabled(currentStepIndex == 0)
             .buttonStyle(ScaleButtonStyle(scaleAmount: 0.92))
             
-            // Next Step Button (>)
             Button(action: {
                 if currentStepIndex < totalSteps - 1 {
                     HapticFeedback.generate(.light)

@@ -2,7 +2,7 @@
   Localizable.strings
   WhatsappChatBackup
 
-  Created by Sumit zalavadiya on 12/12/25.
+  Created by Ios dev 12/12/25.
   
 */
 
@@ -184,7 +184,7 @@
 "Start Chats Without Saving Contacts" = "संपर्क सहेजे बिना चैट शुरू करें";
 "Message anyone without adding new contacts." = "नए संपर्कों को जोड़े बिना किसी को भी संदेश भेजें।";
 "Save Your Favorite Status Easily" = "अपने पसंदीदा स्टेटस को आसानी से सहेजें";
-"Download and save statuses in seconds." = "सेकंडों में स्टेटस डाउनलोड और सेव करें।";
+"Save and manage statuses with ease." = "आसानी से स्टेटस सेव करें और मैनेज करें।";
 "Backup Your Chats With Ease" = "अपनी चैट का आसानी से बैकअप लें";
 "Keep Important Messages Safe Forever." = "महत्वपूर्ण संदेशों को हमेशा के लिए सुरक्षित रखें।";
 "Get Started" = "शुरू करें";
@@ -481,3 +481,27 @@
 "Eula" = "Eula";
 
 "Loading..." = "Loading...";
+
+"Update Available" = "अपडेट उपलब्ध है";
+"Update Now" = "अभी अपडेट करें";
+"Later" = "बाद में";
+"A new version of our app is available on the App Store. Please update for the best experience." = "ऐप स्टोर पर हमारे ऐप का नया संस्करण उपलब्ध है। कृपया सर्वोत्तम अनुभव के लिए अपडेट करें।";
+"Do you like our App?" = "क्या आपको हमारा ऐप पसंद आया?";
+"Help us improve it app by answering this quick poll" = "इस त्वरित पोल का उत्तर देकर हमारे ऐप को बेहतर बनाने में मदद करें";
+"No Backup Chats" = "कोई बैकअप चैट नहीं";
+"Import Backup" = "बैकअप आयात करें";
+"Export Chat Guide" = "चैट निर्यात गाइड";
+"How to Backup Chats" = "चैट का बैकअप कैसे लें";
+"Export Chat" = "चैट निर्यात करें";
+"Got It" = "समझ गया";
+"Open Web Scanner and tap on 'Backup Chats'." = "वेब स्कैनर खोलें और 'बैकअप चैट' पर टैप करें।";
+"Open the app and tap on WA Backup Chats." = "ऐप खोलें और WA बैकअप चैट पर टैप करें।";
+"Open the chat section, swipe left on any conversation, and tap 'More'." = "चैट सेक्शन खोलें, किसी भी बातचीत पर बाईं ओर स्वाइप करें और 'अधिक' पर टैप करें।";
+"Tap on Contact or Group info." = "संपर्क या समूह जानकारी पर टैप करें।";
+"Tap on Export Chat." = "चैट निर्यात करें पर टैप करें।";
+"Choose Attach Media or Without Media." = "मीडिया संलग्न करें या बिना मीडिया चुनें।";
+"Choose Wp Chat." = "Wp Chat चुनें।";
+"Tap on Saved to Files." = "फ़ाइलों में सहेजें पर टैप करें।";
+"Tap on the 'Import Backup' button at the bottom." = "नीचे 'बैकअप आयात करें' बटन पर टैप करें।";
+"Tap Import Backup Chat." = "बैकअप चैट आयात करें पर टैप करें।";
+"Select your saved WhatsApp backup (.zip or .txt) file from Files." = "फ़ाइलें से अपनी सहेजी गई WhatsApp बैकअप (.zip या .txt) फ़ाइल चुनें।";

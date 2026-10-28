@@ -13,8 +13,7 @@ public struct CaptionDetailView: View {
     let category: CaptionCategory
     
     @State private var copiedCaption: String? = nil
-    @State private var shareText: String? = nil
-    @State private var showShareSheet: Bool = false
+    @State private var shareItem: ShareTextItem? = nil
     
     private var isIPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
@@ -30,10 +29,8 @@ public struct CaptionDetailView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 40 : 28) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < [Category Name] Caption
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Captions List
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVStack(spacing: isIPad ? 16 : 14) {
                         ForEach(Array(category.captions.enumerated()), id: \.offset) { _, caption in
@@ -60,10 +57,8 @@ public struct CaptionDetailView: View {
         .onAppear {
             TabBarManager.shared.isHidden = true
         }
-        .sheet(isPresented: $showShareSheet) {
-            if let text = shareText {
-                ActivityView(activityItems: [text])
-            }
+        .sheet(item: $shareItem) { item in
+            ActivityView(activityItems: [item.text])
         }
     }
     
@@ -79,6 +74,7 @@ public struct CaptionDetailView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -108,15 +104,12 @@ public struct CaptionDetailView: View {
                 .padding(.top, isIPad ? 18 : 14)
                 .padding(.bottom, isIPad ? 16 : 12)
             
-            // Divider
             Rectangle()
                 .fill(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.08))
                 .frame(height: 0.8)
                 .padding(.horizontal, isIPad ? 16 : 12)
             
-            // Actions (Copy & Share)
             HStack(spacing: 0) {
-                // Copy Button
                 Button(action: {
                     HapticFeedback.generate(.medium)
                     TR_AdCountViewModel.sharedd.registerTap()
@@ -143,9 +136,11 @@ public struct CaptionDetailView: View {
                                 .foregroundColor(AppColors.primaryGreen)
                         } else {
                             Image("ic_copy")
+                                .renderingMode(.template)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: isIPad ? 18 : 15.scaled, height: isIPad ? 18 : 15.scaled)
+                                .foregroundColor(AppColors.textPrimary(for: colorScheme))
                             
                             Text("Copy".localized)
                                 .font(.inter(.medium, size: isIPad ? 15 : 13.scaled))
@@ -158,17 +153,14 @@ public struct CaptionDetailView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                // Vertical Separator
                 Rectangle()
                     .fill(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.08))
                     .frame(width: 0.8, height: isIPad ? 22 : 18)
                 
-                // Share Button
                 Button(action: {
                     HapticFeedback.generate(.light)
                     TR_AdCountViewModel.sharedd.registerTap()
-                    shareText = caption
-                    showShareSheet = true
+                    shareItem = ShareTextItem(text: caption)
                 }) {
                     HStack(spacing: 8) {
                         Image("ic_status_Share")
@@ -189,11 +181,7 @@ public struct CaptionDetailView: View {
                 .buttonStyle(PlainButtonStyle())
             }
         }
-//        .background(
-//            RoundedRectangle(cornerRadius: isIPad ? 22 : 16, style: .continuous)
-//                .fill(colorScheme == .dark ? Color.white.opacity(0.06) : Color.white.opacity(0.85))
-//                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: isIPad ? 22 : 16, style: .continuous))
-//        )
+
         .overlay(
             RoundedRectangle(cornerRadius: isIPad ? 22 : 16, style: .continuous)
                 .stroke(
@@ -208,7 +196,6 @@ public struct CaptionDetailView: View {
                     lineWidth: 1
                 )
         )
-//        .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.25 : 0.04), radius: 6, x: 0, y: 3)
         .glassModifier(cornerRadius: isIPad ? 22 : 16)
     }
 }

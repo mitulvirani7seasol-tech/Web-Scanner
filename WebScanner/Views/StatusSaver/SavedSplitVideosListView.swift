@@ -29,10 +29,8 @@ public struct SavedSplitVideosListView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 40 : 28) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Saved Video
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Content
                 if manager.savedCollections.isEmpty {
                     emptyStateView
                 } else {
@@ -75,6 +73,7 @@ public struct SavedSplitVideosListView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -143,7 +142,6 @@ public struct SavedSplitVideosListView: View {
             }
         }) {
             HStack(spacing: 14) {
-                // Thumbnail with Play overlay
                 ZStack {
                     if let cover = collection.coverImage {
                         Image(uiImage: cover)
@@ -168,7 +166,6 @@ public struct SavedSplitVideosListView: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 
-                // Info
                 VStack(alignment: .leading, spacing: 4) {
                     Text(collection.title)
                         .font(.inter(.semiBold, size: isIPad ? 17 : 15))
@@ -182,7 +179,6 @@ public struct SavedSplitVideosListView: View {
                 
                 Spacer()
                 
-                // Ellipsis Menu
                 Menu {
                     Button(action: {
                         TR_AdCountViewModel.sharedd.registerTap()

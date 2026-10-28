@@ -47,25 +47,20 @@ public struct GenerateQRCodeMainView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Generate QR Code
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Segmented Toggle Bar (QR Code | Barcode)
                 segmentedToggleBar
                     .padding(.horizontal, horizontalPadding)
                     .padding(.top, isIPad ? 14 : 10)
                     .padding(.bottom, isIPad ? 14 : 12)
                 
-                // 3. Scrollable Content List
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 14 : 12.scaled) {
                         if tabManager.selectedTab == .qrCode {
-                            // QR Code Category Items (Matches Screenshot 1)
                             ForEach(QRCodeCategory.allCases) { item in
                                 qrCodeItemCard(item: item)
                             }
                         } else {
-                            // Barcode Items (Matches Screenshot 2)
                             ForEach(BarcodeCategory.allCases) { item in
                                 barcodeItemCard(item: item)
                             }
@@ -85,7 +80,6 @@ public struct GenerateQRCodeMainView: View {
         .onAppear {
             TabBarManager.shared.isHidden = true
         }
-        // Fallback navigation when navPath is nil
         .navigationDestination(isPresented: Binding(
             get: { selectedCategoryToNavigate != nil && navPath == nil },
             set: { if !$0 { selectedCategoryToNavigate = nil } }
@@ -115,6 +109,7 @@ public struct GenerateQRCodeMainView: View {
                     .font(.system(size: isIPad ? 22 : 17, weight: .semibold))
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 44 : 36, height: isIPad ? 44 : 36)
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -132,7 +127,6 @@ public struct GenerateQRCodeMainView: View {
     // MARK: - Segmented Toggle Bar (QR Code | Barcode)
     private var segmentedToggleBar: some View {
         HStack(spacing: 4) {
-            // Tab 1: QR Code
             Button(action: {
                 TR_AdCountViewModel.sharedd.registerTap()
                 HapticFeedback.generate(.selection)
@@ -161,7 +155,6 @@ public struct GenerateQRCodeMainView: View {
             }
             .contentShape(Rectangle())
             
-            // Tab 2: Barcode
             Button(action: {
                 TR_AdCountViewModel.sharedd.registerTap()
                 HapticFeedback.generate(.selection)
@@ -191,10 +184,6 @@ public struct GenerateQRCodeMainView: View {
             .contentShape(Rectangle())
         }
         .padding(4)
-//        .background(
-//            Capsule()
-//                .fill(colorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.05))
-//        )
         .overlay(
             Capsule()
                 .stroke(
@@ -226,7 +215,6 @@ public struct GenerateQRCodeMainView: View {
             }
         }) {
             HStack(spacing: 14) {
-                // Category Icon (40x40 circle)
                 Image(item.iconName)
                     .resizable()
                     .scaledToFit()

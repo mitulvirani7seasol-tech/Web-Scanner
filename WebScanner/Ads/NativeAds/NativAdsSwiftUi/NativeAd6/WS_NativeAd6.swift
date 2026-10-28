@@ -16,25 +16,31 @@ struct WS_NativeAd6: View {
     @State var hasLoadedOnce = false
 
     var body: some View {
-        VStack {
-            if !isPro {
+        let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+        VStack(spacing: 0) {
+            if !isUserPro {
                 if let _ = nativeViewModel.smallNativeAd {
                     WS_NativeAd6Container(nativeViewModel: nativeViewModel)
                         .frame(height: isIpad() ? 110 : 95)
                         .background(Color.white.opacity(0.50))
                         .cornerRadius(8)
+                        .transition(.opacity)
                 } else if nativeViewModel.didFailToSmallLoad {
                     Color.clear
                         .frame(height: 0)
-                        .animation(.easeOut(duration: 0.3), value: nativeViewModel.didFailToSmallLoad)
                 } else {
                     WS_ShimmerPlaceholderView()
-                        .frame(height: isIpad() ? 110 : 82)
+                        .frame(height: isIpad() ? 110 : 95)
                         .padding(.horizontal, 8)
+                        .transition(.opacity)
                 }
             }
         }
+        .animation(.easeInOut(duration: 0.35), value: nativeViewModel.smallNativeAd != nil)
+        .animation(.easeOut(duration: 0.3), value: nativeViewModel.didFailToSmallLoad)
         .onAppear {
+            let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+            guard !isUserPro else { return }
             if !hasLoadedOnce {
                 nativeViewModel.refreshSmallNative()
                 hasLoadedOnce = true

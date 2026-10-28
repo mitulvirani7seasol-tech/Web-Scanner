@@ -38,7 +38,6 @@ public final class CoreDataManager: ObservableObject {
     }
     
     private init() {
-        // Build dynamic Core Data NSManagedObjectModel programmatically
         let model = NSManagedObjectModel()
         
         let entity = NSEntityDescription()
@@ -80,7 +79,6 @@ public final class CoreDataManager: ObservableObject {
         
         persistentContainer = NSPersistentContainer(name: "WebScannerCoreData", managedObjectModel: model)
         
-        // Use an SQLite persistent store in Application Support
         persistentContainer.loadPersistentStores { description, error in
             if let error = error {
                 print("[CoreData] Error loading persistent store: \(error.localizedDescription)")

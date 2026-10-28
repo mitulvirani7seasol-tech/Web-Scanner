@@ -52,22 +52,17 @@ public struct HowToDownloadStatusView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 48 : 32) : 18
             
             VStack(spacing: 20) {
-                // 1. Top Custom Navigation Header: < How to download?
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Liquid Glass Step Pill Badge: STEP X OF Y
                 stepBadge
                     .padding(.top, isIPad ? (isLandscape ? 12 : 20) : 0)
                 
-                // 3. Description Text
                 stepDescriptionText
                     .padding(.horizontal, horizontalPadding)
                     .padding(.top, isIPad ? (isLandscape ? 10 : 16) : 0)
                 
-                // 4. Swipeable Device Preview Carousel
                 devicePreviewCarousel(geo: geo, isLandscape: isLandscape)
                 
-                // 5. Bottom Navigation Controls (< and >)
                 bottomControls(isLandscape: isLandscape)
                     .padding(.top, isIPad ? (isLandscape ? 8 : 14) : 8)
                     .padding(.bottom, max(geo.safeAreaInsets.bottom + (isIPad ? (isLandscape ? 12 : 0) : 0), isIPad ? (isLandscape ? 20 : 0) : 0))
@@ -99,6 +94,7 @@ public struct HowToDownloadStatusView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
@@ -193,7 +189,6 @@ public struct HowToDownloadStatusView: View {
     // MARK: - Bottom Controls (< and >)
     private func bottomControls(isLandscape: Bool) -> some View {
         HStack(spacing: isIPad ? (isLandscape ? 24 : 32) : 20) {
-            // Previous Step Button (<)
             Button(action: {
                 if currentStepIndex > 0 {
                     HapticFeedback.generate(.light)
@@ -208,7 +203,6 @@ public struct HowToDownloadStatusView: View {
             .disabled(currentStepIndex == 0)
             .buttonStyle(ScaleButtonStyle(scaleAmount: 0.92))
             
-            // Next Step Button (>)
             Button(action: {
                 if currentStepIndex < totalSteps - 1 {
                     HapticFeedback.generate(.light)

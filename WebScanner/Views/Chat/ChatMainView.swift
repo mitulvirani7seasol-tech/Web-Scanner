@@ -31,20 +31,16 @@ public struct ChatMainView: View {
             let horizontalPadding: CGFloat = isIPad ? (isLandscape ? 48 : 32) : 18
             
             VStack(spacing: 0) {
-                // 1. Top Custom Navigation Header: < Chat
                 headerBar(horizontalPadding: horizontalPadding)
                 
-                // 2. Chat Feature Cards List
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: isIPad ? 18 : 14.scaled) {
                         
-                        // Native Ad 7
                         if !isPro {
                             TR_NativeAd7()
                                 .padding(.top, 10)
                         }
                         
-                        // Card 1: Quick Replay
                         chatCard(
                             title: "Quick Replay".localized,
                             subtitle: "Reply instantly with just one tap".localized,
@@ -65,7 +61,6 @@ public struct ChatMainView: View {
                             }
                         }
                         
-                        // Card 2: Funny Messages
                         chatCard(
                             title: "Funny Messages".localized,
                             subtitle: "Create funny messages for every mood".localized,
@@ -86,7 +81,6 @@ public struct ChatMainView: View {
                             }
                         }
                         
-                        // Card 3: Scan QR Code
                         chatCard(
                             title: "Scan QR Code".localized,
                             subtitle: "Scan codes instantly with one tap".localized,
@@ -107,7 +101,6 @@ public struct ChatMainView: View {
                             }
                         }
                         
-                        // Card 4: Generate QR Code
                         chatCard(
                             title: "Generate QR Code".localized,
                             subtitle: "Create custom QR codes instantly".localized,
@@ -177,6 +170,7 @@ public struct ChatMainView: View {
                     .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     .frame(width: isIPad ? 48 : 36, height: isIPad ? 48 : 36)
                     .contentShape(Rectangle())
+                    .glassCard(cornerRadius: 12)
             }
             .buttonStyle(PlainButtonStyle())
             
