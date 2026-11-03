@@ -356,7 +356,7 @@ public struct ChatBackupView: View {
                     helpStepCard(
                         step: 3,
                         title: "Import Backup".localized,
-                        desc: "In WebScanner, tap 'Import Backup' and choose the saved ZIP or TXT file.".localized
+                        desc: "In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file.".localized
                     )
                     
                     helpStepCard(

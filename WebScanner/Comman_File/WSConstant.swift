@@ -9,30 +9,20 @@ import Foundation
 import UIKit
 import SwiftUI
 
-#if DEBUG
-let AppId = 6756773198
-#else
-let AppId = 6781641021
-#endif
+let AppId = 6505063874
 
-let appname = "Web Scanner"
+let appname = "Dual App"
 let REVIEW_LINK = "https://apps.apple.com/app/id\(AppId)?action=write-review"
 let APPURL = "https://apps.apple.com/app/id\(AppId)"
-let PRIVACYPOLICY = "https://jenniferpinto58.blogspot.com/2026/07/privacy-policy.html"
-let TEARMS = "https://jenniferpinto58.blogspot.com/2026/07/terms-conditions.html"
-let EULA = "https://jenniferpinto58.blogspot.com/2026/07/eula.html"
+let PRIVACYPOLICY = "https://vsapps7.blogspot.com/2024/07/privacymetqr.html"
+let TEARMS = "https://vsapps7.blogspot.com/2024/10/termicrickmaster.html"
+let EULA = "https://vsapps7.blogspot.com/2024/09/eulaftscore.html"
 
 // In-App Purchase identifiers
-var iapLifetime = "false"
-var iapYearlyPlan = "false"
+var iapYearlyPlan = "false" 
 var iapMonthlyPlan = "false"
 var iapWeeklyPlan = "false"
 var premiumCloseTime: Double = 2.0
-
-public var isLifetimePlanEnabled: Bool {
-    let val = iapLifetime.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-    return val == "true" || val == "1"
-}
 
 public var isYearlyPlanEnabled: Bool {
     let val = iapYearlyPlan.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -57,7 +47,6 @@ var second_small_native = ""
 var pro_close_inter = ""
 var smallNativeAd = ""
 var freeLimitCount = ""
-var androidBannerUrl = "https://7seasol-application.s3.ap-south-1.amazonaws.com/Smart+View/TV+Banner+Natasha.png"
 
 var bannerId = "ca-app-pub-3940256099942544/2934735716"
 var nativeId = "ca-app-pub-3940256099942544/3986624511"
@@ -69,12 +58,7 @@ var adsCount = 4
 var adsPlus = 1
 var smallNativeBannerId = ""
 
-#if DEBUG
-let ApiURL : String = "https://7seasol-application.s3.amazonaws.com/admin_prod/pbz-grfgvat-arj.json"
-//let ApiURL : String = "https://d2is1ss4hhk4uk.cloudfront.net/dev/mitulvirani.7seasol@gmail.json"
-#else
-let ApiURL : String = "https://7seasol-application.s3.amazonaws.com/admin_prod/pbz-pber-gbby.json"
-#endif
+let ApiURL : String = "https://d3ae04iuu0wjup.cloudfront.net/pbz-rnfljn-zrrglpung.json"
 
 func isIpad() -> Bool {
     UIDevice.current.userInterfaceIdiom == .pad

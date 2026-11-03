@@ -185,7 +185,7 @@ public struct PasscodeLockOverlayView: View {
         var error: NSError?
         
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Unlock WebScanner") { success, _ in
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Unlock Dual App") { success, _ in
                 DispatchQueue.main.async {
                     if success {
                         passcodeManager.isAppUnlocked = true

@@ -21,7 +21,6 @@ final class WS_SubscriptionManager {
         updateListenerTask?.cancel()
     }
 
-    /// Listens for real-time App Store transactions (purchases, renewals, revocations)
     func startListeningForTransactionUpdates() {
         updateListenerTask?.cancel()
         updateListenerTask = Task.detached { [weak self] in
@@ -46,7 +45,6 @@ final class WS_SubscriptionManager {
         var foundAnySubscription = false
         var hasExpiredOrRevoked = false
 
-        // 1. Check current entitlements (active subscriptions and lifetime purchases)
         for await result in Transaction.currentEntitlements {
             let transaction: Transaction
             switch result {
@@ -58,14 +56,12 @@ final class WS_SubscriptionManager {
 
             foundAnySubscription = true
 
-            // If revoked by Apple (e.g. refund/chargeback), it is not active
             if transaction.revocationDate != nil {
                 hasExpiredOrRevoked = true
                 continue
             }
 
             if let expirationDate = transaction.expirationDate {
-                // Auto-renewable subscription: check if expiration date is in the future
                 if expirationDate > Date() {
                     hasActiveSubscription = true
                     break
@@ -73,7 +69,6 @@ final class WS_SubscriptionManager {
                     hasExpiredOrRevoked = true
                 }
             } else {
-                // Non-consumable / Lifetime purchase: has no expiration date
                 hasActiveSubscription = true
                 break
             }

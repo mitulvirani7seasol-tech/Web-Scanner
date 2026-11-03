@@ -46,7 +46,7 @@ public struct SplashScreenView: View {
                             .frame(width: isIPad ? 170 : 130, height: isIPad ? 170 : 130)
                             .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.35 : 0.08), radius: 12, x: 0, y: 6)
                         
-                        Text("Web Scanner".localized)
+                        Text("Dual App".localized)
                             .font(.inter(.bold, size: isIPad ? 32 : 24))
                             .foregroundColor(AppColors.textPrimary(for: colorScheme))
                     }

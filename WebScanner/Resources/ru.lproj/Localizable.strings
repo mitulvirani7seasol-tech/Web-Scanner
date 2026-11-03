@@ -191,6 +191,9 @@
 "Backup Your Chats With Ease" = "Легкое резервное копирование чатов";
 "Keep Important Messages Safe Forever." = "Храните важные сообщения в безопасности навсегда.";
 "Get Started" = "Начать";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Веб-сканер";
 "WT Scan Now" = "Сканировать WT";
 "Access Your Chats Instantly" = "Мгновенный доступ к вашим чатам";
@@ -498,7 +501,10 @@
 "How to Backup Chats" = "Как создать резервную копию чатов";
 "Export Chat" = "Экспорт чата";
 "Got It" = "Понятно";
-"Open Web Scanner and tap on 'Backup Chats'." = "Откройте Веб-сканер и нажмите «Резервные копии чатов».";
+"Open Dual App and tap on 'Backup Chats'." = "Откройте Dual App и нажмите «Резервные копии чатов».";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Откройте Dual App и нажмите «Резервные копии чатов».";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Откройте Dual App и нажмите «Резервные копии чатов».";
+"Open Web Scanner and tap on 'Backup Chats'." = "Откройте Dual App и нажмите «Резервные копии чатов».";
 "Open the app and tap on WA Backup Chats." = "Откройте приложение и нажмите «Резервные копии чатов WA».";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "Откройте раздел чатов, проведите пальцем влево по любому разговору и нажмите «Еще».";
 "Tap on Contact or Group info." = "Нажмите на информацию о контакте или группе.";
@@ -509,3 +515,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "Нажмите кнопку «Импорт резервной копии» внизу.";
 "Tap Import Backup Chat." = "Нажмите «Импорт резервной копии чата».";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Выберите сохраненный файл резервной копии WhatsApp (.zip или .txt) из файлов.";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "В Dual App нажмите «Импорт резервной копии» и выберите сохраненный ZIP или TXT файл.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "В Dual App нажмите «Импорт резервной копии» и выберите сохраненный ZIP или TXT файл.";
+"Open in WhatsApp Business" = "Открыть в WhatsApp Business";
+"Message %@" = "Написать %@";

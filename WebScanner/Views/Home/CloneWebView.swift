@@ -146,6 +146,12 @@ public struct CloneWebView: View {
     }
     
     private var displayTitle: String {
+        if let acc = AccountManager.shared.accounts.first(where: { $0.id == sessionAccount.id }) {
+            let raw = acc.accountName.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !raw.isEmpty && !raw.starts(with: "-") && !raw.contains("Log in") && !raw.contains("Sign in") {
+                return raw
+            }
+        }
         if existingAccount == nil {
             return platform.displayName
         }
@@ -411,149 +417,185 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                     return;
                   }
 
-                  // Target button at top right: prefer xBtn (close), then pauseBtn or muteBtn
-                  const targetBtn = (xBtn && !xBtn.closest('#side, #pane-side, [data-testid="chat-list"]')) ? xBtn : (pauseBtn || muteBtn);
+                  // Hide Cross (✕) button in Status Viewer
+                  const xButtons = document.querySelectorAll('span[data-icon="x"], span[data-icon="x-viewer"], span[data-icon="close"]');
+                  xButtons.forEach(span => {
+                    const btn = span.closest('button, [role="button"]');
+                    if (btn && !btn.closest('#side, #pane-side, [data-testid="chat-list"]')) {
+                      btn.style.setProperty('display', 'none', 'important');
+                    }
+                  });
+                  document.querySelectorAll('button[aria-label="Close"], div[role="button"][aria-label="Close"]').forEach(btn => {
+                    if (!btn.closest('#side, #pane-side, [data-testid="chat-list"]')) {
+                      btn.style.setProperty('display', 'none', 'important');
+                    }
+                  });
 
-                  if (targetBtn && !document.querySelector('.custom-download-btn')) {
-                    const containerElement = targetBtn.parentElement?.parentElement?.parentElement
-                                          || targetBtn.parentElement?.parentElement
-                                          || targetBtn.parentElement;
-
-                    const downloadButton = document.createElement('button');
-                    downloadButton.className = 'custom-download-btn';
-                    downloadButton.type = 'button';
-                    downloadButton.setAttribute('aria-label', 'Download Status');
-                    downloadButton.style.background = 'transparent';
-                    downloadButton.style.border = 'none';
-                    downloadButton.style.cursor = 'pointer';
-                    downloadButton.style.marginRight = '8px';
-                    downloadButton.style.padding = '6px';
-                    downloadButton.style.display = 'inline-flex';
-                    downloadButton.style.alignItems = 'center';
-                    downloadButton.style.justifyContent = 'center';
-                    downloadButton.style.zIndex = '99999';
-
-                    downloadButton.innerHTML = `
-                      <svg fill="#FFF" height="18px" width="18px" viewBox="0 0 29.978 29.978" style="filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.7));">
-                        <g>
-                          <path d="M25.462,19.105v6.848H4.515v-6.848H0.489v8.861c0,1.111,0.9,2.012,2.016,2.012h24.967c1.115,0,2.016-0.9,2.016-2.012 v-8.861H25.462z"/>
-                          <path d="M14.62,18.426l-5.764-6.965c0,0-0.877-0.828,0.074-0.828s3.248,0,3.248,0s0-0.557,0-1.416c0-2.449,0-6.906,0-8.723 c0,0-0.129-0.494,0.615-0.494c0.75,0,4.035,0,4.572,0c0.536,0,0.524,0.416,0.524,0.416c0,1.762,0,6.373,0,8.742 c0,0.768,0,1.266,0,1.266s1.842,0,2.998,0c1.154,0,0.285,0.867,0.285,0.867s-4.904,6.51-5.588,7.193 C15.092,18.979,14.62,18.426,14.62,18.426z"/>
-                        </g>
-                      </svg>
-                    `;
-
-                    downloadButton.addEventListener('click', (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-
-                      function sendDataToSwift(mediaType, base64Data) {
-                          if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusHandler) {
-                              window.webkit.messageHandlers.statusHandler.postMessage({
-                                  mediaType: mediaType,
-                                  base64Data: base64Data
-                              });
-                          }
+                  // Position Status Back button above the white progress bar
+                  const allBackSpans = document.querySelectorAll('span[data-icon="back"], span[data-icon="arrow-back"], span[data-icon="chevron-left"], span[data-icon="left"]');
+                  let statusBackBtn = null;
+                  for (const span of allBackSpans) {
+                    const b = span.closest('button, [role="button"]');
+                    if (b && !b.closest('#side, #pane-side, [data-testid="chat-list"]')) {
+                      statusBackBtn = b;
+                      break;
+                    }
+                  }
+                  if (!statusBackBtn) {
+                    for (const b of document.querySelectorAll('button[aria-label*="Back" i], div[role="button"][aria-label*="Back" i]')) {
+                      if (!b.closest('#side, #pane-side, [data-testid="chat-list"]')) {
+                        statusBackBtn = b;
+                        break;
                       }
+                    }
+                  }
+                  if (statusBackBtn) {
+                    statusBackBtn.style.setProperty('position', 'absolute', 'important');
+                    statusBackBtn.style.setProperty('top', '8px', 'important');
+                    statusBackBtn.style.setProperty('left', '12px', 'important');
+                    statusBackBtn.style.setProperty('z-index', '99999', 'important');
+                  }
 
-                      function fetchBlobAndSendToSwift(blobUrl, fallbackType) {
-                          if (blobUrl.startsWith('data:')) {
-                              const parts = blobUrl.split(',');
-                              const mimeMatch = parts[0].match(/:(.*?);/);
-                              const mimeType = mimeMatch ? mimeMatch[1] : (fallbackType || 'image/jpeg');
-                              sendDataToSwift(mimeType, parts[1] || '');
-                              return;
-                          }
+                  // Position Download button next to the Play/Pause button
+                  const playPauseTarget = pauseBtn || muteBtn || document.querySelector('span[data-icon="menu"], span[data-icon="more-options"]')?.closest('button, [role="button"]');
 
-                          fetch(blobUrl)
-                              .then(response => response.blob())
-                              .then(blob => {
-                                  const reader = new FileReader();
-                                  reader.onloadend = function() {
-                                      const base64data = reader.result;
-                                      sendDataToSwift(blob.type || fallbackType || 'image/jpeg', (base64data || '').split(',')[1] || '');
-                                  };
-                                  reader.readAsDataURL(blob);
-                              })
-                              .catch(error => {
-                                  console.error('Fetching blob failed:', error);
-                              });
+                  if (playPauseTarget && playPauseTarget.parentNode) {
+                    let downloadButton = document.querySelector('.custom-download-btn');
+                    if (downloadButton) {
+                      if (downloadButton.nextElementSibling !== playPauseTarget && downloadButton.parentNode !== playPauseTarget.parentNode) {
+                        playPauseTarget.parentNode.insertBefore(downloadButton, playPauseTarget);
                       }
+                    } else {
+                      downloadButton = document.createElement('button');
+                      downloadButton.className = 'custom-download-btn';
+                      downloadButton.type = 'button';
+                      downloadButton.setAttribute('aria-label', 'Download Status');
+                      downloadButton.style.background = 'transparent';
+                      downloadButton.style.border = 'none';
+                      downloadButton.style.cursor = 'pointer';
+                      downloadButton.style.marginRight = '8px';
+                      downloadButton.style.padding = '6px';
+                      downloadButton.style.display = 'inline-flex';
+                      downloadButton.style.alignItems = 'center';
+                      downloadButton.style.justifyContent = 'center';
+                      downloadButton.style.zIndex = '99999';
 
-                      function extractAndSendMedia(retriesLeft) {
-                          // 1. Check video
-                          const videos = Array.from(document.querySelectorAll('video')).filter(v => !v.closest('#side, #pane-side, [data-testid="chat-list"]'));
-                          const videoElement = videos.find(v => v.src && v.src.startsWith('blob:')) || videos.find(v => v.src);
-                          if (videoElement && videoElement.src) {
-                              fetchBlobAndSendToSwift(videoElement.src, 'video/mp4');
-                              return;
-                          }
+                      downloadButton.innerHTML = `
+                        <svg fill="#FFF" height="18px" width="18px" viewBox="0 0 29.978 29.978" style="filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.7));">
+                          <g>
+                            <path d="M25.462,19.105v6.848H4.515v-6.848H0.489v8.861c0,1.111,0.9,2.012,2.016,2.012h24.967c1.115,0,2.016-0.9,2.016-2.012 v-8.861H25.462z"/>
+                            <path d="M14.62,18.426l-5.764-6.965c0,0-0.877-0.828,0.074-0.828s3.248,0,3.248,0s0-0.557,0-1.416c0-2.449,0-6.906,0-8.723 c0,0-0.129-0.494,0.615-0.494c0.75,0,4.035,0,4.572,0c0.536,0,0.524,0.416,0.524,0.416c0,1.762,0,6.373,0,8.742 c0,0.768,0,1.266,0,1.266s1.842,0,2.998,0c1.154,0,0.285,0.867,0.285,0.867s-4.904,6.51-5.588,7.193 C15.092,18.979,14.62,18.426,14.62,18.426z"/>
+                          </g>
+                        </svg>
+                      `;
 
-                          // 2. Candidate images outside side-pane, chat-list, header
-                          const allImages = Array.from(document.querySelectorAll('img')).filter(img => {
-                              if (img.closest('#side, #pane-side, [data-testid="chat-list"], header')) return false;
-                              if (img.src && (img.src.includes('emoji') || img.src.includes('data:image/svg+xml'))) return false;
-                              return true;
-                          });
+                      downloadButton.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
 
-                          // 2a. Priority 1: blob images sorted by resolution
-                          const blobImages = allImages.filter(img => img.src && img.src.includes('blob:'));
-                          if (blobImages.length > 0) {
-                              blobImages.sort((a, b) => ((b.naturalWidth * b.naturalHeight) || (b.clientWidth * b.clientHeight)) - ((a.naturalWidth * a.naturalHeight) || (a.clientWidth * a.clientHeight)));
-                              fetchBlobAndSendToSwift(blobImages[0].src, 'image/jpeg');
-                              return;
-                          }
+                        function sendDataToSwift(mediaType, base64Data) {
+                            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusHandler) {
+                                window.webkit.messageHandlers.statusHandler.postMessage({
+                                    mediaType: mediaType,
+                                    base64Data: base64Data
+                                });
+                            }
+                        }
 
-                          // 2b. Priority 2: Canvas in viewer
-                          const canvases = Array.from(document.querySelectorAll('canvas')).filter(c => {
-                              return !c.closest('#side, #pane-side, [data-testid="chat-list"], header') && c.width > 200 && c.height > 200;
-                          });
-                          if (canvases.length > 0) {
-                              canvases.sort((a, b) => (b.width * b.height) - (a.width * a.height));
-                              try {
-                                  const dataUrl = canvases[0].toDataURL('image/jpeg', 0.95);
-                                  if (dataUrl && dataUrl.startsWith('data:')) {
-                                      sendDataToSwift('image/jpeg', dataUrl.split(',')[1] || '');
-                                      return;
-                                  }
-                              } catch (err) {
-                                  console.error('Canvas export failed:', err);
-                              }
-                          }
+                        function fetchBlobAndSendToSwift(blobUrl, fallbackType) {
+                            if (blobUrl.startsWith('data:')) {
+                                const parts = blobUrl.split(',');
+                                const mimeMatch = parts[0].match(/:(.*?);/);
+                                const mimeType = mimeMatch ? mimeMatch[1] : (fallbackType || 'image/jpeg');
+                                sendDataToSwift(mimeType, parts[1] || '');
+                                return;
+                            }
 
-                          // 2c. Priority 3: Non-blob images with high natural resolution
-                          if (allImages.length > 0) {
-                              allImages.sort((a, b) => (b.naturalWidth * b.naturalHeight) - (a.naturalWidth * a.naturalHeight));
-                              const bestImage = allImages[0];
-                              if (bestImage.naturalWidth >= 300 || (bestImage.naturalWidth * bestImage.naturalHeight) >= 60000) {
-                                  fetchBlobAndSendToSwift(bestImage.src, 'image/jpeg');
-                                  return;
-                              }
-                          }
+                            fetch(blobUrl)
+                                .then(response => response.blob())
+                                .then(blob => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = function() {
+                                        const base64data = reader.result;
+                                        sendDataToSwift(blob.type || fallbackType || 'image/jpeg', (base64data || '').split(',')[1] || '');
+                                    };
+                                    reader.readAsDataURL(blob);
+                                })
+                                .catch(error => {
+                                    console.error('Fetching blob failed:', error);
+                                });
+                        }
 
-                          // If only low-res thumbnail is found and retries remain, wait for high-res blob
-                          if (retriesLeft > 0) {
-                              setTimeout(() => extractAndSendMedia(retriesLeft - 1), 350);
-                              return;
-                          }
+                        function extractAndSendMedia(retriesLeft) {
+                            // 1. Check video
+                            const videos = Array.from(document.querySelectorAll('video')).filter(v => !v.closest('#side, #pane-side, [data-testid="chat-list"]'));
+                            const videoElement = videos.find(v => v.src && v.src.startsWith('blob:')) || videos.find(v => v.src);
+                            if (videoElement && videoElement.src) {
+                                fetchBlobAndSendToSwift(videoElement.src, 'video/mp4');
+                                return;
+                            }
 
-                          // Fallback: send whatever image was found
-                          if (allImages.length > 0) {
-                              fetchBlobAndSendToSwift(allImages[0].src, 'image/jpeg');
-                              return;
-                          }
+                            // 2. Candidate images outside side-pane, chat-list, header
+                            const allImages = Array.from(document.querySelectorAll('img')).filter(img => {
+                                if (img.closest('#side, #pane-side, [data-testid="chat-list"], header')) return false;
+                                if (img.src && (img.src.includes('emoji') || img.src.includes('data:image/svg+xml'))) return false;
+                                return true;
+                            });
 
-                          console.log('No media found to download');
-                      }
+                            // 2a. Priority 1: blob images sorted by resolution
+                            const blobImages = allImages.filter(img => img.src && img.src.includes('blob:'));
+                            if (blobImages.length > 0) {
+                                blobImages.sort((a, b) => ((b.naturalWidth * b.naturalHeight) || (b.clientWidth * b.clientHeight)) - ((a.naturalWidth * a.naturalHeight) || (a.clientWidth * a.clientHeight)));
+                                fetchBlobAndSendToSwift(blobImages[0].src, 'image/jpeg');
+                                return;
+                            }
 
-                      extractAndSendMedia(2);
-                    });
+                            // 2b. Priority 2: Canvas in viewer
+                            const canvases = Array.from(document.querySelectorAll('canvas')).filter(c => {
+                                return !c.closest('#side, #pane-side, [data-testid="chat-list"], header') && c.width > 200 && c.height > 200;
+                            });
+                            if (canvases.length > 0) {
+                                canvases.sort((a, b) => (b.width * b.height) - (a.width * a.height));
+                                try {
+                                    const dataUrl = canvases[0].toDataURL('image/jpeg', 0.95);
+                                    if (dataUrl && dataUrl.startsWith('data:')) {
+                                        sendDataToSwift('image/jpeg', dataUrl.split(',')[1] || '');
+                                        return;
+                                    }
+                                } catch (err) {
+                                    console.error('Canvas export failed:', err);
+                                }
+                            }
 
-                    if (targetBtn.parentElement && targetBtn.parentElement !== containerElement) {
-                      targetBtn.parentElement.parentElement?.insertBefore(downloadButton, targetBtn.parentElement);
-                    } else if (targetBtn.parentNode) {
-                      targetBtn.parentNode.insertBefore(downloadButton, targetBtn);
-                    } else if (containerElement) {
-                      containerElement.prepend(downloadButton);
+                            // 2c. Priority 3: Non-blob images with high natural resolution
+                            if (allImages.length > 0) {
+                                allImages.sort((a, b) => (b.naturalWidth * b.naturalHeight) - (a.naturalWidth * a.naturalHeight));
+                                const bestImage = allImages[0];
+                                if (bestImage.naturalWidth >= 300 || (bestImage.naturalWidth * bestImage.naturalHeight) >= 60000) {
+                                    fetchBlobAndSendToSwift(bestImage.src, 'image/jpeg');
+                                    return;
+                                }
+                            }
+
+                            // If only low-res thumbnail is found and retries remain, wait for high-res blob
+                            if (retriesLeft > 0) {
+                                setTimeout(() => extractAndSendMedia(retriesLeft - 1), 350);
+                                return;
+                            }
+
+                            // Fallback: send whatever image was found
+                            if (allImages.length > 0) {
+                                fetchBlobAndSendToSwift(allImages[0].src, 'image/jpeg');
+                                return;
+                            }
+
+                            console.log('No media found to download');
+                        }
+
+                        extractAndSendMedia(2);
+                      });
+
+                      playPauseTarget.parentNode.insertBefore(downloadButton, playPauseTarget);
                     }
                   }
                 });
@@ -839,6 +881,7 @@ struct WKWebViewRepresentable: UIViewRepresentable {
         private var loginTimer: Timer?
         private var hasSeenLoggedIn: Bool = false
         private var pageLoadCompleted: Bool = false
+        private var consecutiveLogoutCount: Int = 0
         var capturedUsername: String? = nil
         
         init(parent: WKWebViewRepresentable) {
@@ -962,8 +1005,13 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                                             cleanName.lowercased() == "settings" ||
                                             cleanName.lowercased().contains("help center")
                         
+                        let existingAcc = AccountManager.shared.accounts.first(where: { $0.id == self.parent.account.id })
+                        let isCustom = self.parent.account.isCustomNamed || (existingAcc?.isCustomNamed == true)
+                        
                         let displayName: String
-                        if self.parent.platform == .google {
+                        if isCustom {
+                            displayName = existingAcc?.accountName ?? self.parent.account.accountName
+                        } else if self.parent.platform == .google {
                             var googleEmail = ""
                             if cleanName.contains("@") {
                                 googleEmail = cleanName
@@ -1000,6 +1048,9 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                         
                         var acc = self.parent.account
                         acc.accountName = displayName
+                        if isCustom {
+                            acc.isCustomNamed = true
+                        }
                         acc.isSessionActive = true
                         self.parent.account = acc
                         self.parent.currentTitle = displayName
@@ -1026,13 +1077,66 @@ struct WKWebViewRepresentable: UIViewRepresentable {
             (function() {
                 var bodyText = (document.body ? (document.body.innerText || '') : '').toLowerCase();
                 
-                var isLoggingOut = bodyText.includes('logging out')
-                                || (bodyText.includes("don't close this window") && !document.querySelector('#pane-side'));
+                // 1. Check if "Use here" / "Open in another window" modal is present
+                var isUseHereDialog = bodyText.includes('open in another window')
+                                   || bodyText.includes('use here')
+                                   || bodyText.includes('whatsapp web here')
+                                   || Array.from(document.querySelectorAll('button, [role="button"]')).some(function(b) {
+                                       var t = (b.innerText || b.textContent || '').trim().toLowerCase();
+                                       return t === 'use here' || t.includes('use here');
+                                   });
                 
-                var isQR = document.querySelector('[data-ref]') != null
-                        || (document.querySelector('canvas') != null && document.querySelector('canvas').width > 10)
-                        || document.querySelector('[data-testid="qrcode"]') != null
-                        || document.querySelector('div[data-ref]') != null;
+                // Track if user clicked "Use here" recently
+                if (!window.__wa_use_here_listener_installed) {
+                    window.__wa_use_here_listener_installed = true;
+                    document.addEventListener('click', function(e) {
+                        var target = e.target;
+                        var btn = target ? target.closest('button, [role="button"]') : null;
+                        if (btn) {
+                            var text = (btn.innerText || btn.textContent || '').trim().toLowerCase();
+                            if (text.includes('use here')) {
+                                window.__wa_use_here_clicked_time = Date.now();
+                            }
+                        }
+                    }, true);
+                }
+                
+                var isRecentlyResumed = window.__wa_use_here_clicked_time && (Date.now() - window.__wa_use_here_clicked_time < 20000);
+                
+                // 2. Check if WhatsApp is currently connecting, syncing, or loading messages
+                var isConnectingOrLoading = bodyText.includes('connecting')
+                                         || bodyText.includes('loading your chats')
+                                         || bodyText.includes('organizing messages')
+                                         || bodyText.includes('downloading messages')
+                                         || bodyText.includes('starting chat')
+                                         || document.querySelector('[role="progressbar"], progress, [data-testid="loading-screen"]') != null;
+                
+                // If "Use here" modal is open, user recently tapped "Use here", or WhatsApp is connecting/loading:
+                // NEVER treat as logging out or QR!
+                if (isUseHereDialog || isRecentlyResumed || isConnectingOrLoading) {
+                    return JSON.stringify({
+                        hasChatList: false,
+                        isLoggingOut: false,
+                        hasQR: false,
+                        isUseHere: isUseHereDialog,
+                        isConnecting: isConnectingOrLoading,
+                        name: ''
+                    });
+                }
+                
+                var isLoggingOut = bodyText.includes('logging out')
+                                && !bodyText.includes('use here');
+                
+                // Genuine QR landing page: must have pairing data-ref / qrcode container, OR explicit pairing text + canvas
+                var isLandingPage = bodyText.includes('to use whatsapp on your computer')
+                                 || bodyText.includes('link a device')
+                                 || bodyText.includes('link with phone number')
+                                 || bodyText.includes('open whatsapp on your phone');
+                                 
+                var qrContainer = document.querySelector('[data-ref], [data-testid="qrcode"], [data-testid="link-device-qrcode"], div[aria-label="Scan me!"]');
+                
+                var isQR = (qrContainer != null)
+                        || (isLandingPage && document.querySelector('canvas') != null);
                 
                 var chatList = document.querySelector('#pane-side')
                             || document.querySelector('div[aria-label="Chat list"]')
@@ -1096,6 +1200,8 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                     hasChatList: chatList != null && !isLoggingOut,
                     isLoggingOut: isLoggingOut,
                     hasQR: isQR,
+                    isUseHere: false,
+                    isConnecting: false,
                     name: userName
                 });
             })()
@@ -1112,32 +1218,24 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                 let isLoggingOut = dict["isLoggingOut"] as? Bool ?? false
                 let hasChatList = dict["hasChatList"] as? Bool ?? false
                 let hasQR = dict["hasQR"] as? Bool ?? false
+                let isUseHere = dict["isUseHere"] as? Bool ?? false
+                let isConnecting = dict["isConnecting"] as? Bool ?? false
                 let fetchedName = dict["name"] as? String ?? ""
                 
-                if (self.hasSeenLoggedIn && (isLoggingOut || (hasQR && !hasChatList))) || (self.pageLoadCompleted && hasQR && !hasChatList) {
-                    // WhatsApp logged out or is logging out!
-                    print("🚪 WhatsApp logout detected in CloneWebView - resetting session and opening WebScannerView")
-                    self.loginTimer?.invalidate()
-                    self.loginTimer = nil
-                    self.webView?.stopLoading()
-                    
-                    DispatchQueue.main.async {
-                        var acc = self.parent.account
-                        AccountManager.shared.resetWhatsAppSession(for: &acc)
-                        self.parent.account = acc
-                        self.parent.currentTitle = acc.accountName
-                        UserDefaults.standard.set(false, forKey: "is_whatsapp_web_logged_in")
-                        TabBarManager.shared.isHidden = true
-                        HapticFeedback.generate(.medium)
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            self.parent.shouldOpenWebScanner = true
-                        }
-                    }
-                } else if hasChatList {
+                if hasChatList {
+                    self.consecutiveLogoutCount = 0
                     self.hasSeenLoggedIn = true
                     DispatchQueue.main.async {
                         var acc = self.parent.account
-                        if !fetchedName.isEmpty && !AccountManager.isPhoneNumber(fetchedName) {
+                        let existingAcc = AccountManager.shared.accounts.first(where: { $0.id == acc.id })
+                        let isCustom = acc.isCustomNamed || (existingAcc?.isCustomNamed == true)
+                        
+                        if isCustom {
+                            let customName = existingAcc?.accountName ?? acc.accountName
+                            self.parent.currentTitle = customName
+                            acc.accountName = customName
+                            acc.isCustomNamed = true
+                        } else if !fetchedName.isEmpty && !AccountManager.isPhoneNumber(fetchedName) {
                             self.parent.currentTitle = fetchedName
                             acc.accountName = fetchedName
                         } else {
@@ -1173,6 +1271,35 @@ struct WKWebViewRepresentable: UIViewRepresentable {
                             self.checkWhatsAppStatus(webView: webView)
                         }
                     }
+                } else if isUseHere || isConnecting {
+                    // "Use here" dialog or connecting state -> preserve session, zero logout counter
+                    self.consecutiveLogoutCount = 0
+                } else if isLoggingOut || hasQR {
+                    self.consecutiveLogoutCount += 1
+                    print("⚠️ [CloneWebView] Potential logout/QR signal (\(self.consecutiveLogoutCount)/5) | isLoggingOut: \(isLoggingOut), hasQR: \(hasQR)")
+                    
+                    if self.consecutiveLogoutCount >= 5 && (self.hasSeenLoggedIn || self.pageLoadCompleted) {
+                        // Confirmed genuine WhatsApp logout
+                        print("🚪 WhatsApp logout confirmed in CloneWebView - resetting session and opening WebScannerView")
+                        self.loginTimer?.invalidate()
+                        self.loginTimer = nil
+                        self.webView?.stopLoading()
+                        
+                        DispatchQueue.main.async {
+                            var acc = self.parent.account
+                            AccountManager.shared.resetWhatsAppSession(for: &acc)
+                            self.parent.account = acc
+                            self.parent.currentTitle = acc.accountName
+                            UserDefaults.standard.set(false, forKey: "is_whatsapp_web_logged_in")
+                            TabBarManager.shared.isHidden = true
+                            HapticFeedback.generate(.medium)
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                self.parent.shouldOpenWebScanner = true
+                            }
+                        }
+                    }
+                } else {
+                    self.consecutiveLogoutCount = 0
                 }
             }
         }

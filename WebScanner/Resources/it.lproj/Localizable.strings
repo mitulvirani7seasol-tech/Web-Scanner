@@ -187,6 +187,9 @@
 "Backup Your Chats With Ease" = "Esegui il backup delle chat facilmente";
 "Keep Important Messages Safe Forever." = "Conserva i messaggi importanti per sempre.";
 "Get Started" = "Inizia";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Scanner Web";
 "WT Scan Now" = "Scansiona WT ora";
 "Access Your Chats Instantly" = "Accedi istantaneamente alle tue chat";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "Come eseguire il backup delle chat";
 "Export Chat" = "Esporta chat";
 "Got It" = "Ho capito";
-"Open Web Scanner and tap on 'Backup Chats'." = "Apri Web Scanner e tocca 'Backup delle chat'.";
+"Open Dual App and tap on 'Backup Chats'." = "Apri Dual App e tocca 'Backup delle chat'.";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Apri Dual App e tocca 'Backup delle chat'.";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Apri Dual App e tocca 'Backup delle chat'.";
+"Open Web Scanner and tap on 'Backup Chats'." = "Apri Dual App e tocca 'Backup delle chat'.";
 "Open the app and tap on WA Backup Chats." = "Apri l'app e tocca Backup chat WA.";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "Apri la sezione chat, scorri a sinistra su qualsiasi conversazione e tocca 'Altro'.";
 "Tap on Contact or Group info." = "Tocca le info del contatto o del gruppo.";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "Tocca il pulsante 'Importa backup' in basso.";
 "Tap Import Backup Chat." = "Tocca Importa backup chat.";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Seleziona il file di backup di WhatsApp (.zip o .txt) salvato da File.";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "In Dual App, tocca 'Importa backup' e seleziona il file ZIP o TXT salvato.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "In Dual App, tocca 'Importa backup' e seleziona il file ZIP o TXT salvato.";
+"Open in WhatsApp Business" = "Apri in WhatsApp Business";
+"Message %@" = "Messaggio a %@";

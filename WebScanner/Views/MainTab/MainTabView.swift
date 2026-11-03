@@ -80,18 +80,16 @@ public struct MainTabView: View {
         .environment(\.horizontalSizeClass, .compact)
         .tint(AppColors.primaryGreen)
         .toolbar(tabBarManager.isHidden ? .hidden : .visible, for: .tabBar)
-        .id(localizationHelper.refreshID)
         .fullScreenCover(isPresented: $isPresentPremium, onDismiss: {
-            checkUpdateThenRate()
+            handlePaywallDismiss()
         }) {
             PremiumPaywallView(isFromAppOpen: tabBarManager.isPaywallFromAppOpen) {
                 isPresentPremium = false
-                tabBarManager.showPaywall = false
-                checkUpdateThenRate()
+                handlePaywallDismiss()
             }
         }
         .alert(
-            "Update Available".localized,
+            Text("Update Available".localized),
             isPresented: $updateManager.showUpdateAlert
         ) {
             Button("Update Now".localized) {
@@ -104,7 +102,7 @@ public struct MainTabView: View {
         } message: {
             Text("A new version of our app is available on the App Store. Please update for the best experience.".localized)
         }
-        .alert("Do you like our App?".localized, isPresented: $showRateAlert) {
+        .alert(Text("Do you like our App?".localized), isPresented: $showRateAlert) {
             Button("No".localized + " ❌", role: .cancel) {
             }
             Button("Yes".localized + " 👍") {
@@ -117,6 +115,7 @@ public struct MainTabView: View {
         } message: {
             Text("Help us improve it app by answering this quick poll".localized)
         }
+        .id(localizationHelper.refreshID)
         .onChange(of: tabBarManager.showPaywall) { show in
             if show {
                 isPresentPremium = true
@@ -161,6 +160,16 @@ public struct MainTabView: View {
         } else {
             checkUpdateThenRate()
         }
+    }
+    
+    private func handlePaywallDismiss() {
+        tabBarManager.showPaywall = false
+        if let callback = tabBarManager.onPaywallDismissed {
+            tabBarManager.onPaywallDismissed = nil
+            let isUserPro = UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+            callback(isUserPro)
+        }
+        checkUpdateThenRate()
     }
 
     private func checkUpdateThenRate() {

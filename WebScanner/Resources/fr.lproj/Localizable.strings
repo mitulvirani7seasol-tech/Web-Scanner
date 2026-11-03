@@ -187,6 +187,9 @@
 "Backup Your Chats With Ease" = "Sauvegardez vos discussions facilement";
 "Keep Important Messages Safe Forever." = "Gardez vos messages importants en sécurité.";
 "Get Started" = "Commencer";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Web Scanner";
 "WT Scan Now" = "Scanner WT maintenant";
 "Access Your Chats Instantly" = "Accédez instantanément à vos discussions";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "Comment sauvegarder les chats";
 "Export Chat" = "Exporter la discussion";
 "Got It" = "Compris";
-"Open Web Scanner and tap on 'Backup Chats'." = "Ouvrez Web Scanner et appuyez sur « Sauvegardes de chat ».";
+"Open Dual App and tap on 'Backup Chats'." = "Ouvrez Dual App et appuyez sur « Sauvegardes de chat ».";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Ouvrez Dual App et appuyez sur « Sauvegardes de chat ».";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Ouvrez Dual App et appuyez sur « Sauvegardes de chat ».";
+"Open Web Scanner and tap on 'Backup Chats'." = "Ouvrez Dual App et appuyez sur « Sauvegardes de chat ».";
 "Open the app and tap on WA Backup Chats." = "Ouvrez l'application et appuyez sur Sauvegardes WA.";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "Ouvrez la section discussions, glissez vers la gauche sur une conversation et appuyez sur « Plus ».";
 "Tap on Contact or Group info." = "Appuyez sur les infos du contact ou du groupe.";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "Appuyez sur le bouton « Importer la sauvegarde » en bas.";
 "Tap Import Backup Chat." = "Appuyez sur Importer la sauvegarde de discussion.";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Sélectionnez votre fichier de sauvegarde WhatsApp (.zip ou .txt) enregistré dans Fichiers.";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dans Dual App, appuyez sur « Importer la sauvegarde » et choisissez le fichier ZIP ou TXT enregistré.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dans Dual App, appuyez sur « Importer la sauvegarde » et choisissez le fichier ZIP ou TXT enregistré.";
+"Open in WhatsApp Business" = "Ouvrir dans WhatsApp Business";
+"Message %@" = "Message à %@";

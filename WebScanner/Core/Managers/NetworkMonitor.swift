@@ -3,6 +3,7 @@
 //  WebScanner
 //
 //
+//
 
 import Foundation
 import Network
@@ -14,7 +15,7 @@ public final class NetworkMonitor: ObservableObject {
     public static let shared = NetworkMonitor()
     
     private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "com.WebScanner.NetworkMonitor", qos: .background)
+    private let queue = DispatchQueue(label: "com.WebScanner.NetworkMonitor", qos: .userInitiated)
     
     @Published public private(set) var isConnected: Bool = true
     
@@ -23,24 +24,29 @@ public final class NetworkMonitor: ObservableObject {
         
         monitor.pathUpdateHandler = { path in
             let isSatisfied = (path.status == .satisfied)
+            let reachable = NetworkMonitor.checkReachability()
+            let available = isSatisfied || reachable
             Task { @MainActor in
-                NetworkMonitor.shared.isConnected = isSatisfied && NetworkMonitor.checkReachability()
+                NetworkMonitor.shared.isConnected = available
             }
         }
         monitor.start(queue: queue)
     }
     
     public var isNetworkAvailable: Bool {
-        if !Self.checkReachability() {
-            return false
+        // 1. If NWPathMonitor reports satisfied, network is definitely available
+        if monitor.currentPath.status == .satisfied {
+            return true
         }
-        if monitor.currentPath.status != .satisfied {
-            return false
+        // 2. If our published state is true
+        if isConnected {
+            return true
         }
-        return isConnected
+        // 3. Check reachability flags with full Cellular & VPN on-demand support
+        return Self.checkReachability()
     }
     
-    public static func checkReachability() -> Bool {
+    nonisolated public static func checkReachability() -> Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
@@ -49,13 +55,17 @@ public final class NetworkMonitor: ObservableObject {
                 SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
             }
         }
-        guard let reachability = defaultRouteReachability else { return false }
+        guard let reachability = defaultRouteReachability else { return true }
         var flags = SCNetworkReachabilityFlags()
         if !SCNetworkReachabilityGetFlags(reachability, &flags) {
-            return false
+            return true
         }
-        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-        return (isReachable && !needsConnection)
+        
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        let canConnectAutomatically = flags.contains(.connectionOnDemand) || flags.contains(.connectionOnTraffic)
+        let canConnectWithoutUserIntervention = canConnectAutomatically && !flags.contains(.interventionRequired)
+        
+        return isReachable && (!needsConnection || canConnectWithoutUserIntervention)
     }
 }

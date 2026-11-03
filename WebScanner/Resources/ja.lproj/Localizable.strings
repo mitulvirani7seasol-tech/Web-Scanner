@@ -187,6 +187,9 @@
 "Backup Your Chats With Ease" = "チャットを簡単にバックアップ";
 "Keep Important Messages Safe Forever." = "大切なメッセージをずっと安全に保管します。";
 "Get Started" = "始める";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "ウェブスキャナー";
 "WT Scan Now" = "今すぐWTスキャン";
 "Access Your Chats Instantly" = "チャットに即座にアクセス";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "チャットのバックアップ方法";
 "Export Chat" = "チャットをエクスポート";
 "Got It" = "了解";
-"Open Web Scanner and tap on 'Backup Chats'." = "Web Scannerを開き、「バックアップチャット」をタップします。";
+"Open Dual App and tap on 'Backup Chats'." = "Dual Appを開き、「バックアップチャット」をタップします。";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Dual Appを開き、「バックアップチャット」をタップします。";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Dual Appを開き、「バックアップチャット」をタップします。";
+"Open Web Scanner and tap on 'Backup Chats'." = "Dual Appを開き、「バックアップチャット」をタップします。";
 "Open the app and tap on WA Backup Chats." = "アプリを開き、WAバックアップチャットをタップします。";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "チャットセクションを開き、会話を左にスワイプして「その他」をタップします。";
 "Tap on Contact or Group info." = "連絡先またはグループ情報をタップします。";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "下部にある「バックアップをインポート」ボタンをタップします。";
 "Tap Import Backup Chat." = "バックアップチャットをインポートをタップします。";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "ファイルから保存したWhatsAppバックアップ（.zipまたは.txt）ファイルを選択します。";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dual Appで「バックアップをインポート」をタップし、保存されたZIPまたはTXTファイルを選択します。";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dual Appで「バックアップをインポート」をタップし、保存されたZIPまたはTXTファイルを選択します。";
+"Open in WhatsApp Business" = "WhatsApp Businessで開く";
+"Message %@" = "%@ にメッセージを送信";

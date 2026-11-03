@@ -188,6 +188,9 @@
 "Backup Your Chats With Ease" = "अपनी चैट का आसानी से बैकअप लें";
 "Keep Important Messages Safe Forever." = "महत्वपूर्ण संदेशों को हमेशा के लिए सुरक्षित रखें।";
 "Get Started" = "शुरू करें";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "वेब स्कैनर";
 "WT Scan Now" = "डब्ल्यूटी स्कैन";
 "Access Your Chats Instantly" = "अपनी चैट तुरंत एक्सेस करें";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "चैट का बैकअप कैसे लें";
 "Export Chat" = "चैट निर्यात करें";
 "Got It" = "समझ गया";
-"Open Web Scanner and tap on 'Backup Chats'." = "वेब स्कैनर खोलें और 'बैकअप चैट' पर टैप करें।";
+"Open Dual App and tap on 'Backup Chats'." = "Dual App खोलें और 'बैकअप चैट' पर टैप करें।";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Dual App खोलें और 'बैकअप चैट' पर टैप करें।";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Dual App खोलें और 'बैकअप चैट' पर टैप करें।";
+"Open Web Scanner and tap on 'Backup Chats'." = "Dual App खोलें और 'बैकअप चैट' पर टैप करें।";
 "Open the app and tap on WA Backup Chats." = "ऐप खोलें और WA बैकअप चैट पर टैप करें।";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "चैट सेक्शन खोलें, किसी भी बातचीत पर बाईं ओर स्वाइप करें और 'अधिक' पर टैप करें।";
 "Tap on Contact or Group info." = "संपर्क या समूह जानकारी पर टैप करें।";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "नीचे 'बैकअप आयात करें' बटन पर टैप करें।";
 "Tap Import Backup Chat." = "बैकअप चैट आयात करें पर टैप करें।";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "फ़ाइलें से अपनी सहेजी गई WhatsApp बैकअप (.zip या .txt) फ़ाइल चुनें।";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dual App में, 'बैकअप आयात करें' पर टैप करें और सहेजी गई ZIP या TXT फ़ाइल चुनें।";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dual App में, 'बैकअप आयात करें' पर टैप करें और सहेजी गई ZIP या TXT फ़ाइल चुनें।";
+"Open in WhatsApp Business" = "WhatsApp Business में खोलें";
+"Message %@" = "%@ को संदेश भेजें";

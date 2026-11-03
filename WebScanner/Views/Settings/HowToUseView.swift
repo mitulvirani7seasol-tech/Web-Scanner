@@ -121,7 +121,7 @@ public struct HowToUseView: View {
             guideStepCard(
                 step: 3,
                 title: "Link a Device & Scan",
-                description: "Tap 'Link a Device' and point your camera at the QR code displayed on WebScanner.",
+                description: "Tap 'Link a Device' and point your camera at the QR code displayed on Dual App.",
                 icon: "camera.viewfinder"
             )
             
@@ -184,8 +184,8 @@ public struct HowToUseView: View {
             
             guideStepCard(
                 step: 3,
-                title: "Import into WebScanner",
-                description: "Open WebScanner > Chat Backup tab > Tap '+ Import Chat' and select the saved ZIP.",
+                title: "Import into Dual App",
+                description: "Open Dual App > Chat Backup tab > Tap '+ Import Chat' and select the saved ZIP.",
                 icon: "arrow.down.doc.fill"
             )
             
@@ -216,8 +216,8 @@ public struct HowToUseView: View {
             
             guideStepCard(
                 step: 3,
-                title: "Manage in WebScanner",
-                description: "Open WebScanner Status Saver tab to view, share, and export your captured status media.",
+                title: "Manage in Dual App",
+                description: "Open Dual App Status Saver tab to view, share, and export your captured status media.",
                 icon: "square.and.arrow.down.fill"
             )
         }

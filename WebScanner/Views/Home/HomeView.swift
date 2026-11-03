@@ -235,7 +235,7 @@ public struct HomeView: View {
     // MARK: - Top Header
     private var topHeader: some View {
         HStack(alignment: .center) {
-            Text("Web Scanner".localized)
+            Text("Dual App".localized)
                 .font(.inter(.bold, size: isIPad ? 22 : 22))
                 .foregroundColor(AppColors.textPrimary(for: colorScheme))
             
@@ -507,21 +507,17 @@ public struct HomeView: View {
                                 }
                                 if !isPro {
                                     tabBarManager.isPaywallFromAppOpen = false
+                                    tabBarManager.onPaywallDismissed = { didPurchase in
+                                        if didPurchase {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                                navigateToAccount(account)
+                                            }
+                                        }
+                                    }
                                     tabBarManager.showPaywall = true
                                     return
                                 }
-                                accountManager.touch(account)
-                                TR_AdCountViewModel.sharedd.registerTap {
-                                    if account.platform == .whatsApp {
-                                        if account.isSessionActive {
-                                            navPath.append(HomeDestination.clone(platform: .whatsApp, accountId: account.id))
-                                        } else {
-                                            navPath.append(HomeDestination.webScanner(accountId: account.id))
-                                        }
-                                    } else {
-                                        navPath.append(HomeDestination.clone(platform: account.platform, accountId: account.id))
-                                    }
-                                }
+                                navigateToAccount(account)
                             },
                             onDelete: {
                                 accountToDelete = account
@@ -540,6 +536,21 @@ public struct HomeView: View {
                         )
                     }
                 }
+            }
+        }
+    }
+    
+    private func navigateToAccount(_ account: AppAccount) {
+        accountManager.touch(account)
+        TR_AdCountViewModel.sharedd.registerTap {
+            if account.platform == .whatsApp {
+                if account.isSessionActive {
+                    navPath.append(HomeDestination.clone(platform: .whatsApp, accountId: account.id))
+                } else {
+                    navPath.append(HomeDestination.webScanner(accountId: account.id))
+                }
+            } else {
+                navPath.append(HomeDestination.clone(platform: account.platform, accountId: account.id))
             }
         }
     }
@@ -589,6 +600,7 @@ public struct HomeView: View {
                     guard !trimmed.isEmpty else { return }
                     if var acc = accountToRename {
                         acc.accountName = trimmed
+                        acc.isCustomNamed = true
                         accountManager.update(acc)
                     }
                     showRenameSheet = false

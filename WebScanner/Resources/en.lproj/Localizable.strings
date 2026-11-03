@@ -192,6 +192,9 @@
 "Backup Your Chats With Ease" = "Backup Your Chats With Ease";
 "Keep Important Messages Safe Forever." = "Keep Important Messages Safe Forever.";
 "Get Started" = "Get Started";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Web Scanner";
 "WT Scan Now" = "WT Scan Now";
 "Access Your Chats Instantly" = "Access Your Chats Instantly";
@@ -244,7 +247,10 @@
 "Tap on Export Chat." = "Tap on Export Chat.";
 "Choose Attach Media or Without Media." = "Choose Attach Media or Without Media.";
 "Tap on Saved to Files." = "Tap on Saved to Files.";
-"Open Web Scanner and tap on 'Backup Chats'." = "Open Web Scanner and tap on 'Backup Chats'.";
+"Open Dual App and tap on 'Backup Chats'." = "Open Dual App and tap on 'Backup Chats'.";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Open Dual App and tap on 'Backup Chats'.";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Open Dual App and tap on 'Backup Chats'.";
+"Open Web Scanner and tap on 'Backup Chats'." = "Open Dual App and tap on 'Backup Chats'.";
 "Tap on the 'Import Backup' button at the bottom." = "Tap on the 'Import Backup' button at the bottom.";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Select your saved WhatsApp backup (.zip or .txt) file from Files.";
 "Open the app and tap on WA Backup Chats." = "Open the app and tap on WA Backup Chats.";
@@ -519,3 +525,7 @@
 "No" = "No";
 "Yes" = "Yes";
 "Help us improve it app by answering this quick poll" = "Help us improve it app by answering this quick poll";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file.";
+"Open in WhatsApp Business" = "Open in WhatsApp Business";
+"Message %@" = "Message %@";

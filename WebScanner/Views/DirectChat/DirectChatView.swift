@@ -521,15 +521,17 @@ public struct DirectChatView: View {
         
         RecentChatManager.shared.addChat(phoneNumber: formattedDisplay, message: messageText)
         
-        var urlString = "https://wa.me/\(fullDigits)"
-        if !messageText.isEmpty,
-           let encoded = messageText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            urlString += "?text=\(encoded)"
-        }
+        let encodedMessage = messageText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let appURLString = "whatsapp://send?phone=\(fullDigits)&text=\(encodedMessage)"
+        let webURLString = "https://api.whatsapp.com/send?phone=\(fullDigits)&text=\(encodedMessage)"
         
-        if let url = URL(string: urlString) {
-            shouldClearOnReturn = true
-            UIApplication.shared.open(url)
+        shouldClearOnReturn = true
+        if let appURL = URL(string: appURLString), UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        } else if let webURL = URL(string: webURLString), UIApplication.shared.canOpenURL(webURL) {
+            UIApplication.shared.open(webURL)
+        } else if let fallbackURL = URL(string: "https://wa.me/\(fullDigits)?text=\(encodedMessage)") {
+            UIApplication.shared.open(fallbackURL)
         }
     }
     
@@ -537,14 +539,16 @@ public struct DirectChatView: View {
         let cleanDigits = fullNumber.filter { "0123456789".contains($0) }
         guard !cleanDigits.isEmpty else { return }
         
-        var urlString = "https://wa.me/\(cleanDigits)"
-        if !message.isEmpty,
-           let encoded = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            urlString += "?text=\(encoded)"
-        }
+        let encodedMessage = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let appURLString = "whatsapp://send?phone=\(cleanDigits)&text=\(encodedMessage)"
+        let webURLString = "https://api.whatsapp.com/send?phone=\(cleanDigits)&text=\(encodedMessage)"
         
-        if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+        if let appURL = URL(string: appURLString), UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        } else if let webURL = URL(string: webURLString), UIApplication.shared.canOpenURL(webURL) {
+            UIApplication.shared.open(webURL)
+        } else if let fallbackURL = URL(string: "https://wa.me/\(cleanDigits)?text=\(encodedMessage)") {
+            UIApplication.shared.open(fallbackURL)
         }
     }
 }

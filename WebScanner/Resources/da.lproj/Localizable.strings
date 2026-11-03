@@ -187,6 +187,9 @@
 "Backup Your Chats With Ease" = "Sikkerhedskopier dine chats med lethed";
 "Keep Important Messages Safe Forever." = "Hold vigtige beskeder sikre for altid.";
 "Get Started" = "Kom i gang";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Web Scanner";
 "WT Scan Now" = "Scan WT nu";
 "Access Your Chats Instantly" = "Få adgang til dine chats med det samme";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "Sådan sikkerhedskopieres chats";
 "Export Chat" = "Eksporter chat";
 "Got It" = "Forstået";
-"Open Web Scanner and tap on 'Backup Chats'." = "Åbn Web Scanner og tryk på 'Sikkerhedskopier chats'.";
+"Open Dual App and tap on 'Backup Chats'." = "Åbn Dual App og tryk på 'Sikkerhedskopier chats'.";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Åbn Dual App og tryk på 'Sikkerhedskopier chats'.";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Åbn Dual App og tryk på 'Sikkerhedskopier chats'.";
+"Open Web Scanner and tap on 'Backup Chats'." = "Åbn Dual App og tryk på 'Sikkerhedskopier chats'.";
 "Open the app and tap on WA Backup Chats." = "Åbn appen og tryk på WA Sikkerhedskopier chats.";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "Åbn chatsektionen, stryg til venstre på en samtale, og tryk på 'Mere'.";
 "Tap on Contact or Group info." = "Tryk på Kontakt- eller Gruppeoplysninger.";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "Tryk på knappen 'Importer sikkerhedskopi' nederst.";
 "Tap Import Backup Chat." = "Tryk på Importer sikkerhedskopieret chat.";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Vælg din gemte WhatsApp-sikkerhedskopi (.zip eller .txt) fra Arkiver.";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "I Dual App skal du trykke på 'Importer sikkerhedskopi' og vælge den gemte ZIP- eller TXT-fil.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "I Dual App skal du trykke på 'Importer sikkerhedskopi' og vælge den gemte ZIP- eller TXT-fil.";
+"Open in WhatsApp Business" = "Åbn i WhatsApp Business";
+"Message %@" = "Besked %@";

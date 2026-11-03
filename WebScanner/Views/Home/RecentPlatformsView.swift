@@ -20,6 +20,7 @@ public struct RecentPlatformsView: View {
     @State private var newAccountName: String = ""
     @AppStorage(WS_SessionKeys.isPro) var isPro = false
     @State private var showPaywall: Bool = false
+    @State private var pendingAccount: AppAccount? = nil
     @State private var showNoInternetAlert: Bool = false
     
     private var isIPad: Bool {
@@ -54,21 +55,11 @@ public struct RecentPlatformsView: View {
                                             return
                                         }
                                         if !isPro {
+                                            pendingAccount = account
                                             showPaywall = true
                                             return
                                         }
-                                        accountManager.touch(account)
-                                        TR_AdCountViewModel.sharedd.registerTap {
-                                            if account.platform == .whatsApp {
-                                                if account.isSessionActive {
-                                                    navPath.append(HomeDestination.clone(platform: .whatsApp, accountId: account.id))
-                                                } else {
-                                                    navPath.append(HomeDestination.webScanner(accountId: account.id))
-                                                }
-                                            } else {
-                                                navPath.append(HomeDestination.clone(platform: account.platform, accountId: account.id))
-                                            }
-                                        }
+                                        navigateToAccount(account)
                                     },
                                     onDelete: {
                                         accountToDelete = account
@@ -116,9 +107,12 @@ public struct RecentPlatformsView: View {
                 TabBarManager.shared.isHidden = false
             }
         }
-        .fullScreenCover(isPresented: $showPaywall) {
+        .fullScreenCover(isPresented: $showPaywall, onDismiss: {
+            handlePaywallDismiss()
+        }) {
             PremiumPaywallView(isFromAppOpen: false) {
                 showPaywall = false
+                handlePaywallDismiss()
             }
         }
         .alert(isPresented: $showDeleteConfirmation) {
@@ -234,6 +228,7 @@ public struct RecentPlatformsView: View {
                     guard !trimmed.isEmpty else { return }
                     if var acc = accountToRename {
                         acc.accountName = trimmed
+                        acc.isCustomNamed = true
                         accountManager.update(acc)
                     }
                     showRenameSheet = false
@@ -255,5 +250,33 @@ public struct RecentPlatformsView: View {
         )
         .presentationDetents([.height(isIPad ? 210 : 170)])
         .presentationDragIndicator(.hidden)
+    }
+    
+    private func handlePaywallDismiss() {
+        showPaywall = false
+        if let account = pendingAccount {
+            pendingAccount = nil
+            let isUserPro = isPro || UserDefaults.standard.bool(forKey: WS_SessionKeys.isPro)
+            if isUserPro {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    navigateToAccount(account)
+                }
+            }
+        }
+    }
+    
+    private func navigateToAccount(_ account: AppAccount) {
+        accountManager.touch(account)
+        TR_AdCountViewModel.sharedd.registerTap {
+            if account.platform == .whatsApp {
+                if account.isSessionActive {
+                    navPath.append(HomeDestination.clone(platform: .whatsApp, accountId: account.id))
+                } else {
+                    navPath.append(HomeDestination.webScanner(accountId: account.id))
+                }
+            } else {
+                navPath.append(HomeDestination.clone(platform: account.platform, accountId: account.id))
+            }
+        }
     }
 }

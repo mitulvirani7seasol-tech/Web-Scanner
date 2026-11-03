@@ -187,6 +187,9 @@
 "Backup Your Chats With Ease" = "Sohbetlerinizi Kolayca Yedekleyin";
 "Keep Important Messages Safe Forever." = "Önemli mesajlarınızı sonsuza kadar güvende tutun.";
 "Get Started" = "Başla";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Web Tarayıcı";
 "WT Scan Now" = "Şimdi WT Tara";
 "Access Your Chats Instantly" = "Sohbetlerinize Anında Erişin";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "Sohbetler Nasıl Yedeklenir";
 "Export Chat" = "Sohbeti Dışa Aktar";
 "Got It" = "Anladım";
-"Open Web Scanner and tap on 'Backup Chats'." = "Web Tarayıcıyı açın ve 'Yedek Sohbetler'e dokunun.";
+"Open Dual App and tap on 'Backup Chats'." = "Dual App'i açın ve 'Yedek Sohbetler'e dokunun.";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Dual App'i açın ve 'Yedek Sohbetler'e dokunun.";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Dual App'i açın ve 'Yedek Sohbetler'e dokunun.";
+"Open Web Scanner and tap on 'Backup Chats'." = "Dual App'i açın ve 'Yedek Sohbetler'e dokunun.";
 "Open the app and tap on WA Backup Chats." = "Uygulamayı açın ve WA Yedek Sohbetler'e dokunun.";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "Sohbet bölümünü açın, herhangi bir sohbette sola kaydırın ve 'Daha Fazla'ya dokunun.";
 "Tap on Contact or Group info." = "Kişi veya Grup bilgisine dokunun.";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "Alttaki 'Yedeği İçe Aktar' düğmesine dokunun.";
 "Tap Import Backup Chat." = "Yedek Sohbeti İçe Aktar'a dokunun.";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Dosyalar'dan kaydedilmiş WhatsApp yedekleme (.zip veya .txt) dosyanızı seçin.";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dual App'te 'Yedeği İçe Aktar'a dokunun ve kaydedilen ZIP veya TXT dosyasını seçin.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Dual App'te 'Yedeği İçe Aktar'a dokunun ve kaydedilen ZIP veya TXT dosyasını seçin.";
+"Open in WhatsApp Business" = "WhatsApp Business'ta Aç";
+"Message %@" = "%@ numarasına mesaj gönder";

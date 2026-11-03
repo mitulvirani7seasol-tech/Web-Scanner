@@ -29,6 +29,11 @@ final class WS_NativeAdViewModel: NSObject, ObservableObject {
     private var secondAdLoader: AdLoader?
     private var secondSmallAdLoader: AdLoader?
 
+    private func isValidNativeUnit(_ id: String) -> Bool {
+        let trimmed = id.trimmingCharacters(in: .whitespacesAndNewlines)
+        return !trimmed.isEmpty && trimmed != "0" && trimmed != "NA" && trimmed != bannerId && trimmed != "ca-app-pub-3940256099942544/2934735716"
+    }
+
     func refreshAd() {
         didFailToLoad = false
         nativeAd = nil
@@ -36,9 +41,13 @@ final class WS_NativeAdViewModel: NSObject, ObservableObject {
         let isHomeOpened = UserDefaults.standard.bool(forKey: WS_SessionKeys.isHomeOpened)
         let adUnit: String = {
             if !isHomeOpened {
-                return !second_native.isEmpty ? second_native : (!nativeId.isEmpty ? nativeId : "ca-app-pub-3940256099942544/3986624511")
+                if isValidNativeUnit(second_native) { return second_native }
+                if isValidNativeUnit(nativeId) { return nativeId }
+                return "ca-app-pub-3940256099942544/3986624511"
             } else {
-                return !nativeId.isEmpty ? nativeId : (!second_native.isEmpty ? second_native : "ca-app-pub-3940256099942544/3986624511")
+                if isValidNativeUnit(nativeId) { return nativeId }
+                if isValidNativeUnit(second_native) { return second_native }
+                return "ca-app-pub-3940256099942544/3986624511"
             }
         }()
         print("📢 [NativeAd Large] Requesting Ad Unit ID: \(adUnit) | isHomeOpened: \(isHomeOpened)")
@@ -59,9 +68,13 @@ final class WS_NativeAdViewModel: NSObject, ObservableObject {
         let isHomeOpened = UserDefaults.standard.bool(forKey: WS_SessionKeys.isHomeOpened)
         let adUnit: String = {
             if !isHomeOpened {
-                return !second_native.isEmpty ? second_native : (!nativeId.isEmpty ? nativeId : "ca-app-pub-3940256099942544/3986624511")
+                if isValidNativeUnit(second_native) { return second_native }
+                if isValidNativeUnit(nativeId) { return nativeId }
+                return "ca-app-pub-3940256099942544/3986624511"
             } else {
-                return !nativeId.isEmpty ? nativeId : (!second_native.isEmpty ? second_native : "ca-app-pub-3940256099942544/3986624511")
+                if isValidNativeUnit(nativeId) { return nativeId }
+                if isValidNativeUnit(second_native) { return second_native }
+                return "ca-app-pub-3940256099942544/3986624511"
             }
         }()
         print("📢 [Second NativeAd Large] Requesting Ad Unit ID: \(adUnit) | isHomeOpened: \(isHomeOpened)")
@@ -82,9 +95,15 @@ final class WS_NativeAdViewModel: NSObject, ObservableObject {
         let isHomeOpened = UserDefaults.standard.bool(forKey: WS_SessionKeys.isHomeOpened)
         let adUnit: String = {
             if !isHomeOpened {
-                return !second_small_native.isEmpty ? second_small_native : (!small_native.isEmpty ? small_native : (!nativeId.isEmpty ? nativeId : "ca-app-pub-3940256099942544/3986624511"))
+                if isValidNativeUnit(second_small_native) { return second_small_native }
+                if isValidNativeUnit(small_native) { return small_native }
+                if isValidNativeUnit(nativeId) { return nativeId }
+                return "ca-app-pub-3940256099942544/3986624511"
             } else {
-                return !small_native.isEmpty ? small_native : (!second_small_native.isEmpty ? second_small_native : (!nativeId.isEmpty ? nativeId : "ca-app-pub-3940256099942544/3986624511"))
+                if isValidNativeUnit(small_native) { return small_native }
+                if isValidNativeUnit(second_small_native) { return second_small_native }
+                if isValidNativeUnit(nativeId) { return nativeId }
+                return "ca-app-pub-3940256099942544/3986624511"
             }
         }()
         print("📢 [Small NativeAd] Requesting Ad Unit ID: \(adUnit) | isHomeOpened: \(isHomeOpened)")
@@ -105,9 +124,15 @@ final class WS_NativeAdViewModel: NSObject, ObservableObject {
         let isHomeOpened = UserDefaults.standard.bool(forKey: WS_SessionKeys.isHomeOpened)
         let adUnit: String = {
             if !isHomeOpened {
-                return !second_small_native.isEmpty ? second_small_native : (!small_native.isEmpty ? small_native : (!nativeId.isEmpty ? nativeId : "ca-app-pub-3940256099942544/3986624511"))
+                if isValidNativeUnit(second_small_native) { return second_small_native }
+                if isValidNativeUnit(small_native) { return small_native }
+                if isValidNativeUnit(nativeId) { return nativeId }
+                return "ca-app-pub-3940256099942544/3986624511"
             } else {
-                return !small_native.isEmpty ? small_native : (!second_small_native.isEmpty ? second_small_native : (!nativeId.isEmpty ? nativeId : "ca-app-pub-3940256099942544/3986624511"))
+                if isValidNativeUnit(small_native) { return small_native }
+                if isValidNativeUnit(second_small_native) { return second_small_native }
+                if isValidNativeUnit(nativeId) { return nativeId }
+                return "ca-app-pub-3940256099942544/3986624511"
             }
         }()
         print("📢 [Second Small NativeAd] Requesting Ad Unit ID: \(adUnit) | isHomeOpened: \(isHomeOpened)")

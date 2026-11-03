@@ -17,6 +17,7 @@ public class TabBarManager: ObservableObject {
     @Published public var chatToOpenImmediately: ChatConversation?
     @Published public var showPaywall: Bool = false
     @Published public var isPaywallFromAppOpen: Bool = false
+    public var onPaywallDismissed: ((_ isPro: Bool) -> Void)?
     
     public func reset() {
         isHidden = false

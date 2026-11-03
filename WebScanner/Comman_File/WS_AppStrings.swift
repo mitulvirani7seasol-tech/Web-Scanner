@@ -31,10 +31,9 @@ struct WS_SessionKeys {
 }
 
 enum WS_Products: String, CaseIterable {
-    case Motion_Week = "Week_Cast"
-    case Motion_Month = "Month_Cast"
-    case Motion_Year = "Year_Cast"
-    case Motion_LifeTime = "Life_Time_Cast"
+    case Motion_Week = "dule_week"
+    case Motion_Month = "dule_month"
+    case Motion_Year = "dule_year"
 }
 
 class WS_AppSession {

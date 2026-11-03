@@ -439,12 +439,13 @@ public struct AppAccount: Codable, Identifiable, Equatable, Hashable {
     public var webDataStoreID: String
     public var cookiesKey: String
     public var isSessionActive: Bool
+    public var isCustomNamed: Bool
     
     enum CodingKeys: String, CodingKey {
-        case id, platform, accountName, createdAt, webDataStoreID, cookiesKey, isSessionActive
+        case id, platform, accountName, createdAt, webDataStoreID, cookiesKey, isSessionActive, isCustomNamed
     }
     
-    public init(platform: WebAppPlatform, accountName: String = "", isSessionActive: Bool = false) {
+    public init(platform: WebAppPlatform, accountName: String = "", isSessionActive: Bool = false, isCustomNamed: Bool = false) {
         self.id = UUID().uuidString
         self.platform = platform
         self.accountName = accountName.isEmpty ? "\(platform.rawValue) 1" : accountName
@@ -452,6 +453,7 @@ public struct AppAccount: Codable, Identifiable, Equatable, Hashable {
         self.webDataStoreID = UUID().uuidString
         self.cookiesKey = "cookies_\(self.id)"
         self.isSessionActive = isSessionActive
+        self.isCustomNamed = isCustomNamed
     }
     
     public init(from decoder: Decoder) throws {
@@ -462,6 +464,7 @@ public struct AppAccount: Codable, Identifiable, Equatable, Hashable {
         self.createdAt = try container.decode(Date.self, forKey: .createdAt)
         self.webDataStoreID = try container.decode(String.self, forKey: .webDataStoreID)
         self.cookiesKey = try container.decode(String.self, forKey: .cookiesKey)
+        self.isCustomNamed = (try? container.decodeIfPresent(Bool.self, forKey: .isCustomNamed)) ?? false
         
         if let active = try? container.decodeIfPresent(Bool.self, forKey: .isSessionActive) {
             self.isSessionActive = active
@@ -483,6 +486,7 @@ public struct AppAccount: Codable, Identifiable, Equatable, Hashable {
         try container.encode(webDataStoreID, forKey: .webDataStoreID)
         try container.encode(cookiesKey, forKey: .cookiesKey)
         try container.encode(isSessionActive, forKey: .isSessionActive)
+        try container.encode(isCustomNamed, forKey: .isCustomNamed)
     }
 }
 
@@ -510,6 +514,7 @@ public final class AccountManager: ObservableObject {
                                     .sorted { list[$0].createdAt < list[$1].createdAt }
         
         for idx in wpIndices {
+            if list[idx].isCustomNamed { continue }
             let name = list[idx].accountName.trimmingCharacters(in: .whitespacesAndNewlines)
             var currentNum: Int? = nil
             for p in ["WhatsApp - ", "WT Scan - "] {
@@ -541,6 +546,7 @@ public final class AccountManager: ObservableObject {
             
             var usedNumbers = Set<Int>()
             for idx in sortedIndices {
+                if list[idx].isCustomNamed { continue }
                 let name = list[idx].accountName.trimmingCharacters(in: .whitespacesAndNewlines)
                 let numberStr: String?
                 if name.starts(with: prefix) {
@@ -568,6 +574,7 @@ public final class AccountManager: ObservableObject {
         
         for i in 0..<list.count {
             if list[i].platform == .google {
+                if list[i].isCustomNamed { continue }
                 let name = list[i].accountName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
                 if name == "settings" || name.contains("help center") || name == "account" || name.isEmpty {
                     if let cred = CoreDataManager.shared.getLatestCredential(for: "Google"), cred.username.contains("@") {
@@ -669,8 +676,18 @@ public final class AccountManager: ObservableObject {
         }
         UserDefaults.standard.removeObject(forKey: account.cookiesKey)
         account.webDataStoreID = UUID().uuidString
-        let idx = whatsappIndex(for: account)
-        account.accountName = "WhatsApp - \(idx)"
+        
+        let existing = accounts.first(where: { $0.id == account.id })
+        let isCustom = account.isCustomNamed || (existing?.isCustomNamed == true)
+        
+        if isCustom {
+            let customName = existing?.accountName ?? account.accountName
+            account.accountName = customName
+            account.isCustomNamed = true
+        } else {
+            let idx = whatsappIndex(for: account)
+            account.accountName = "WhatsApp - \(idx)"
+        }
         account.isSessionActive = false
         update(account)
     }
@@ -681,6 +698,10 @@ public final class AccountManager: ObservableObject {
         updatedAccount.createdAt = Date()
         
         if let idx = list.firstIndex(where: { $0.id == updatedAccount.id }) {
+            if list[idx].isCustomNamed && !updatedAccount.isCustomNamed {
+                updatedAccount.accountName = list[idx].accountName
+                updatedAccount.isCustomNamed = true
+            }
             list.remove(at: idx)
         } else {
             if updatedAccount.accountName.isEmpty {
@@ -727,6 +748,7 @@ public final class AccountManager: ObservableObject {
                 updated.accountName = "\(updated.platform.displayName) - \(next)"
             } else {
                 updated.accountName = trimmed
+                updated.isCustomNamed = true
             }
             updated.createdAt = Date()
             list.insert(updated, at: 0)

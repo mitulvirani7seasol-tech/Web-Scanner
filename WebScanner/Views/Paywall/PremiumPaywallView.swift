@@ -23,10 +23,9 @@ public struct PremiumPaywallView: View {
     public var isFromAppOpen: Bool = false
     public var onDismiss: (() -> Void)? = nil
     
-    private let yearProductID = "Re_Year"
-    private let monthProductID = "Re_Month"
-    private let weekProductID = "Re_Week"
-    private let lifetimeProductID = "Re_Lifetime"
+    private let yearProductID = "dule_year"
+    private let monthProductID = "dule_month"
+    private let weekProductID = "dule_week"
     
     @State private var selectedPlanId: String = ""
     @State private var isCloseButtonVisible: Bool = false
@@ -52,59 +51,38 @@ public struct PremiumPaywallView: View {
         self.onDismiss = onDismiss
     }
     
-    // MARK: - Strictly Dynamic Plans from StoreKit matching Active API Flags (No Static Fallbacks)
     private var availablePlans: [PaywallPlanItem] {
-        var plans: [PaywallPlanItem] = []
-        
-        if isLifetimePlanEnabled {
-            if let p = storeKitProducts.first(where: { $0.id == lifetimeProductID || $0.id == "Life_Time_Cast" }) {
-                plans.append(PaywallPlanItem(
-                    id: p.id,
-                    title: "Lifetime Plan".localized,
-                    price: "\(p.displayPrice)/",
-                    period: "One-Time".localized,
-                    badge: "Best Value".localized
-                ))
-            }
-        }
+        var items: [(id: String, title: String, period: String, product: Product)] = []
         
         if isYearlyPlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == yearProductID }) {
-                plans.append(PaywallPlanItem(
-                    id: yearProductID,
-                    title: "Yearly Plan".localized,
-                    price: "\(p.displayPrice)/",
-                    period: "Per Year".localized,
-                    badge: (isLifetimePlanEnabled ? nil : "Best Value".localized)
-                ))
+                items.append((id: yearProductID, title: "Yearly Plan".localized, period: "Per Year".localized, product: p))
             }
         }
         
         if isMonthlyPlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == monthProductID }) {
-                plans.append(PaywallPlanItem(
-                    id: monthProductID,
-                    title: "Monthly Plan".localized,
-                    price: "\(p.displayPrice)/",
-                    period: "Per Month".localized,
-                    badge: nil
-                ))
+                items.append((id: monthProductID, title: "Monthly Plan".localized, period: "Per Month".localized, product: p))
             }
         }
         
         if isWeeklyPlanEnabled {
             if let p = storeKitProducts.first(where: { $0.id == weekProductID }) {
-                plans.append(PaywallPlanItem(
-                    id: weekProductID,
-                    title: "Weekly Plan".localized,
-                    price: "\(p.displayPrice)/",
-                    period: "Per Week".localized,
-                    badge: nil
-                ))
+                items.append((id: weekProductID, title: "Weekly Plan".localized, period: "Per Week".localized, product: p))
             }
         }
         
-        return plans
+        let highestPriceId = items.count > 1 ? items.max(by: { $0.product.price < $1.product.price })?.id : nil
+        
+        return items.map { item in
+            PaywallPlanItem(
+                id: item.id,
+                title: item.title,
+                price: "\(item.product.displayPrice)/",
+                period: item.period,
+                badge: (item.id == highestPriceId) ? "Best Value".localized : nil
+            )
+        }
     }
     
     public var body: some View {
@@ -205,8 +183,6 @@ public struct PremiumPaywallView: View {
             if let highestPriceProduct = matchingProducts.max(by: { $0.price < $1.price }) {
                 selectedPlanId = highestPriceProduct.id
                 print("💎 [PremiumPaywallView] Default selected highest price plan: \(highestPriceProduct.id) (\(highestPriceProduct.displayPrice))")
-            } else if plans.contains(where: { $0.id == lifetimeProductID || $0.id == "Life_Time_Cast" }) {
-                selectedPlanId = plans.first(where: { $0.id == lifetimeProductID || $0.id == "Life_Time_Cast" })?.id ?? ""
             } else if plans.contains(where: { $0.id == yearProductID }) {
                 selectedPlanId = yearProductID
             } else if plans.contains(where: { $0.id == monthProductID }) {
@@ -453,6 +429,13 @@ public struct PremiumPaywallView: View {
         }) {
             ZStack(alignment: .topTrailing) {
                 HStack(alignment: .center) {
+                    
+                    Text(title)
+                        .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
+                        .foregroundColor(AppColors.textPrimary(for: colorScheme))
+                    
+                    Spacer()
+                    
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
                         Text(price)
                             .font(.inter(.bold, size: isIPad ? 18 : 16.scaled))
@@ -462,12 +445,7 @@ public struct PremiumPaywallView: View {
                             .font(.inter(.regular, size: isIPad ? 13 : 11.5.scaled))
                             .foregroundColor(AppColors.SaticColor(for: colorScheme))
                     }
-                    
-                    Spacer()
-                    
-                    Text(title)
-                        .font(.inter(.bold, size: isIPad ? 16 : 14.scaled))
-                        .foregroundColor(AppColors.textPrimary(for: colorScheme))
+                   
                 }
                 .padding(.horizontal, isIPad ? 20 : 16.scaled)
                 .padding(.vertical, isIPad ? 26 : 18.scaled)
@@ -638,19 +616,18 @@ public struct PremiumPaywallView: View {
                 yearProductID,
                 monthProductID,
                 weekProductID,
-                lifetimeProductID,
-                "Life_Time_Cast"
+//                lifetimeProductID,
             ]
             let products = try await Product.products(for: ids)
             await MainActor.run {
                 self.storeKitProducts = products
             }
-            print("🛒 [PremiumPaywallView] Successfully loaded \(products.count) StoreKit products:")
+            print("[PremiumPaywallView] Successfully loaded \(products.count) StoreKit products:")
             for p in products {
                 print("   - \(p.id): \(p.displayPrice)")
             }
         } catch {
-            print("❌ [PremiumPaywallView] Failed to load StoreKit products: \(error)")
+            print("[PremiumPaywallView] Failed to load StoreKit products: \(error)")
         }
     }
     

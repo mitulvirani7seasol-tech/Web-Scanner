@@ -179,26 +179,42 @@ final class WS_AppConsentManager: NSObject, ObservableObject {
                     
                     let ResponseData = (responseJSON["extraFields"] as? [String: Any]) ?? (responseJSON["configuration"] as? [String: Any]) ?? responseJSON
                     
-                    small_native = ResponseData["small_native"] as? String ?? (responseJSON["customBanner"] as? String ?? (responseJSON["bannerId"] as? String ?? ""))
-                    second_small_native = ResponseData["second_small_native"] as? String ?? (responseJSON["secBannerId"] as? String ?? (responseJSON["customBanner"] as? String ?? ""))
-                    second_native = ResponseData["second_native"] as? String ?? (responseJSON["secNativeId"] as? String ?? (responseJSON["customNative"] as? String ?? ""))
-                    second_appopen = ResponseData["second_appopen"] as? String ?? (responseJSON["secAppopenId"] as? String ?? (responseJSON["customAppOpen"] as? String ?? ""))
-                    androidBannerUrl = ResponseData["splash_banner"] as? String ?? androidBannerUrl
+                    let parsedNativeId = (responseJSON["nativeId"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                    let validNativeId = (!parsedNativeId.isEmpty && parsedNativeId != "0" && parsedNativeId != "NA") ? parsedNativeId : nativeId
                     
-                    if let val = ResponseData["iapLifetime"] { iapLifetime = "\(val)" }
-                    else if let val = ResponseData["lifeTime_plan"] { iapLifetime = "\(val)" }
-                    else { iapLifetime = "false" }
+                    let parsedSecNativeId = (responseJSON["secNativeId"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                    let validSecNativeId = (!parsedSecNativeId.isEmpty && parsedSecNativeId != "0" && parsedSecNativeId != "NA") ? parsedSecNativeId : validNativeId
+                    
+                    if let sNative = (ResponseData["small_native"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+                       !sNative.isEmpty, sNative != "0", sNative != "NA", sNative != bannerId, sNative != "ca-app-pub-3940256099942544/2934735716" {
+                        small_native = sNative
+                    } else {
+                        small_native = validNativeId
+                    }
+                    
+                    if let secSNative = (ResponseData["second_small_native"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+                       !secSNative.isEmpty, secSNative != "0", secSNative != "NA", secSNative != bannerId, secSNative != "ca-app-pub-3940256099942544/2934735716" {
+                        second_small_native = secSNative
+                    } else {
+                        second_small_native = validSecNativeId
+                    }
+                    
+                    if let secNat = (ResponseData["second_native"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+                       !secNat.isEmpty, secNat != "0", secNat != "NA" {
+                        second_native = secNat
+                    } else {
+                        second_native = validSecNativeId
+                    }
+                    
+                    second_appopen = ResponseData["second_appopen"] as? String ?? (responseJSON["secAppopenId"] as? String ?? (responseJSON["customAppOpen"] as? String ?? ""))
                     
                     if let val = ResponseData["iapYearlyPlan"] { iapYearlyPlan = "\(val)" }
-                    else if let val = ResponseData["yearly_plan"] { iapYearlyPlan = "\(val)" }
                     else { iapYearlyPlan = "false" }
                     
                     if let val = ResponseData["iapMonthlyPlan"] { iapMonthlyPlan = "\(val)" }
-                    else if let val = ResponseData["monthly_plan"] { iapMonthlyPlan = "\(val)" }
                     else { iapMonthlyPlan = "false" }
                     
                     if let val = ResponseData["iapWeeklyPlan"] { iapWeeklyPlan = "\(val)" }
-                    else if let val = ResponseData["weekly_plan"] { iapWeeklyPlan = "\(val)" }
                     else { iapWeeklyPlan = "false" }
                     
                     isShowPremium = ResponseData["isShowPremium"] as? String ?? (responseJSON["isShowPremium"] as? String ?? "true")
@@ -223,9 +239,6 @@ final class WS_AppConsentManager: NSObject, ObservableObject {
                     } else {
                         premiumCloseTime = 2.0
                     }
-                    
- 
-                    freeLimitCount = ResponseData["freeLimitCount"] as? String ?? "10"
                     
                     let customInterstitialCount = responseJSON["customInterstial"] as? Int ?? 0
                     

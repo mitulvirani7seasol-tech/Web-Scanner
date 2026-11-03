@@ -186,14 +186,16 @@ public struct RecentChatsView: View {
         let cleanDigits = chat.phoneNumber.filter { "0123456789".contains($0) }
         guard !cleanDigits.isEmpty else { return }
         
-        var urlString = "https://wa.me/\(cleanDigits)"
-        if !chat.message.isEmpty,
-           let encoded = chat.message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            urlString += "?text=\(encoded)"
-        }
+        let encodedMessage = chat.message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let appURLString = "whatsapp://send?phone=\(cleanDigits)&text=\(encodedMessage)"
+        let webURLString = "https://api.whatsapp.com/send?phone=\(cleanDigits)&text=\(encodedMessage)"
         
-        if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+        if let appURL = URL(string: appURLString), UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        } else if let webURL = URL(string: webURLString), UIApplication.shared.canOpenURL(webURL) {
+            UIApplication.shared.open(webURL)
+        } else if let fallbackURL = URL(string: "https://wa.me/\(cleanDigits)?text=\(encodedMessage)") {
+            UIApplication.shared.open(fallbackURL)
         }
     }
 }

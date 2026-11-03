@@ -187,6 +187,9 @@
 "Backup Your Chats With Ease" = "Maak eenvoudig een back-up van chats";
 "Keep Important Messages Safe Forever." = "Bewaar belangrijke berichten voor altijd veilig.";
 "Get Started" = "Aan de slag";
+"Dual App" = "Dual App";
+"DualApp Web Scanner App" = "Dual App";
+"DualApp-Web Scanner App" = "Dual App";
 "Web Scanner" = "Web Scanner";
 "WT Scan Now" = "Nu WT scannen";
 "Access Your Chats Instantly" = "Direct toegang tot uw chats";
@@ -494,7 +497,10 @@
 "How to Backup Chats" = "Hoe u chats kunt back-uppen";
 "Export Chat" = "Exporteer chat";
 "Got It" = "Begrepen";
-"Open Web Scanner and tap on 'Backup Chats'." = "Open Web Scanner en tik op 'Backup chats'.";
+"Open Dual App and tap on 'Backup Chats'." = "Open Dual App en tik op 'Backup chats'.";
+"Open DualApp Web Scanner App and tap on 'Backup Chats'." = "Open Dual App en tik op 'Backup chats'.";
+"Open DualApp-Web Scanner App and tap on 'Backup Chats'." = "Open Dual App en tik op 'Backup chats'.";
+"Open Web Scanner and tap on 'Backup Chats'." = "Open Dual App en tik op 'Backup chats'.";
 "Open the app and tap on WA Backup Chats." = "Open de app en tik op WA Backup chats.";
 "Open the chat section, swipe left on any conversation, and tap 'More'." = "Open het chatgedeelte, veeg naar links op een gesprek en tik op 'Meer'.";
 "Tap on Contact or Group info." = "Tik op Contact- of Groepsinformatie.";
@@ -505,3 +511,7 @@
 "Tap on the 'Import Backup' button at the bottom." = "Tik onderaan op de knop 'Reservekopie importeren'.";
 "Tap Import Backup Chat." = "Tik op Reservekopiechat importeren.";
 "Select your saved WhatsApp backup (.zip or .txt) file from Files." = "Selecteer uw opgeslagen WhatsApp-reservekopie (.zip of .txt) uit Bestanden.";
+"In Dual App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Tik in Dual App op 'Reservekopie importeren' en kies het opgeslagen ZIP- of TXT-bestand.";
+"In DualApp-Web Scanner App, tap 'Import Backup' and choose the saved ZIP or TXT file." = "Tik in Dual App op 'Reservekopie importeren' en kies het opgeslagen ZIP- of TXT-bestand.";
+"Open in WhatsApp Business" = "Openen in WhatsApp Business";
+"Message %@" = "Bericht aan %@";
