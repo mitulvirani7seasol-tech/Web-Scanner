@@ -9,36 +9,22 @@
       }
     ]
   },
-  "identifier" : "E3CA0F65",
+  "identifier" : "D7B5F82B",
   "nonRenewingSubscriptions" : [
 
   ],
   "products" : [
-    {
-      "displayPrice" : "34.99",
-      "familyShareable" : false,
-      "internalID" : "6823514000",
-      "localizations" : [
-        {
-          "description" : "Full Access Lifetime",
-          "displayName" : "Lifetime Plan",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "Re_Lifetime",
-      "referenceName" : "Lifetime Plan",
-      "type" : "NonConsumable"
-    }
+
   ],
   "settings" : {
-    "_applicationInternalID" : "6790386176",
+    "_applicationInternalID" : "6505063874",
     "_askToBuyEnabled" : false,
     "_billingGracePeriodEnabled" : false,
     "_billingIssuesEnabled" : false,
-    "_developerTeamID" : "AMS33G996X",
+    "_developerTeamID" : "9F8UHA9AH5",
     "_disableDialogs" : false,
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 813828651.11782098,
+    "_lastSynchronizedDate" : 815310892.883901,
     "_locale" : "en_US",
     "_renewalBillingIssuesEnabled" : false,
     "_storefront" : "USA",
@@ -49,11 +35,15 @@
   },
   "subscriptionGroups" : [
     {
-      "id" : "22483666",
+      "id" : "21507198",
       "localizations" : [
-
+        {
+          "description" : "",
+          "displayName" : "dule app subscription",
+          "locale" : "en_US"
+        }
       ],
-      "name" : "Subscribe Remote",
+      "name" : "dualmet",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -62,29 +52,33 @@
           "billingPlans" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "commitmentDisplayPrice" : "14.99",
-              "displayPrice" : "14.99",
-              "internalID" : "6823512902_BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "1.99",
+              "displayPrice" : "1.99",
+              "internalID" : "6511220067_BILLED_UPFRONT",
               "isEnabled" : true
             }
           ],
           "codeOffers" : [
 
           ],
-          "displayPrice" : "14.99",
+          "displayPrice" : "1.99",
           "familyShareable" : false,
-          "groupNumber" : 2,
-          "internalID" : "6823512902",
+          "groupNumber" : 1,
+          "internalID" : "6511220067",
           "introductoryOffers" : [
 
           ],
           "localizations" : [
-
+            {
+              "description" : "Get Monthly Subscription",
+              "displayName" : "Monthly subscription",
+              "locale" : "en_US"
+            }
           ],
-          "productID" : "Re_Month",
+          "productID" : "dule_month",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Month Plan",
-          "subscriptionGroupID" : "22483666",
+          "referenceName" : "dule_month",
+          "subscriptionGroupID" : "21507198",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
 
@@ -99,7 +93,7 @@
               "billingPlanType" : "BILLED_UPFRONT",
               "commitmentDisplayPrice" : "7.99",
               "displayPrice" : "7.99",
-              "internalID" : "6823512620_BILLED_UPFRONT",
+              "internalID" : "6829710377_BILLED_UPFRONT",
               "isEnabled" : true
             }
           ],
@@ -108,18 +102,22 @@
           ],
           "displayPrice" : "7.99",
           "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "6823512620",
+          "groupNumber" : 3,
+          "internalID" : "6829710377",
           "introductoryOffers" : [
 
           ],
           "localizations" : [
-
+            {
+              "description" : "Get Weekly Subscription",
+              "displayName" : "Week Plan",
+              "locale" : "en_US"
+            }
           ],
-          "productID" : "Re_Week",
+          "productID" : "dule_week",
           "recurringSubscriptionPeriod" : "P1W",
-          "referenceName" : "Week Plan",
-          "subscriptionGroupID" : "22483666",
+          "referenceName" : "dule_week",
+          "subscriptionGroupID" : "21507198",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
 
@@ -132,29 +130,33 @@
           "billingPlans" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "commitmentDisplayPrice" : "24.99",
-              "displayPrice" : "24.99",
-              "internalID" : "6823513170_BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "19.99",
+              "displayPrice" : "19.99",
+              "internalID" : "6511220149_BILLED_UPFRONT",
               "isEnabled" : true
             }
           ],
           "codeOffers" : [
 
           ],
-          "displayPrice" : "24.99",
+          "displayPrice" : "19.99",
           "familyShareable" : false,
-          "groupNumber" : 3,
-          "internalID" : "6823513170",
+          "groupNumber" : 2,
+          "internalID" : "6511220149",
           "introductoryOffers" : [
 
           ],
           "localizations" : [
-
+            {
+              "description" : "Get yearly subscription",
+              "displayName" : "Yearly Subscription",
+              "locale" : "en_US"
+            }
           ],
-          "productID" : "Re_Year",
+          "productID" : "dule_year",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Year Plan",
-          "subscriptionGroupID" : "22483666",
+          "referenceName" : "dule_year",
+          "subscriptionGroupID" : "21507198",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
 
